@@ -13,5 +13,18 @@ Follow Up:
 Can you do it in O(n) time?
 */
 public class 325MaximumSubarraySum{
-	
+	public int maxSubArrayLen(int[] nums, int k) {	
+		HashMap<Integer,Integer> map = new HashMap<Integer,Integer>();
+		map.put(0,-1);
+		int sum = 0;
+		int maxL = Integer.MIN_VALUE;
+		for(int i=0;i<nums.length;i++){
+			sum += nums[i];
+			if(!map.contains(sum))
+				map.put(sum,i);
+			if(map.contains(sum-k))
+				maxL = Math.max(maxL,i-map.get(sum-k));
+		}
+		return maxL==Integer.MIN_VALUE?0:maxL;
+	}
 }

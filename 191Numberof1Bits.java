@@ -8,6 +8,13 @@ For example, the 32-bit integer ’11' has binary representation 000000000000000
 public class 191Numberof1Bits {
     // you need to treat n as an unsigned value
     public int hammingWeight(int n) {
-        
+        int i = 0;
+        int count = 0;
+        while(i<32){
+        	if(((n>>i)&1)==1)
+        		count ++;
+        	i++;
+        }
+        return count;
     }
 }

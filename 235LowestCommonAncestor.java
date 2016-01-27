@@ -10,7 +10,8 @@ According to the definition of LCA on Wikipedia: “The lowest common ancestor i
    0      _4       7       9
          /  \
          3   5
-For example, the lowest common ancestor (LCA) of nodes 2 and 8 is 6. Another example is LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself according to the LCA definition.
+For example, the lowest common ancestor (LCA) of nodes 2 and 8 is 6. 
+Another example is LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself according to the LCA definition.
 */
 
 
@@ -26,29 +27,26 @@ For example, the lowest common ancestor (LCA) of nodes 2 and 8 is 6. Another exa
 public class 235LowestCommonAncestor {
     //Iteriative
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if(root == null || p==null||q==null)
-		    return null;
-    	while(root!=null){
-    	    if(root.val == Math.min(p.val,q.val))
-    		    return root;
-    	    if(root.val>Math.min(p.val,q.val)){
-        		if(root.val<=Math.max(p.val,q.val))
-    	    		return root;
-    	            root = root.left;
-    	    }
-        	else
-    		    root = root.right;	    
-    	}
-    	return null;
+        if(root == null||p==null||q==null)
+            return null;
+        while(root!=null){
+            if(root.val>p.val&&root.val>q.val)
+                root = root.left;
+            else if(root.val<p.val&&root.val<q.val)
+                root = root.right;
+            else
+                return root;
+        }
+        return null;
     }
     //Recursive
-        public TreeNode lowestCommonAncestor_1(TreeNode root, TreeNode p, TreeNode q) {
-        if(root == null || p==null||q==null)
-		    return null;
-        if(root.val<Math.min(p.val,q.val))
-            return lowestCommonAncestor(root.right, p, q);
-        if(root.val>Math.max(p.val,q.val))
-            return lowestCommonAncestor(root.left, p, q);
+    public TreeNode lowestCommonAncestor_1(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null||p==null||q==null)
+            return null;
+        if(root.val>p.val&&root.val>q.val)
+            return  lowestCommonAncestor(root.left, p, q);
+        else if(root.val<p.val&&root.val<q.val)
+            return  lowestCommonAncestor(root.right, p, q);
         return root;
     }
 }
