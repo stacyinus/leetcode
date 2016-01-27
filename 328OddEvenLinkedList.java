@@ -22,6 +22,18 @@ The first node is considered odd, the second node even and so on ...
  */
 public class 328OddEvenLinkedList {
     public ListNode oddEvenList(ListNode head) {
-        
+        if(head==null||head.next==null||head.next.next==null)
+        	return head;
+        ListNode oHead = head;
+        ListNode eHead = head.next;
+        ListNode temp = eHead;
+        while(temp!=null&&temp.next!=null){
+        	oHead.next = oHead.next.next;
+        	temp.next = temp.next.next;
+        	oHead = oHead.next;
+        	temp = temp.next;
+        }
+        oHead.next = eHead;
+    	return head;
     }
 }
