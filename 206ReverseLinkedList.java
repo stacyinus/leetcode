@@ -13,9 +13,30 @@ Reverse a singly linked list.
 
 public class 206ReverseLinkedList {
 	 //iterative
-    public ListNode reverseList2(ListNode head) {
+        public ListNode reverseList(ListNode head) {
+        if(head ==null||head.next==null)
+            return head;
+        ListNode temp = head;
+        ListNode pre = null;
+        ListNode next = null;
+        while(temp!=null){
+            next = temp.next;
+            temp.next=pre;
+            pre=temp;
+            temp = next;
+        }
+        return pre;
     }
+    
     //recursive
-    public ListNode reverseList(ListNode head) {
+    public ListNode reverseList1(ListNode head) {
+        if(head ==null||head.next==null)
+            return head;
+        ListNode cur =  head.next;
+        ListNode newHead = reverseList(cur);
+        cur.next = head;
+        head.next=null;
+        return newHead;
+        
     }
 }

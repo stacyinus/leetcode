@@ -8,7 +8,28 @@ Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. For 
 Note that 1 is typically treated as an ugly number.
 */
 public class 263UglyNumber {
+    //recursive
+    public boolean isUgly2(int num) {
+        if(num <= 0)
+            return false;
+        if(num==1)
+            return true;
+        if(num%5==0)
+            return isUgly(num/5);
+        if(num%3==0)
+            return isUgly(num/3);
+        if(num%2==0)
+            return isUgly(num/2);
+        return false;
+    }
+    //iterative
     public boolean isUgly(int num) {
-        
+        if(num <= 0)
+            return false;
+        int[] set = {2,3,5};
+        for(int i=0;i<3;i++)
+            while(num%set[i]==0)
+                num = num/set[i];
+        return num==1;
     }
 }
