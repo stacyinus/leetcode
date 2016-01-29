@@ -17,6 +17,26 @@ Return
 
 public class 118PascalTriangle {
     public List<List<Integer>> generate(int numRows) {
-        
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if(numRows==0)
+        	return result;
+        for(int i=0;i<numRows;i++){
+        	Integer[] l = new Integer[i+1];//here, it has to be Integer instead of int, because
+        								//Arrays.asList won't convert the int to Integer.
+        	List<Integer> lastrow = i>0?result.get(i-1):null;
+        	for(int j=0;j<(l.length+1)/2;j++){
+        		if(j==0){
+        			l[0]=1;
+        			l[l.length-1]=1;
+        		}
+        		else{        			
+        			l[j]=lastrow.get(j-1)+lastrow.get(j);
+        			l[l.length-1-j]=l[j];
+        		}
+        	}
+        	List<Integer> currentrow = Arrays.asList(l);
+        	result.add(currentrow);
+        }
+        return result;
     }
 }

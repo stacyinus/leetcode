@@ -30,7 +30,22 @@ Bonus points if you could solve it both recursively and iteratively.
  * }
  */
 public class 101SymmetricTree {
+	//recursive
     public boolean isSymmetric(TreeNode root) {
-        
+        if(root==null||(root.left==null&&root.right==null))
+        	return true;
+        return isSym(root.left,root.right);
+    }
+    private boolean isSym(TreeNode left, TreeNode right){
+    	if(left==null&&right==null)
+    		return true;
+    	if(left!=null&&right==null||right!=null&&left==null)
+    		return false;
+    	if(left.val!=right.val)
+    		return false;
+    	return isSym(left.left,right.right)&&isSym(left.right,right.left);
+    }
+    //iterative
+    public boolean isSymmetric2(TreeNode root) {
     }
 }
