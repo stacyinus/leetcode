@@ -16,13 +16,25 @@ For this problem, a height-balanced binary tree is defined as a binary tree in w
  * }
  */
 public class 110BalancedBinaryTree {
+    //recursive
     public boolean isBalanced(TreeNode root) {
+        if(root == null)
+            return true;
+        return depth(root)!=-1;
         
     }
-    private int depth(TreeNode root){
-    	if(root == null)
-    		return 0;
-    	return Math.max(depth(root.left),depth(root.right))	+1;
+    public int depth(TreeNode t){
+        if(t==null)
+            return 0;
+        int left = depth(t.left);
+        int right = depth(t.right);
+        if(left==-1||right==-1||Math.abs(left-right)>1)
+            return -1;
+        return Math.max(left,right)+1;
+    }
+    //iterative
+    public boolean isBalanced2(TreeNode root) {
+        return true;
     }
 
 }
