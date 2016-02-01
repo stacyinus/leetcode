@@ -15,5 +15,31 @@ Return:
 */
 public class 249GroupShiftedStrings {
     public List<List<String>> groupStrings(String[] strings) {
-    }
+		HashMap<String,List<String>> map = new HashMap<String,List<String>>();
+		for(int i=0;i<strings.length;i++){
+			String s = shift(strings[i]);
+			ArrayList<String> list;
+			if(map.contains(s))
+				list = map.get(s);
+			else
+				list = new ArrayList<String>();
+			list.add(strings[i]);
+			map.put(s,list);
+		}
+		return Arrays.asList(map.values());
+	}
+	private String shift(String s){
+		if(s.length()==0) return "";
+		int move = s.charAt(0)-'a';
+		if(move==0) return s;
+		StringBuilder sb = new StringBuilder();
+		sb.append('a');
+		for(int i=1;i<s.length();i++){
+			char c = s.charAt(i)-move;
+			if(c<'a')
+				c=c+'a';
+			sb.append(c);
+		}
+		return(sb.toString());
+	}
 }
