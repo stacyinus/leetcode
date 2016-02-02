@@ -34,7 +34,46 @@ Your code should preferably run in O(n) time and use only O(1) memory.
  * }
  */
 public class 160IntersectionOfTwoLinkedLists {
+    //cleaner yet not really faster approach
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        
+        if(headA==null||headB==null)
+            return null;
+        ListNode a = headA;
+        ListNode b = headB;
+        while(a!=b){
+            a = a==null?headB:a.next;
+            b = b==null?headA:b.next;
+        }
+        return a;
     }
-}
+    //This approach is kinda stupid, you can just append one list to another instead of append one to itself.
+    public ListNode getIntersectionNode1(ListNode headA, ListNode headB) {
+        if(headA==null||headB==null)
+        	return null;
+        ListNode tailA = headA;
+        while(tailA.next!=null) //find the tail of list1
+        	tailA = tailA.next;
+        tailA.next = headA;	//make a loop for list1
+        ListNode result = findLoopHead(headB);
+        tailA.next =null;//set the list back to 
+        return result;
+    }
+    private ListNode findLoopHead(ListNode head){
+		ListNode tmp1 = head;//slow
+        ListNode tmp2 = head;//fast
+        while(tmp2!=null&&tmp2.next!=null){
+        	tmp1 = tmp1.next;
+        	tmp2 = tmp2.next.next;
+        	if(tmp1==tmp2)
+        		break;
+        }
+        if(tmp2==null||tmp2.next==null)//meaning there's no loop
+        	return null;
+     	tmp1=head;
+     	while(tmp1!=tmp2){//tmp1 and tmp2 will meet at the beginning of the loop
+     		tmp1=tmp1.next;
+     		tmp2=tmp2.next;
+     	}
+     	return tmp2;
+    }
+}	
