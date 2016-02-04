@@ -9,4 +9,19 @@ find(4) -> true
 find(7) -> false
 */
 public class 170TwoSum {
+	ArrayList<Integer> list = new ArrayList<Integer>();
+	//O(1)
+	public void add(int i){
+		list.add(i);
+	}
+	//O(n)
+	public boolean find(int x){
+		HashSet<Integer> set = new HashSet<Integer>();
+		for(int i=0;i<list.size();i++){
+			if(set.contains(x-list.get(i)))
+				return true;
+			set.add(list.get(i));
+		}
+		return false;
+	}
 }
