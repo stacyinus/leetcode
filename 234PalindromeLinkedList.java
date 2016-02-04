@@ -18,4 +18,12 @@ public class 234PalindromeLinkedList {
     public boolean isPalindrome(ListNode head) {
         
     }
+    private ListNode reverse(ListNode head){
+    	if(head==null||head.next==null) return head; 
+    	ListNode tmp = head.next;
+    	ListNode newHead = reverse(tmp);
+    	tmp.next = head;
+    	head.next = null;
+    	return newHead;
+    }
 }
