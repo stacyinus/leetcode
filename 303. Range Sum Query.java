@@ -14,14 +14,21 @@ You may assume that the array does not change.
 There are many calls to sumRange function.
 */
 
-public class 303RangeSumQuery {
-
+public class NumArray {
+	int[] sums = null;
     public NumArray(int[] nums) {
-        
+        int sum = 0;
+        sums = new int[nums.length];
+        for(int i=0;i<sums.length;i++){
+        	sum+=nums[i];
+        	sums[i]=sum;
+        }
     }
 
     public int sumRange(int i, int j) {
-        
+    	if(i==0)
+    		return sums[j];
+    	return sums[j]-sums[i-1];
     }
 }
 
