@@ -15,7 +15,21 @@ public class 157ReadNCharactersGivenRead4 extends Reader4 {
 * @param n　　　Maximum number of characters to read
 * @return　    The number of characters read
 */
+	// read4 reads 4 characters from a file into "buf" char array, 
+	//and implement a function that reads n characters from the file into "buf" char array.
     public int read(char[] buf, int n) {
-
+    	if(n<=0)
+    		return 0;
+    	int read = 0;
+    	char[] buffer = new char[4];
+    	boolean eof = false;
+    	int tmp = 0;
+    	while(!(tmp<4)&&read<n){
+    		tmp = read4(buffer);
+    		int l = Math.min(tmp,n-read);//This is to prevent over-read
+    		read+=l;
+    		System.arraycopy(buffer,0,buf,read,l);
+    	}
+    	return read;
     }
 }
