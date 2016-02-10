@@ -18,24 +18,31 @@ public class 21MergeTwoSortedLists {
     		return n2;
     	if(n2==null)
     		return n1;
-    	ListNode temp = null;
     	ListNode head = null;
-    	while(n1!=null&&n2!=null){
-	    	if(n1.val>n2.val){
-	    		if(head==null) head =n2;
-	    		temp = n2.next;
-	    		if(n2.next==null||n2.next.val>n1.val)
-		    		n2.next = n1;
-		    	n2=temp;
-	    	}
-	    	else{
-	    		if(head==null) head =n1;
-	    		temp = n1.next;
-	    		if(n1.next==null||n1.next.val>n2.val)
-	    			n1.next = n2;	
-	    		n1 = temp;	
-	    	}    		
+    	if(n1.val<n2.val){
+    		head = n1;
+    		n1 = n1.next;
     	}
+    	else{
+    		head = n2;
+    		n2 = n2.next;
+    	}
+    	ListNode cur = head;
+    	while(n1!=null&&n2!=null){
+    		if(n1.val<n2.val){
+    			cur.next = n1;
+    			n1=n1.next;
+    		}
+    		else{
+    			cur.next=n2;
+    			n2=n2.next;
+    		}
+    		cur = cur.next;
+    	}
+    	if(n1!=null)
+    		cur.next=n1;
+    	else if(n2!=null)
+    		cur.next=n2;
     	return head;
     }
 }    
