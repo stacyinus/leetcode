@@ -5,6 +5,43 @@ class Sort{
 		sort.insertionSort(nums);
 		sort.printArray(nums);
 	}
+
+	public void quickSort(int[] nums){
+		if(nums.length==0||nums.length==1)
+			return;
+		quickSort(nums,0,nums.length-1);
+	}
+
+	public void quickSort(int[] nums, int l, int r){
+		int index = partition(nums,l,r);
+		if(l<index-1)
+			quickSort(nums,l,index-1);
+		if(r>index)
+			quickSort(nums,index,r);
+	}
+	private int partition(int[] nums, int l, int r){
+		int i=l;
+		int j=r;
+		int pivot = nums[l+(r-l)/2];
+		while(i<=j){//why it has to be i<=j not i<j?
+			while(nums[i]<pivot)
+				i++;
+			while(nums[j]>pivot)
+				j--;
+			if(i<=j){//why it has to be i<=j not i<j?
+				int tmp = nums[i];
+				nums[i]=nums[j];
+				nums[j]=tmp;
+				i++;
+				j--;
+			}
+		}
+		return i;
+	}
+	private void buildMinHeap(int[] nums){
+
+	}
+
 	//merge sort, Time O(nlogn), Space O(n);
 	//constant O(nlogn)
 	public void mergeSort(int[] nums){

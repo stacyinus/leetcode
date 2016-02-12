@@ -37,7 +37,7 @@ public class 278FirstBadVersion extends VersionControl {
     	int high = n;
     	int mid = 0;
     	while(low<=high){
-    		mid = (low+high)/2;
+    		mid = low+(high-low)/2;
     		if(isBadVersion(mid)){
     			if(mid==1||!isBadVersion(mid-1))
     				return mid;

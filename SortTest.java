@@ -82,4 +82,15 @@ public class SortTest {
 		}
 		
 	}
+	@Test
+	public void testQuick() {
+		Sort sort = new Sort();
+		int[][] testSets = getTestSet();
+		int[][] resultSets = getResultSet();
+		for(int i=0;i<testSets.length;i++){
+			sort.quickSort(testSets[i]);		
+			assertArrayEquals(resultSets[i], testSets[i]);
+		}
+		
+	}	
 }

@@ -8,33 +8,35 @@ closest to the target.
  * Definition for a binary tree node.
  * public class TreeNode {
  *     int val;
- *     TreeNode left;
+ *     TreeNode left;   
  *     TreeNode right;
  *     TreeNode(int x) { val = x; }
  * }
  */
 public class 270ClosestBSTValue {
-	//iterative
+    //iterative
     public int closestValue(TreeNode root, double target) {
-    	TreeNode parent = root;
-    	while(root!=null){
-    		if(target==root.val)
-    			return target;
-    		parent = root;
-    		if(target>root.val)
-    			root=root.right;
-    		else
-    			root=root.left;
-    	}
-    	int v = parent.val;
-    	//parent value is not necessary the closest, neet to check the biggest value of
-    	//left tree of parent.
-    	parent = parent.left;
-    	if(parent==null) return v;
-    	while(parent.right!=null)
-    		parent=parent.right;
-    	if(Math.abs(v-target)>Math.abs(parent.val-target))
-    		return parent.val
-    	return  v;
+        int diff = Integer.MAX_VALUE;
+        int value = 0;
+        while(root!=null){
+            if(root.val == target)
+                return target;
+            int tmpDiff = Math.abs(target-root.val);
+            if(diff>tmpDiff){
+                diff = tmpDiff;
+                value = root.val;
+            }
+            root = (root.val>target)?root = root.left:root = root.right;
+        }
+        return value;
+    }
+    //recursive
+    public int closestValue(TreeNode root, double target) {
+        if(root.val == target) return target;
+        TreeNode kid = root.val > target? root.left: root.right);
+        if(kid == null)
+            return root.val;
+        int closestVal = closetstValue(kid, target);
+        return Math.abs(closestVal-target)<Math.abs(root.val-target)?closestVal:root.val;
     }
 } 

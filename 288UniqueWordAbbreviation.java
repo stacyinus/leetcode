@@ -28,7 +28,7 @@ public class ValidWordAbbr {
     	if(dictionary!=null)
 	    	for(int i=0;i<dictionary.length;i++){
 	    		String key = getAbbr(dictionary[i]);
-	    		if(dictionary.containsKey())
+	    		if(dictionary.containsKey(key))
 	    			map.put(key,"");
 	    		else
 	    			map.put(key,dictionary[i]);
