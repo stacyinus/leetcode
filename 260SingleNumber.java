@@ -13,6 +13,21 @@ Your algorithm should run in linear runtime complexity. Could you implement it u
 
 public class 260SingleNumber {
     public int[] singleNumber(int[] nums) {
-        
+        int x = 0;
+        for(int i=0;i<nums.length;i++)
+        	x^=nums[i];
+        //find the first bit equals to 1 starting from left;
+        int j = 1;
+        while((x&j)==0)
+        	j=j<<1;
+        int x1=0;
+        int x2=0;
+        for(int i=0;i<nums.length;i++){
+        	if((nums[i]&j)==0) 
+        		x1^=nums[i];
+        	else
+        		x2^=nums[i];
+        }
+        return new int[]{x1,x2};
     }
 }

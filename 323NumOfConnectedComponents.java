@@ -16,6 +16,28 @@ You can assume that no duplicate edges will appear in edges. Since all edges are
 */
 
 public class 323NumOfConnectedComponents{
+	int[] id = null;
     public int countComponents(int n, int[][] edges) {
+    	id = new int[n];
+    	for(int i=0;i<n;i++)
+    		id[i]=i;
+    	for(int i=0;i<edges.length;i++)
+    		union(edges[i][0],edges[i][1]);
+    	int r = 0;
+    	for(int i=0;i<n;i++)
+    		if(id[i]==i)
+    			r++;
+    	return r;
+
+    }
+    private int root(int i){
+    	while(id[i]!=i)
+    		i=id[i];
+    	return i;
+    }
+    private void union(int p, int q){
+    	int rootP = root(p);
+    	int rootQ = root(q);
+    	id[rootP]=rootQ;
     }
 }    
