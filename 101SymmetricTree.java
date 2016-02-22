@@ -47,5 +47,29 @@ public class 101SymmetricTree {
     }
     //iterative
     public boolean isSymmetric2(TreeNode root) {
+        if(root==null||(root.left==null&&root.right==null))
+            return true;
+        Stack<TreeNode> l = new Stack<TreeNode>();
+        Stack<TreeNode> r = new Stack<TreeNode>();
+        l.push(root.left);
+        r.push(root.right);
+        TreeNode left, right = null;
+        while(!r.empty()&&!l.empty()){
+          left = l.pop();
+          right = r.pop();
+          if(left==null&&right==null)
+            continue;
+          else if(left!=null&&right!=null){
+            if(left.val!=right.val)
+              return false;
+            l.push(left.left);
+            r.push(right.right); 
+            l.push(left.right);
+            r.push(right.left); 
+          }
+          else 
+            return false;
+        }
+        return l.empty()&&r.empty();
     }
 }

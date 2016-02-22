@@ -9,5 +9,13 @@ Given word = "word", return the following list (order does not matter):
 
 public class 320GeneralizedAbbreviation {
      public List<String> generateAbbreviations(String word) {
+     	list<String> list = new ArrayList<String>();
+     	for(int n=1;n<word.length();n++){
+     		StringBuilder sb = new StringBuilder();
+	     	for(int i=0;i<word.length();i++){
+	     		
+	     	}     		
+     	}
+
      }
 }
