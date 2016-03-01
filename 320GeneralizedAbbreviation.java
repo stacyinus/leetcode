@@ -11,11 +11,17 @@ public class 320GeneralizedAbbreviation {
      public List<String> generateAbbreviations(String word) {
      	list<String> list = new ArrayList<String>();
      	char[] chars = word.toCharArray();
-     	for(int n=1;n<chars.length;n++){
-	     	for(int i=0;i<chars.length-n;i++){
-	     		
-	     	}     		
+     	for(int n=0;n<chars.length;n++){
+	     	generateAbbreviations(word, n, list);
+	     	
      	}
 
+     }
+     private void generateAbbreviations(String word, int n, List<String> list ) {
+     	if(n==0)
+     		list.add(word);
+     	for(int i=0;i<=chars.length-n;i++){
+	     	list.add(word.substring(0,i+n-1) + Integer.toString(n) + word.substring(i+n));	    
+	    } 
      }
 }
