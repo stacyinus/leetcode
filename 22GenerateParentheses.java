@@ -8,6 +8,7 @@ For example, given n = 3, a solution set is:
 */
 
 public class Solution {
+    //recursive:5 ms, so freaking slow....
     public List<String> generateParenthesis(int n) {
         List<String> list = new ArrayList<String>();
         if(n<1)
@@ -18,15 +19,21 @@ public class Solution {
         }
         List<String> base = generateParenthesis(n-1);
         for(String s: base){
-        	HashSet<String> set = new HashSet<String>();
-        	set.add(s+"()");
-        	set.add("()"+s);
-        	set.add("("+s+")");
-        	for(String t: set){
-        		if(!list.contains(t))
-        			list.add(t);
-        	}
+            int i=0;
+            for(int j=0;j<s.length();j++){
+                if(i==0)
+                    list.add("("+s.substring(0,j)+")"+s.subString(j));
+                if(s.charAt(j)=='(')
+                    i++;
+                else
+                    i--;
+            }
+            list.add("("+s+")");
         }
         return list;
+    }
+    //use dp.
+    public List<String> generateParenthesis(int n) {
+    
     }
 }
