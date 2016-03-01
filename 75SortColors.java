@@ -20,6 +20,7 @@ Could you come up with an one-pass algorithm using only constant space?
 
 
 public class Solution {
+	//two pass solution
 	public void sortColors(int[] nums) {
 		int[] t = new int[3];
 		for(int i=0;i<nums.length;i++)
@@ -29,11 +30,11 @@ public class Solution {
 			while(t[i]-->0&&j<nums.length)
 				nums[j++]=i; 
 	}
-	//s
+	//one pass solution
     public void sortColors(int[] nums) {
     	int low = 0,i=0;
     	int high = nums.length-1;
-    	while(i<nums.length&&low<high){
+    	while(i<=high){
     		if(nums[i]==0){
     			int tmp = nums[low];
     			nums[low]=nums[i];
@@ -45,10 +46,10 @@ public class Solution {
     			int tmp = nums[high];
     			nums[high]=nums[i];
     			nums[i]=tmp;
-    			i++;
     			high--;
     		}
-    		
+    		else
+    			i++;
     	}
 
     }
