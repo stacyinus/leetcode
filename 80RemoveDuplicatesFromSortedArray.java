@@ -14,6 +14,34 @@ Subscribe to see which companies asked this question
 
 public class Solution {
     public int removeDuplicates(int[] nums) {
-        
+        int count = 0;
+        int i=0,j=1;
+        while(j<nums.length){
+        	if(nums[i]!=nums[j]){
+        		if(i+1!=j){
+        			int tmp = nums[i+1];
+        			nums[i+1]=nums[j];
+        			nums[j]=tmp;
+				}
+				count=0;
+				j++;
+        		i++;
+        	}
+        	else if(count == 0){
+        		if(i+1!=j){
+        			int tmp = nums[i+1];
+        			nums[i+1]=nums[j];
+        			nums[j]=tmp;
+				}
+				count++;
+				j++;
+        		i++;
+        	}
+        	else{
+        		count++;
+        		j++;
+        	}
+        }
+        return i+1;
     }
 }

@@ -28,7 +28,22 @@ Return the sum = 12 + 13 = 25.
  * }
  */
 public class Solution {
+	//DFS
     public int sumNumbers(TreeNode root) {
-        
+    	return sumNumbers(root, 0);
+    }
+
+    private int sumNumbers(TreeNode root, int sum) {
+    	if(root==null)
+    		return sum;
+    	sum = 10*sum+root.val;
+    	if(root.left==null&&root.right==null)
+    		return sum;
+    	int left = 0,right=0;
+    	if(root.left!=null)
+    		left = sumNumbers(root.left, sum);
+    	if(root.right!=null)
+    		right = sumNumbers(root.right, sum);
+    	return left+right;
     }
 }
