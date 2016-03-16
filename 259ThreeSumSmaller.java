@@ -13,17 +13,18 @@ Could you solve it in O(n2) runtime?
 public class 259ThreeSumSmaller {
     public int threeSumSmaller(int[] nums, int target) {
         int result = 0;
+        Arrays.sort(nums);
         for(int i=0;i<nums.length-2;i++){
-            int j=i+1;
-            int k=sums.length-1;
-            while(j<k){
-                if(nums[i] + nums[j] + nums[k] < target){
-                    result+=k-j;
-                    j++;
+            int s = i+1,e=nums.length-1;
+            while(s<e){
+                if(nums[i]+nums[s]+nums[e]<target){
+                    result+=e-s;
+                    s++;
                 }
-                else
-                    k--;
+                else 
+                    e--;
             }
         }
+        return result;
     }
 }

@@ -38,7 +38,7 @@ public class Solution {
     	int colE = j<board[0].length-1?j+1:j;
     	int live = 0;
     	for(int r = rowS;r<=rowE;r++){
-    		for(int c = colS;r<=colE;c++){
+    		for(int c = colS;c<=colE;c++){
     			if(r==i&&c==j)
     				continue;
     			if(board[r][c]==1)
@@ -69,6 +69,26 @@ public class Solution {
         		else if(board[i][j]==0&&live==3)
         			board[i][j]=2;
         	}
+        for(int i=0;i<board.length;i++)
+        	for(int j=0;j<board[0].length;j++)
+        		board[i][j] = board[i][j]>>1;
+    }
+
+    private int getLive(int[][] board, int i, int j){
+    	int rowS = i>0?i-1:i;
+    	int colS = j>0?j-1:j;
+    	int rowE = i<board.length-1?i+1:i;
+    	int colE = j<board[0].length-1?j+1:j;
+    	int live = 0;
+    	for(int r = rowS;r<=rowE;r++){
+    		for(int c = colS;c<=colE;c++){
+    			if(r==i&&c==j)
+    				continue;
+    			if((board[r][c]&1)==1)
+    				live++;
+    		}
+    	}
+    	return live;
     }
 
 }
