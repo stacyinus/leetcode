@@ -47,4 +47,18 @@ public class Solution {
         }
         flatten(root.right);
     }
+
+    public void flatten(TreeNode root, TreeNode node) {
+		if(root==null)
+        	return;
+        TreeNode left = root.left;
+        if(node!=null){
+			TreeNode right = root.right;
+	        root.right = left; 
+	        while(node.right!=null)
+	        	node = node.right;
+	        node.right = right;        	
+        }
+        flatten(root.right,left.right);
+    }    
 }
