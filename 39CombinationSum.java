@@ -16,24 +16,43 @@ A solution set is:
 */
 
 public class Solution {
-	HashMap<Integer,Integer> map;
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        return combinationSum(candidates,target,candidates.length-1);
+    }
+    public List<List<Integer>> combinationSum(int[] candidates, int target, int e) {
         int k = findIndex(candidates,target);
         List<List<Integer>> result = new ArrayList<List<Integer>>();
-
-        if(k==candidates.length-1) return result;
-        if(map==null){
-        	map = 
+        if(k==0&&candidates[0]>target) return result;
+        for(int i=e;i>=0;i--){
+            if(target==candidates[i]){
+                ArrayList<Integer> list = new ArrayList<Integer>();
+                list.add(candidates[i]);
+                result.add(list);
+            }
+            else{
+                List<List<Integer>> lists = combinationSum(candidates,target-candidates[i],i);
+                if(lists.size()!=0){
+                    for(List<Integer> list: lists)
+                        list.add(candidates[i]);
+                    result.addAll(lists);
+                }
+            }
         }
-        for(int i=k;i>=0;i--){
-
-        }
-
-    }
+        return result;
+    }   
     //find the element in array that is most closer to target 
-    private int findIndex(int[] candidates,int target){
-
+     public int findIndex(int[] candidates,int target){
+        int s=0, e= candidates.length-1,mid=s+(e-s)/2;
+        while(s<=e){
+            mid=s+(e-s)/2;
+            if(candidates[mid]==target)
+                return mid;
+            else if(target>candidates[mid])
+                s = mid+1;
+            else
+                e = mid-1;
+        }
+        return s==0?s:s-1;
     }
-
-
 }

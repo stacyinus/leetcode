@@ -16,6 +16,24 @@ If n = 4 and k = 2, a solution is:
 */
 
 public class Solution {
+
+  public List<List<Integer>> combine(int n, int k) {
+      List<List<Integer>> list = new ArrayList<List<Integer>>();
+      if(k==0||n<k)
+          return list;
+      if(k==1){
+        for(int i=1;i<=n;i++)
+          list.add(new ArrayList<Integer>(i));
+        return list;
+      }
+      for(int i=n;i>=n-k;i--){
+        List<List<Integer>> sublist = combine(i-1,k-1);
+        for(List<Integer> l: sublist )
+             l.add(i);
+        list.addAll(sublist) ;
+      }
+      return list;
+  }
     public List<List<Integer>> combine(int n, int k) {
         return helper(1,n,k);
     }
