@@ -25,29 +25,29 @@ Output:
 
 public class Solution {
     public List<List<Integer>> combinationSum3(int k, int n) {
-        return combinationSum3(1,k,n);
+        return combinationSum3(k,n,1);
     }
-    private List<List<Integer>> combinationSum3(int s, int k, int n) {
-    	List<List<Integer>> list = new ArrayList<List<Integer>>();
-    	if(k==1&&s<=n){
-    		if(n>9) return list;
-    		ArrayList<Integer> l = new ArrayList<Integer>();
-    		l.add(n);
-    		list.add(l);
-    		return list;
-    	}
-    	if(s>=(double)n/k)
-    		return list;
-    	int i=1;
-    	while(k>1){
-    		List<List<Integer>> inner = combinationSum3(s+i, k-1, n-(s+i-1));
-    		if(inner.size() == 0)
-    			break;
-    		for(List<Integer> l: inner)
-    			l.add(0,s+i-1);
-    		list.addAll(inner);
-    		i++;
-    	}
-    	return list;
+    public List<List<Integer>> combinationSum3(int k, int n, int s) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if(k==1){
+            if(n<=9){
+                List<Integer> list = new ArrayList<Integer>();
+                list.add(n);
+                result.add(list);
+            }
+            return result;
+        }
+        for(int i=s;i<=9;i++){
+            int tmp = n-i;
+            if(tmp<=i)
+                return result;
+            List<List<Integer>> lists = combinationSum3(k-1,tmp,i+1);
+            if(lists.size()>0){
+                for(List<Integer> list:lists)
+                    list.add(0,i);
+                result.addAll(lists);
+            }
+        }
+        return result;
     }
 }

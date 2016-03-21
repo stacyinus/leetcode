@@ -21,19 +21,33 @@ public class Solution {
       List<List<Integer>> list = new ArrayList<List<Integer>>();
       if(k==0||n<k)
           return list;
+        //This will be taken care of in the recursion.
+      // if(n==k){
+      //     List<Integer> tmp = new ArrayList<Integer>();
+      //     for(int i=1;i<=n;i++){
+      //       tmp.add(i);
+      //     }
+      //     list.add(tmp);
+      //     return list;
+      // }
       if(k==1){
-        for(int i=1;i<=n;i++)
-          list.add(new ArrayList<Integer>(i));
+        for(int i=1;i<=n;i++){
+            List<Integer> tmp = new ArrayList<Integer>();
+            tmp.add(i);
+            list.add(tmp);
+        }
         return list;
       }
-      for(int i=n;i>=n-k;i--){
+      for(int i=n;i>=k;i--){
         List<List<Integer>> sublist = combine(i-1,k-1);
         for(List<Integer> l: sublist )
              l.add(i);
         list.addAll(sublist) ;
       }
       return list;
-  }
+    }
+
+
     public List<List<Integer>> combine(int n, int k) {
         return helper(1,n,k);
     }
