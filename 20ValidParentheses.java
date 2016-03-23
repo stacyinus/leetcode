@@ -22,4 +22,24 @@ The brackets must close in the correct order, "()" and "()[]{}" are all valid bu
         }	
         return stack.isEmpty();
     }
+
+    public boolean isValid(String s) {
+        if(s.length()%2!=0)
+            return false;
+        char[] chars=s.toCharArray();
+        Stack<Character> stack = new Stack<Character>();
+        HashMap<Character,Character> map = new HashMap<Character,Character>();
+        map.put(')','(');
+        map.put('}','{');
+        map.put(']','[');
+        for(int i=0;i<chars.length;i++){
+            if(map.containsKey(chars[i])){
+                if(stack.isEmpty()||stack.pop()!=map.get(chars[i]))
+                    return false;
+            }
+            else
+                stack.push(chars[i]);
+        }
+        return stack.isEmpty();
+    }    
 }
