@@ -26,6 +26,25 @@ Output: [-34, -14, -10, -10, 10]
 
 public class Solution {
     public List<Integer> diffWaysToCompute(String input) {
-        
+    	List<Integer> result = new ArrayList<Integer>();
+    	boolean find = false;
+        for(int i=0;i<input.length();i++){
+        	char c = input.charAt(i);
+        	if(c=='+'||c=='-'||c=='*'){
+        		find = true;
+        		List<Integer> left = diffWaysToCompute(input.substring(0,i));
+        		List<Integer> right = diffWaysToCompute(input.substring(i+1,input.length()));
+        		for(Integer a:left){
+        			for(Integer b:right){
+        				if(c=='+') result.add(a+b);
+        				else if(c=='-') result.add(a-b);
+        				else if(c=='*') result.add(a*b);
+        			}
+        		}
+        	}	
+        }
+        if(!find)
+        	result.add(Integer.parseInt(input));
+        return result;
     }
 }
