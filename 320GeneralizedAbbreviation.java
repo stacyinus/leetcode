@@ -9,19 +9,23 @@ Given word = "word", return the following list (order does not matter):
 
 public class 320GeneralizedAbbreviation {
      public List<String> generateAbbreviations(String word) {
-     	list<String> list = new ArrayList<String>();
-     	char[] chars = word.toCharArray();
-     	for(int n=0;n<chars.length;n++){
-	     	generateAbbreviations(word, n, list);
-	     	
-     	}
-
+     	List<String> list = new ArrayList<String>();
+          generateAbbreviations(list, word, 1,0);
+          return list;
      }
-     private void generateAbbreviations(String word, int n, List<String> list ) {
-     	if(n==0)
-     		list.add(word);
-     	for(int i=0;i<=chars.length-n;i++){
-	     	list.add(word.substring(0,i+n-1) + Integer.toString(n) + word.substring(i+n));	    
-	    } 
+     private void generateAbbreviations(List<String> list， String word, int n, int pos ) {
+          list.add(word);
+          while(pos+n<=word.length()){
+               for(int i=pos;i+n<=word.length();i++){
+                    String firstPart = "", lastPart = "";
+                    if(i>0)
+                         firstPart = word.substring(０, i);
+                    if(i<word.length()-1)
+                         lastPart = word.substring(i+n,word.length());
+                    String s =  firstPart +Integer.toString(n) + lastPart;
+                    generateAbbreviations(list, s, n, i+2);
+               }       
+               n++;        
+          }
      }
 }
