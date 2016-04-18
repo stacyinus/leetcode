@@ -74,42 +74,26 @@
 public class Solution {
   	public static void displayPages(List<String> input) {
   		HashSet<String> hostIds = new HashSet<String>();
-  		List<String> buffer = ArrayList<String>();
   		int count = 0;
   		int page = 1;
-  		for(int i=0;i<input.length;i++){
-  			if(count==12)
-  				count=0;
-  			if(count==0){
-  				hostIds.clear();
-  				System.out.println("Page " + page++);
-  				count = processBuffer(buffer,hostIds);
-  			}
-	  		String[] entry = input.get(i).split(",");
-	  		if(!hostIds.contains(entry[0])){
-	  			hostIds.add(entry[0]);
-	  			System.out.println(input.get(i));
-	  			count++;
-	  		}
-	  		else
-	  			buffer.add(input.get(i));
-  		}
-  	}
-
-  	private int processBuffer(List<String> buffer,HashSet<String> hostIds){
-  		Iterator i = buffer.iterator();
-  		int count = 0;
-  		while(count<12&&i.hasNext()){
-  			String entryString = i.next();
-  			String[] entry = entryString.split(",");
-  			if(!hostIds.contains(entry[0])){
-  				hostIds.add(entry[0]);
-  				System.out.println(entryString);
-  				i.remove();
-  				count++;
-  			}
-  		}
-  		return count;
+      Iterator<String> it = input.iterator();
+      while(it.hasNext()){
+        if(count==0)
+          System.out.println("Page " + page++);
+        String entryString = it.next();
+        String[] entry = entryString.parse(",");
+        if(!hostIds.contains(entry[0])){
+          System.out.println(entryString);
+          hostIds.add(entry[0]);
+          it.remove();
+          count++;
+        }
+        if(count==11){
+          hostIds.clear();
+          count=0;
+          it=input.iterator();
+        }
+      }
   	}
 
 	public static void main(String[] args) {
@@ -148,5 +132,5 @@ public class Solution {
     List<String> input = new ArrayList<>(Arrays.asList(strs));
     displayPages(input);
   }         	
-  
+  //http://buttercola.blogspot.com/2015/11/airbnb-page-display.html
 }

@@ -1,4 +1,4 @@
-/*
+ /*
 331. Verify Preorder Serialization of a Binary Tree
 One way to serialize a binary tree is to use pre-order traversal. When we encounter a non-null node, 
 we record the node's value. If it is a null node, we record using a sentinel value such as #.
@@ -37,7 +37,7 @@ public class Solution {
     public boolean isValidSerialization(String preorder) {
     	ArrayList<String> list = Arrays.asList(preorder.split(","));
     	ArrayList<String> newlist = help(list);
-    	while(newList.size()!=list.size()){
+    	while(newList.size()!=list.    size()){
     		list = newList;
     		newList = help(list);
     	}

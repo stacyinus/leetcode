@@ -13,6 +13,29 @@ Here are few examples.
 */
 
 public class 35SearchInsertPosition {
+
+	public int searchInsert(int[] nums, int target) {
+		if(nums == null || nums.length == 0)
+			return -1;
+		int s = 0, e = nums.length-1;
+		while(s+1<e){
+			int m = s + (e-s)/2;
+			if(nums[m] == target)
+				return m;//if there's duplicate, then here it should be e = m;
+			else if( nums[m] > target )
+				e = m;
+			else
+				s = m;
+		}
+		if ( nums[s]>=target )
+		    return s;
+		else if( nums[e]>=target )
+		    return e;
+		else
+		    return e+1;
+
+	}
+
     public int searchInsert(int[] nums, int target) {
         return searchInsert(nums,target,0,nums.length-1);
     }
