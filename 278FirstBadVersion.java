@@ -12,12 +12,29 @@ You are given an API bool isBadVersion(version) which will return whether versio
       boolean isBadVersion(int version); */
 
 public class 278FirstBadVersion extends VersionControl {
+    //use bsearch template
+    public int firstBadVersion(int n) {
+        int s = 0, e = n; 
+        while(s+1 < e){
+            int mid = s + (e-s)/2;
+            if(isBadVersion(mid))
+                e = mid;
+            else
+                s = mid; 
+        }
+        if(isBadVersion(s))
+            return s;
+        if(isBadVersion(e))
+            return e;
+        return -1;
+     }    
+    // recursive
     public int firstBadVersion(int n) {
     	if(n<1)
     		return -1;
         return firstBadVersion(1,n);
     }
-    public int firstBadVersion(int s,int e) {
+    private int firstBadVersion(int s,int e) {
         if(s>e)
         	return -1;
         int mid = s+(e-s)/2;
@@ -32,6 +49,7 @@ public class 278FirstBadVersion extends VersionControl {
         	return firstBadVersion(mid+1,e);
         }
     }
+    // iterative
     public int firstBadVersion(int n) {
     	int low = 1;
     	int high = n;
