@@ -19,6 +19,26 @@ What if the BST is modified (insert/delete operations) often and you need to fin
  * }
  */
 public class Solution {
+    //Second round: 4/21/2016 
+    public int kthSmallest(TreeNode root, int k) {
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        int i = 0;
+        while(root != null || !stack.isEmpty()){
+            if(root != null){
+                stack.push(root);
+                root = root.left;
+            }
+            else{
+                root = stack.pop();
+                i++;
+                if( i==k )
+                    return root.val;
+                root = root.right;
+            }
+        }
+        return Integer.MIN_VALUE;
+    }
+
 	//iterative
     public int kthSmallest(TreeNode root, int k) {
     	Stack<TreeNode> stack = new Stack<TreeNode>();
@@ -39,9 +59,5 @@ public class Solution {
     	}
     	return tmp.val;
     }
-    //recursive
-    public int kthSmallest(TreeNode root, int k) {
-    	
 
-    }
 }
