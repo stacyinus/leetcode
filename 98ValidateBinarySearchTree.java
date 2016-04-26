@@ -19,8 +19,20 @@ Both the left and right subtrees must also be binary search trees.
  * }
  */
 public class Solution {
-    //traverse and see if it is acending order
+    //traverse and see if it is acending order, this traverse only once.
+    TreeNode prev = null;
     public boolean isValidBST(TreeNode root) {
+        if( root == null )
+            return true;
+        if( !isValidBST(root.left) ) return false;
+        if( prev == null || root.val <= prev.val ) return false;
+        prev = root;
+        return (isValidBST(root.right));
+    }
+
+
+    //traverse and see if it is acending order, this will traverse twice.
+    public boolean isValidBST2(TreeNode root) {
         ArrayList<Integer> list = traverse(root);
         for(int i=0; i<list.size()-1; i++){
             if(list.get(i+1) <= list.get(i))
@@ -40,24 +52,34 @@ public class Solution {
     
     //get left tree max value and right tree min value
     class ResultType {
-        int min;
-        int max;
-        public ResultType(int min, int max){
+        int min; //current node's min value
+        int max;//current node's max value
+        boolean isBST;//current subtree is BST or not
+        public ResultType(int min, int max, boolean isBST){
             this.min = min;
             this.max = max;
+            this.isBST = isBST;
         }
     }
-    public boolean isValidBST(TreeNode root) {
+    public boolean isValidBST3(TreeNode root) {
         if( root == null )
             return true;
-        
+        ResultType result = helper(root);
+        return result.isBST;
     }
     
     private ResultType helper(TreeNode root) {
         if( root == null )
-            return new ResultType(Integer.MAX_VALUE, Integer.MIN_VALUE);
+            return new ResultType(Integer.MAX_VALUE, Integer.MIN_VALUE, true);
         ResultType left = helper(root.left); 
-        
         ResultType right = helper(root.right);
+        if(left.isBST && right.isBST){
+            if( ( root.left == null || ( root.left != null && root.val > root.left.val && root.val > left.max ) ) 
+                && ( root.right == null || ( root.right != null && root.val < root.right.val && root.val < right.min ) ) )
+                    return new ResultType(Math.min(left.min,root.val), Math.max( right.max, root.val), true);
+            else 
+                return new ResultType(Integer.MIN_VALUE, Integer.MAX_VALUE, false); 
+        }
+        return new ResultType(Integer.MIN_VALUE, Integer.MAX_VALUE, false);
     }
 }

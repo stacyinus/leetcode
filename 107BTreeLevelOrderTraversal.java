@@ -28,6 +28,28 @@ return its bottom-up level order traversal as:
  */
 public class 107BTreeLevelOrderTraversal {
     public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer>> lists = new ArrayList<List<Integer>>();
+        if(root == null)
+            return lists;
+        LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.add(root);
+        while(!queue.isEmpty()){
+            List<Integer> list = new ArrayList<Integer>();
+            int size = queue.size();
+            for(int i = 0; i<size; i++){
+                TreeNode node = queue.poll();
+                list.add(node.val);
+                if( node.left != null )
+                    queue.add(node.left);
+                if( node.right != null )
+                    queue.add(node.right);
+            }
+            lists.add( 0, list );
+        }
+        return lists;        
+    }
+
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
         if(root ==null)
         	return new ArrayList<List<Integer>>();
         ArrayList<Integer> top = new ArrayList<Integer>();

@@ -28,6 +28,28 @@ return its level order traversal as:
  * }
  */
 public class 102BTreeLevelOrderTraversal {
+	//better solution.
+	public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> lists = new ArrayList<List<Integer>>();
+        if(root == null)
+            return lists;
+        LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.add(root);
+        while(!queue.isEmpty()){
+            List<Integer> list = new ArrayList<Integer>();
+            int size = queue.size();
+            for(int i = 0; i<size; i++){
+                TreeNode node = queue.poll();
+                list.add(node.val);
+                if( node.left != null )
+                    queue.add(node.left);
+                if( node.right != null )
+                    queue.add(node.right);
+            }
+            lists.add( list );
+        }
+        return lists;
+    }
     public List<List<Integer>> levelOrder1(TreeNode root) {
         List<List<Integer>> list = new ArrayList<List<Integer>>();
         if(root==null)
@@ -46,8 +68,8 @@ public class 102BTreeLevelOrderTraversal {
         l.add(0,top);
         return l;
     }
-    //iterative
-    public List<List<Integer>> levelOrder(TreeNode root) {
+    //iterative: use a dummy node as a breaker for each level.
+    public List<List<Integer>> levelOrder2(TreeNode root) {
     	List<List<Integer>> result = new ArrayList<List<Integer>>();
         if(root==null)
         	return result;
