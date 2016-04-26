@@ -16,34 +16,34 @@ If there are multiple such windows, you are guaranteed that there will always be
 
 public class Solution {
     public String minWindow(String s, String t) {
-        int start = 0, end = 0, start_m = 0, end_m = 0;
-       	HashMap<Character, Integer> map = new HashMap<Character, Integer>();
-       	char[] tChar = t.toCharArray();
-       	for(char c : tChar){
-       		if(map.containsKey(c))
-       			map.put(c, map.get(c)+1);
-       		else
-       			map.put(c,1);
-       	}
+        int start = 0, end = 0;
+        HashMap<Character, Integer> count = new HashMap<Character, Integer>();
+        char[] tChar = t.toCharArray();
+        String result = "";
+        for(char c : tChar)
+          count.put(c, count.containsKey(c)?count.get(c)+1:1);  
+        int num = count.size(); 
         while(start <= s.length()-t.length()){
-        	while(end<s.length() && !map.isEmpty()){
-        		char c = s.charAt(end++);
-        		if(!map.containsKey(c))
-        			continue;
-        		if(map.get(c) == 1)
-        			map.remove(c);
-        		else
-        			map.put(c,map.get(c)-1);
-        	}
-        	if(end == s.length() && !map.isEmpty())
-        		break;
-        	if(result.equals("")) result = s.substring(start, end);   
-        	if(result.length() > end - start)
-        		result = s.substring(start, end);      	
-        	if(t.indexOf(s.charAt(start)) != -1 && s.substring(start+1,end).indexOf(s.charAt(start)) == -1)
-        		tmp = s.substring(start,start+1);
-        	start++;
+            while(end<s.length() && num > 0 ){
+              char c = s.charAt(end++);
+              if(!count.containsKey(c))
+                continue;
+              else
+                count.put(c,count.get(c)-1);
+              if(count.get(c) == 0) num --;
+            }
+            if(end == s.length() && num > 0)
+              break;
+            if(result.equals("")) result = s.substring(start, end);   
+            if(result.length() > end - start)
+              result = s.substring(start, end);       
+            if(count.containsKey(s.charAt(start))){
+              if(count.get(s.charAt(start)) == 0 )
+                num++;
+              count.put(s.charAt(start),count.get(s.charAt(start))+1);
+            }
+            start++;
         }
-        return result;
+        return result;        
     }
 }
