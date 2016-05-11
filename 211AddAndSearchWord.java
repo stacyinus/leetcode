@@ -21,16 +21,32 @@ You may assume that all words are consist of lowercase letters a-z.
 */
 
 public class WordDictionary {
+	Set<String> set = new HashSet<String>();
 
     // Adds a word into the data structure.
     public void addWord(String word) {
-        
+        set.add(word);
     }
 
     // Returns if the word is in the data structure. A word could
     // contain the dot character '.' to represent any one letter.
     public boolean search(String word) {
-        
+        if(!word.contains("."))
+        	return set.contains(word);
+        for(String s : set){
+        	if(s.length() == word.length()){
+        		int i = 0;
+        		for(; i < s.length(); i++){
+        			if(word.charAt(i) == '.')
+        				continue;
+        			if(word.charAt(i) != s.charAt(i))
+        				break;
+        		}
+        		if(i == s.length())
+        			return true;
+        	}
+        }
+        return false;
     }
 }
 

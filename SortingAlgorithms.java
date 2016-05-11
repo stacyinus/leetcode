@@ -38,10 +38,6 @@ class Sort{
 		}
 		return i;
 	}
-	private void buildMinHeap(int[] nums){
-
-	}
-
 	//merge sort, Time O(nlogn), Space O(n);
 	//constant O(nlogn)
 	public void mergeSort(int[] nums){
