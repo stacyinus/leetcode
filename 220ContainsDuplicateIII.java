@@ -7,6 +7,7 @@ such that the difference between nums[i] and nums[j] is at most t and the differ
 */
 
 public class Solution {
+	//|nums[j] - nums[i]| <= t    ====>     - t <= nums[j] - nums[i] <= t      ====> 	nums[i] - t <=	nums[j] <= t + nums[i]
     public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
     	if(nums == null || nums.length == 0)
     			return false;

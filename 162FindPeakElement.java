@@ -13,6 +13,23 @@ For example, in array [1, 2, 3, 1], 3 is a peak element and your function should
 */
 
 public class Solution {
+    //second round using template.
+    public int findPeakElement(int[] nums) {
+        int s = 0, e = nums.length - 1;
+        while(s + 1 < e){
+            int m = s + (e - s)/2;
+            if(nums[m] > nums[m-1] && nums[m] > nums[m+1])
+                return m;
+            else if(nums[m] > nums[m-1])
+                s = m;
+            else
+                e = m;
+        }
+        if( nums[s] > nums[e] )
+            return s;
+        return e;
+    }
+
     public int findPeakElement(int[] nums) {
         int s=0, e=nums.length-1, mid=0;
         while(s<=e){
