@@ -21,6 +21,19 @@ Given target = 20, return false.
 */
 
 public class Solution {
+    //remeber to use a better algo
+    public boolean searchMatrix(int[][] matrix, int target) {
+        if(matrix == null || matrix.length == 0 || matrix[0].length == 0)
+            return false;
+        int row = matrix.length - 1,col = 0;
+        while(row < matrix.length && row >= 0 && col < matrix[0].length && col >= 0 && matrix[row][col] != target){
+            if(matrix[row][col] < target)
+                col++;
+            else
+                row--;
+        }
+        return(row < matrix.length && row >= 0 && col < matrix[0].length && col >= 0 && matrix[row][col] == target);
+    }
     public boolean searchMatrix(int[][] matrix, int target) {    	
     	int r = 0;
     	boolean[] row = new boolean[matrix.length];
@@ -56,4 +69,5 @@ public class Solution {
     	}
     	return false; 
     }
+
 }
