@@ -21,6 +21,26 @@ If nums = [1,2,3], a solution is:
 */
 
 public class Solution {
+    //bfs
+    public List<List<Integer>> subsets(int[] nums) {
+      List<List<Integer>> result = new ArrayList<List<Integer>>();
+      List<Integer> list = new ArrayList<Integer>();
+      result.add(list);
+      if(nums == null || nums.length == 0)
+        return result;          
+      Arrays.sort(nums);
+      int i = 0;
+      while(i < nums.length){
+        int size = result.size();
+        for(int j = 0; j<size ; j++){
+          List<Integer> l = new ArrayList<Integer>(result.get(j));
+          l.add(nums[i]);
+          result.add(l);
+        }
+        i++;
+      }
+      return result;
+    }
     public List<List<Integer>> subsets(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> result = new ArrayList<List<Integer>>();
