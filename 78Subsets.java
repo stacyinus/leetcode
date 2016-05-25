@@ -21,7 +21,7 @@ If nums = [1,2,3], a solution is:
 */
 
 public class Solution {
-    //bfs
+    //bfs template
     public List<List<Integer>> subsets(int[] nums) {
       List<List<Integer>> result = new ArrayList<List<Integer>>();
       List<Integer> list = new ArrayList<Integer>();
@@ -40,7 +40,8 @@ public class Solution {
         i++;
       }
       return result;
-    }
+    } 
+    //dfs template
     public List<List<Integer>> subsets(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> result = new ArrayList<List<Integer>>();

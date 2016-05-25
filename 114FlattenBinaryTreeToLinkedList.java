@@ -35,30 +35,35 @@ The flattened tree should look like:
  */
 public class Solution {
     public void flatten(TreeNode root) {
-		if(root==null)
-        	return;
-        TreeNode left = root.left;
-        if(left!=null){
-			TreeNode right = root.right;
-	        root.right = left; 
-	        while(left.right!=null)
-	        	left = left.right;
-	        left.right = right;        	
+        if(root == null || root.left == null && root.right == null)
+            return;
+        while(root != null){
+            if(root.left == null){
+                root = root.right;
+                continue;
+            }
+            TreeNode left = root.left;
+            while(left.right != null)
+                left = left.right;
+            left.right = root.right;
+            root.right = root.left;
+            root.left = null;
+            root = root.right;
         }
-        flatten(root.right);
     }
 
-    public void flatten(TreeNode root, TreeNode node) {
-		if(root==null)
-        	return;
+    public void flatten(TreeNode root) {
+        if(root == null || root.left == null && root.right == null)
+            return;
         TreeNode left = root.left;
-        if(node!=null){
-			TreeNode right = root.right;
-	        root.right = left; 
-	        while(node.right!=null)
-	        	node = node.right;
-	        node.right = right;        	
-        }
-        flatten(root.right,left.right);
-    }    
+        TreeNode right= root.right;
+        if(left != null){
+            while(left.right != null)
+                left = left.right;
+            root.right = root.left;
+            left.right = right;
+            root.left = null;
+        }   
+        flatten(root.right);      
+    }
 }
