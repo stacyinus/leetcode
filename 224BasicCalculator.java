@@ -16,48 +16,41 @@ Note: Do not use the eval built-in library function.
 
 public class Solution {
     public int calculate(String s) {
-    	int num = 0;
-        int count = 0;
+        boolean calc = false;
         Stack<Integer> nums = new Stack<Integer>();
         Stack<Character> signs = new Stack<Character>();
-        Stack<Integer> counts = new Stack<Integer>();
-        for(int i = 0; i < s.length()-1; i++){
-        	char c = s.charAt(i);
-        	if(c == ' ')
-        		continue;	
-        	else if(c >= '0' && c <= '9'){
-        		num += c-'0'; 
-        		if(s.charAt(i + 1) >= '0' && s.charAt(i + 1) <= '9')
-        			num*=10;
+        for(int i = 0; i < s.length(); i++){
+            char c = s.charAt(i);
+            if(c >= '0' && c <= '9'){ // 0, + , )
+                int tmp = c - '0';
+                while(i + 1 < s.length() && s.charAt(i + 1) >= '0' && s.charAt(i + 1) <= '9'){
+                    tmp = 10 * tmp + s.charAt(i + 1) - '0';     
+                    i++;
+                }
+                if( !calc )
+                    nums.push(tmp);     
                 else{
-                    nums.push(num);
-                    num = 0;
-                    count++;
+                    nums.push( signs.pop() == '+' ? nums.pop() + tmp : nums.pop() - tmp );
+                    calc = false;
                 }
-        	}
-            else if(c == '+' || c == '-')
+            }
+            else if(c == '+' || c == '-'){ // ' ', 0, (
                 signs.push(c);
-            else if(c == '('){
-                counts.push(count);
-                count = 0;
+                while(i+1 < s.length() && s.charAt(i+1) == ' ')
+                    i++;               
+                if(i+1 < s.length() && s.charAt(i+1) >= '0' && s.charAt(i+1) <= '9')
+                    calc = true;
             }
-            else if(c == ')'){
-                int tmp = nums.pop();
-                while(count > 1){
-                    char sign = signs.pop();
-                    if(sign == '+') tmp += nums.pop();
-                    if(sign == '-') tmp = nums.pop() - tmp;
-                    count--;
-                }
-                count = counts.pop();
-                nums.push(tmp);
-                count++;
+            else if( c == ')' && !nums.isEmpty() && !signs.isEmpty()){
+                int num = nums.isEmpty() ? 0 : nums.pop();
+                char sign = signs.pop();
+                if(sign == '+')
+                    num = nums.pop() + num;
+                else
+                    num = nums.pop() - num;
+                nums.push(num);           
             }
-
-
-
-            
-
         }
+        return nums.isEmpty() ? 0 : nums.pop();
     }
 }
