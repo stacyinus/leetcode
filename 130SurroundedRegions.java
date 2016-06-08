@@ -27,6 +27,7 @@ public class Solution {
 			col = c;
 		}
 	}
+    //BFS
     public void solve(char[][] board) {
         if(board == null || board.length == 0 || board[0].length == 0)
         	return;
@@ -66,6 +67,69 @@ public class Solution {
         			board[i][j] = 'X';
         	}
         }
+    }
+	// Version 2: Union Find
+    class UnionFind{
+    	int[] fathers;
+    	public UnionFind(char[][] board){
+    		fathers = new int[board.length * board[0].length];
+    		for(int i = 0; i < board.length; i++)
+    			for(int j = 0; j < board[0].length; j++)
+    				if(board[i][j] == 'O')
+    					fathers[i*board[0].length+j] = i*board[0].length+j;
+    	}
+    	public void union(int i, int j){
+    		int f1 = find(i);
+    		int f2 = find(j);
+    		if(f1 != f2)
+    			fathers[f2] = f1;
+    	}
+    	public int find(int i){
+    		while(fathers[i] != i){
+    			fathers[i] = fathers[fathers[i]];
+    			i = fathers[i];
+    		}
+    		return i;
+    	}
+    }
+
+    public void solve(char[][] board) {
+    	if(board == null || board.length == 0 || board[0].length == 0)
+    		return;
+    	UnionFind uf = new UnionFind(board);
+    	HashSet<Integer> boundries = new HashSet<Integer>();
+    	HashSet<Integer> boundryFathers = new HashSet<Integer>();
+    	for(int i = 0; i < board.length; i++)
+    		for(int j = 0; j < board[0].length; j++)    	
+    			if(board[i][j] == 'O'){
+    				if(i > 0 && board[i-1][j] == 'O')
+    					uf.union(i*board[0].length + j, (i-1)*board[0].length + j);
+    				if(i < board.length - 1 && board[i+1][j] == 'O')
+    					uf.union(i*board[0].length + j, (i+1)*board[0].length + j);
+    				if(j > 0 && board[i][j-1] == 'O')
+    					uf.union(i*board[0].length + j, i*board[0].length + j - 1);
+    				if(j < board[0].length - 1 && board[i][j+1] == 'O')
+    					uf.union(i*board[0].length + j, i*board[0].length + j + 1);	
+    				if( i == 0 || i == board.length - 1 || j == 0 || j == board[0].length - 1)
+    					boundries.add(i*board[0].length + j);
+    			}
+    		for(int i : boundries)
+    		    boundryFathers.add(uf.find(i));
+                	//System.out.println( " i = " + i + " j = " + j);
+                // 	for(int k = 0; k < uf.fathers.length; k++){
+                // 	    System.out.print(uf.fathers[k] + "   ");
+                // 	    if((k+1)%8 == 0)
+                //     	    System.out.println();
+                // 	}
+                	
+                // 	for(int b : boundryFathers)
+                // 	    System.out.print(b + "   ");
+                // 	System.out.println();  
+    	for(int i = 0; i < board.length; i++)
+    		for(int j = 0; j < board[0].length; j++) 
+    			if(board[i][j] == 'O' && !boundryFathers.contains(uf.find(i*board[0].length + j)))
+    				board[i][j] = 'X';
+    		
     }
 }
 

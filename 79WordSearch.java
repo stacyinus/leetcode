@@ -34,7 +34,7 @@ public class Solution {
     		return true;
     	if(i < 0 || j < 0 || i > board.length - 1 || j > board[0].length - 1 || board[i][j] != word.charAt(k))
     		return false;
-    	board[i][j] ^= 256;// this is to change the char to '#' which is not equal to any input character. so that it will be eliminated from the path.
+    	board[i][j] ^= 256;//  The range of char is between 0 - 255. By doing xor with 256, board[x][y] becomes a number >= 256 and thus is different from any character.
     	boolean r = dfs(board, i-1, j, word, k+1) || dfs(board, i+1, j, word, k+1) || dfs(board, i, j-1, word, k+1) || dfs(board, i, j+1, word, k+1);
     	board[i][j] ^= 256;
     	return r;
