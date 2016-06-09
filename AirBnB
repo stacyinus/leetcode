@@ -1,0 +1,246 @@
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+
+/*
+1. phone water to ocean
+http://www.1point3acres.com/bbs/thread-141746-1-1.html
+2. phone median
+http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=171676&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26searchoption%5B3046%5D%5Bvalue%5D%3D37%26searchoption%5B3046%5D%5Btype%5D%3Dradio%26sortid%3D311
+3. phone closet N sum
+4. onsite matrix
+http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=146537&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26searchoption%255B3046%255D%255Bvalue%255D%3D37%26searchoption%255B3046%255D%255Btype%255D%3Dradio&page=1
+5. phone mini parser
+http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=138651&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26searchoption%5B3046%5D%5Bvalue%5D%3D37%26searchoption%5B3046%5D%5Btype%5D%3Dradio%26sortid%3D311
+6. onsite socket 
+http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=148195&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26searchoption%5B3046%5D%5Bvalue%5D%3D37%26searchoption%5B3046%5D%5Btype%5D%3Dradio%26sortid%3D311
+7. phone 不相邻子序列 （2015-4）house robber
+http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=129199&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26searchoption%5B3046%5D%5Bvalue%5D%3D37%26searchoption%5B3046%5D%5Btype%5D%3Dradio%26sortid%3D311
+8. phone decode URL (2015-6)
+http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=131724&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26searchoption%5B3046%5D%5Bvalue%5D%3D37%26searchoption%5B3046%5D%5Btype%5D%3Dradio%26sortid%3D311
+9. kdistance
+http://buttercola.blogspot.com/2015/11/airbnb-k-edit-distance.html
+10. onsite HilbertCurve
+http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=146537&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26searchoption%5B3046%5D%5Bvalue%5D%3D37%26searchoption%5B3046%5D%5Btype%5D%3Dradio%26sortid%3D311
+11. onsite text justification
+http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=165457&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26searchoption%5B3046%5D%5Bvalue%5D%3D37%26searchoption%5B3046%5D%5Btype%5D%3Dradio%26sortid%3D311
+12. onsite alien dictionary 
+http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=148195&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26searchoption%5B3046%5D%5Bvalue%5D%3D37%26searchoption%5B3046%5D%5Btype%5D%3Dradio%26sortid%3D311
+13. onsite available time
+http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=158462&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26searchoption%5B3046%5D%5Bvalue%5D%3D37%26searchoption%5B3046%5D%5Btype%5D%3Dradio%26sortid%3D311
+14. onsite boggle game
+http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=158462&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26searchoption%5B3046%5D%5Bvalue%5D%3D37%26searchoption%5B3046%5D%5Btype%5D%3Dradio%26sortid%3D311
+15. onsite travel city
+http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=158462&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26searchoption%5B3046%5D%5Bvalue%5D%3D37%26searchoption%5B3046%5D%5Btype%5D%3Dradio%26sortid%3D311
+// summarize 
+http://buttercola.blogspot.com/search/label/Airbnb
+
+*/
+//1. phone water to ocean
+/*class WtO{
+  String[] map;
+  public WtO(){};
+  public void findOcean(int x, int y) {
+    if (map == null || map.length == 0) {
+      return;
+    }
+    int m = map.length;
+    int len = map[0].length();
+    char[][] c = new char[m][len];
+    for (int i = 0; i < m; i++) {
+      c[i] = map[i].toCharArray();
+    }
+    if (c[x][y] == 'L') {
+      return;
+    }
+    Queue<Node> q = new LinkedList<Node>();
+    q.offer(new Node(x, y));
+    while (!q.isEmpty()) {
+      Node n = q.poll();
+      c[n.x][n.y] = 'O';
+      if (n.x - 1 >= 0 && c[n.x - 1][n.y] == 'W') {
+        q.offer(new Node(n.x - 1, n.y));
+      }
+      if (n.x + 1 < m && c[n.x + 1][n.y] == 'W') {
+        q.offer(new Node(n.x + 1, n.y));
+      } 
+      if (n.y + 1 < len && c[n.x][n.y + 1] == 'W'){
+        q.offer(new Node(n.x, n.y + 1));
+      }
+      if (n.y - 1 >= 0 && c[n.x][n.y - 1] == 'W') {
+        q.offer(new Node(n.x, n.y - 1));
+      }
+    }
+    for (int i = 0; i < m; i++) {
+      map[i] = new String(c[i]);
+    }
+  }
+  
+  public void printMap() {
+    for (int i = 0; i < map.length; i++) {
+      System.out.println(map[i]);
+    }
+  }
+}
+class Node{
+  int x;
+  int y;
+  public Node(int i, int j) {
+    x = i;
+    y = j;
+  }
+}
+
+//3. phone closet N sum
+// recursion
+// http://blog.csdn.net/le119126/article/details/46382125
+class ClosestNSum{
+  public ClosestNSum(){};
+  public Integer closestNsum(int[] num, int k, int target) {
+    if (num.length == 0) {
+      return null;
+    }
+    if (k < 2) {
+      int diff = Integer.MAX_VALUE;
+      for (int i = 0; i < num.length; i++) {
+        diff = Math.min(diff, Math.abs(num[i] - target));
+      }
+      return diff;
+    }
+    Arrays.sort(num);
+    return helper(0, num, k, target);
+  }
+  
+  public int helper(int start, int[] num, int k, int target) {
+    if (k == 2) {
+      int i = start;
+      int j = num.length - 1;
+      int ret = num[i] + num[j];
+      int sum = 0;
+      while (i < j) {
+        sum = num[i] + num[j];
+        if (Math.abs(sum - target) < Math.abs(ret - target)) {
+          ret = sum;
+        }
+        if (sum == target) {
+          return sum;
+        }
+        if (sum > target) {
+          i++;
+        } else {
+          j--;
+        }
+      }
+      return ret;
+    }
+    int min = 0;
+    for (int i = start; i < num.length - 2; i++) {
+      int tmp_min = helper(i + 1, num, k - 1, target - num[start]);
+      if (i == start) {
+        min = tmp_min + num[i];
+      } else {
+        if (Math.abs(tmp_min + num[i] - target) < Math.abs(min - target)) {
+          min = tmp_min + num[i];
+        }
+      }
+    }
+    return min;
+  }
+}
+
+
+class Solution {
+  public static void main(String[] args) {
+    // WtO w = new WtO();
+    // String[] map = new String[]{
+    //   "WWWLLLW",
+    //   "WWLLLWW",
+    //   "WLLLLWW"  
+    // };
+    // w.map = map;
+    // w.printMap();
+    // w.findOcean(0, 1);
+    // w.printMap();
+    
+    ClosestNSum cns = new ClosestNSum();
+    int diff = cns.closestNsum(new int[]{-1, 2, 1, -4, 3}, 4, 1);
+    System.out.println(diff);
+  }
+}
+*/
+public class Solution {
+  public Integer decodeFind(String badEncString) {
+    if (badEncString == null || badEncString.length() == 0) {
+      return -1;
+    }
+     
+    StringBuffer sb = new StringBuffer();
+     
+    return decodeFindHelper(0, sb, badEncString);
+  }
+   
+  private Integer decodeFindHelper(int start, StringBuffer curr, String badEncString) {
+    if (start == badEncString.length()) {
+      String testEncStr = curr.toString();
+      Integer result = decode(testEncStr);
+       
+      if (result != null) {
+        return result;
+      } else {
+        return null;
+      }
+    }
+     
+    char c = badEncString.charAt(start);
+    System.out.println(c);
+    if (!Character.isLetter(c)) {
+      curr.append(c);
+      Integer result = decodeFindHelper(start + 1, curr, badEncString);
+      if (result != null) {
+        return result;
+      }
+      curr.deleteCharAt(curr.length() - 1);
+    } else {
+      // To lower case
+      char lower = Character.toLowerCase(c);
+      curr.append(lower);
+      Integer result = decodeFindHelper(start + 1, curr, badEncString);
+      if (result != null) {
+        return result;
+      }
+      curr.deleteCharAt(curr.length() - 1);
+       
+      // To upper case
+      char upper = Character.toUpperCase(c);
+      curr.append(upper);
+      result = decodeFindHelper(start + 1, curr, badEncString);
+      if (result != null) {
+        return result;
+      }
+      curr.deleteCharAt(curr.length() - 1);
+    }
+     
+    return null;
+  }
+   
+  public Integer decode(String testEncStr) {
+    String truth = "kljJJ324hijkS_";
+     
+    if (testEncStr.equals(truth)) {
+      return 848662;
+    } else {
+      return null;
+    }
+  }
+   
+  public static void main(String[] args) {
+    Solution solution = new Solution();
+    String badEncStr = "kLjjj324hijks_";
+    Integer result = solution.decodeFind(badEncStr);
+     
+    System.out.println(result);
+  }
+}

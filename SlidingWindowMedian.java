@@ -45,13 +45,7 @@ public class Solution {
         for(int i = 0; i <= (k-1)/2; i++)
         	maxHeap.offer(tmp[i]);
         int offset = maxHeap.size() - minHeap.size(); //could be 0 or 1
-    	System.out.println("offset = " + offset);
     	for(int i = 0; i < nums.length - k;i++ ){
-    	    System.out.println("nums[i] = " + nums[i]);
-    	    System.out.println("nums[i+k] = " + nums[i+k]);
-    	    System.out.println("minHeap = " + Arrays.toString(minHeap.toArray()));
-    	    System.out.println("maxHeap = " + Arrays.toString(maxHeap.toArray()));
-    	    
     		if(nums[i] > m)
     			minHeap.remove(nums[i]);
     		else if(nums[i] <= m)
@@ -61,11 +55,10 @@ public class Solution {
     		else if(nums[i+k] <= m)
     			maxHeap.offer(nums[i+k]);
     		if(maxHeap.size() - minHeap.size() > offset)
-    			m = maxHeap.poll();
-    		else if(maxHeap.size() - minHeap.size() < offset){
+    			minHeap.offer(maxHeap.poll());
+    		else if(maxHeap.size() - minHeap.size() < offset)
     			maxHeap.offer(minHeap.poll());
-    			m = maxHeap.peek();
-    		}   	
+            m = maxHeap.peek();
     		result.add(m);
     	}
     	return result;
