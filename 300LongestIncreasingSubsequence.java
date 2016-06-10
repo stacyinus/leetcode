@@ -36,7 +36,7 @@ public class Solution {
         if(nums == null || nums.length == 0)
             return 0;
         ArrayList<Integer> list = new ArrayList<Integer>();
-        list.add(nums[0]);
+        list.add(nums[0]);  
         int pos = 0;//keeps track of the last inserted position
         for(int i = 1; i< nums.length; i++){
             if(nums[i] > list.get(list.size()-1)){
