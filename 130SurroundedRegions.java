@@ -19,6 +19,7 @@ X O X X
 */
 
 public class Solution {
+	//this is bfs solution which is kinda slow: O(n2)
 	class Pair{
 		int row;
 		int col;
@@ -34,16 +35,16 @@ public class Solution {
         Queue<Pair> q = new LinkedList<Pair>();
 		for(int i = 0; i < board[0].length; i++){
 			if(board[0][i] == 'O')
-					q.offer(new Pair(0, i));
+				q.offer(new Pair(0, i));
 			if(board[board.length - 1][i] == 'O')
-					q.offer(new Pair(board.length - 1, i));
+				q.offer(new Pair(board.length - 1, i));
 		}
 
 		for(int i = 0; i < board.length; i++){
 			if(board[i][0] == 'O')
-					q.offer(new Pair(i, 0));
+				q.offer(new Pair(i, 0));
 			if(board[i][board[i].length - 1] == 'O')
-					q.offer(new Pair(i, board[i].length - 1));	
+				q.offer(new Pair(i, board[i].length - 1));	
 		}
         
         while(!q.isEmpty()){
@@ -129,7 +130,6 @@ public class Solution {
     		for(int j = 0; j < board[0].length; j++) 
     			if(board[i][j] == 'O' && !boundryFathers.contains(uf.find(i*board[0].length + j)))
     				board[i][j] = 'X';
-    		
     }
 }
 

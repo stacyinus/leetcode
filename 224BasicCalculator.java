@@ -16,7 +16,6 @@ Note: Do not use the eval built-in library function.
 
 public class Solution {
     public int calculate(String s) {
-        boolean calc = false;
         Stack<Integer> nums = new Stack<Integer>();
         Stack<Character> signs = new Stack<Character>();
         for(int i = 0; i < s.length(); i++){
@@ -40,8 +39,6 @@ public class Solution {
                     i++;               
                 if(i+1 < s.length() && s.charAt(i+1) >= '0' && s.charAt(i+1) <= '9')
                     calc = true;
-            }
-            else if( c == ')' && !nums.isEmpty() && !signs.isEmpty()){
                 int num = nums.isEmpty() ? 0 : nums.pop();
                 char sign = signs.pop();
                 if(sign == '+')
