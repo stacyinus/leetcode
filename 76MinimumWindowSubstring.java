@@ -15,6 +15,7 @@ If there are multiple such windows, you are guaranteed that there will always be
 */
 
 public class Solution {
+  //Two Pointers: Starting from the same point.
     public String minWindow(String s, String t) {
         int start = 0, end = 0;
         HashMap<Character, Integer> count = new HashMap<Character, Integer>();
@@ -26,17 +27,15 @@ public class Solution {
         while(start <= s.length()-t.length()){
             while(end<s.length() && num > 0 ){
               char c = s.charAt(end++);
-              if(!count.containsKey(c))
-                continue;
-              else
+              if(count.containsKey(c)){
                 count.put(c,count.get(c)-1);
-              if(count.get(c) == 0) num --;
+                if(count.get(c) == 0) num --;
+              }
             }
             if(end == s.length() && num > 0)
               break;
-            if(result.equals("")) result = s.substring(start, end);   
-            if(result.length() > end - start)
-              result = s.substring(start, end);       
+            if(result.equals("") || result.length() > end - start) 
+              result = s.substring(start, end);        
             if(count.containsKey(s.charAt(start))){
               if(count.get(s.charAt(start)) == 0 )
                 num++;
@@ -46,4 +45,5 @@ public class Solution {
         }
         return result;        
     }
+    
 }
