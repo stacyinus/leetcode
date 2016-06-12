@@ -13,6 +13,11 @@ If there is no such window in S that covers all characters in T, return the empt
 
 If there are multiple such windows, you are guaranteed that there will always be only one unique minimum window in S.
 */
+/*
+  Two Pointers: Starting from the same point. keep a map to count the number of target characters, when all the number of target characters 
+  turn to 0 or less than 0 (meaning the number of this char is more than needed ), then we find a substring containing all target chars.
+
+*/
 
 public class Solution {
   //Two Pointers: Starting from the same point.
@@ -24,7 +29,7 @@ public class Solution {
         for(char c : tChar)
           count.put(c, count.containsKey(c)?count.get(c)+1:1);  
         int num = count.size(); 
-        while(start <= s.length()-t.length()){
+        while(start <= s.length()-t.length()){ //here we use start index because we are looking for the min lenth.
             while(end<s.length() && num > 0 ){
               char c = s.charAt(end++);
               if(count.containsKey(c)){
@@ -45,5 +50,5 @@ public class Solution {
         }
         return result;        
     }
-    
+
 }
