@@ -10,6 +10,12 @@ Given [0,1,0,2,1,0,1,3,2,1,2,1], return 6.
 The above elevation map is represented by array [0,1,0,2,1,0,1,3,2,1,2,1]. In this case, 6 units of rain water (blue section) are being trapped.
  Thanks Marcos for contributing this image!
 */
+
+ /*
+2 pointers: 
+1) find the first peak from start, find the first peak from end
+2) alwasy starting from the smaller side to calculate the trapped water. 
+ */
 public class Solution {
     public int trap(int[] height) {
         int l = 0;

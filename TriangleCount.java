@@ -17,7 +17,10 @@ Given array S = [4,4,4,4], return 4. They are:
 [4(2),4(3),4(4)]
 
 */
-
+/*
+    Two Pointers: sort, for each number in the array(except for the front 2 numbers), 
+    do a "two sum greater than"
+*/
 public class Solution {
     /**
      * @param S: A list of integers

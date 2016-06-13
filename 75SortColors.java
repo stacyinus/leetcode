@@ -17,6 +17,12 @@ First, iterate the array counting number of 0's, 1's, and 2's, then overwrite ar
 Could you come up with an one-pass algorithm using only constant space?
 */
 
+/*
+    Two Pass Solution O(n): count each number, and repopulate the array
+    One Pass solution O(n): use 2 pointers, low tracks the last index of
+                            0, high track the first index of 2, and use 
+                            a moving index i to move the numbers.
+*/
 
 
 public class Solution {
