@@ -16,47 +16,14 @@ Can you do it in O(n) time and/or in-place with O(1) extra space?
 
 public class Solution {
     public void wiggleSort(int[] nums) {
-        if(nums == null || nums.length == 0)
+        if(nums == null || nums.length == 0 || nums.length == 1)
         	return;
-        for(int i = 1; i < nums.length -1; i += 2){
-        	if(nums[i] > nums[i-1] && nums[i] < nums[i+1])
-        		continue;
-        	if(nums[i] < nums[i-1]){
-        		int tmp = nums[i];
-        		nums[i] = nums[i-1];
-        		nums[i-1] = tmp;
-	        }
-	        else if(nums[i] == nums[i-1]){
-	        	int tmpi = i + 1;
-	        	while(tmpi < nums.length){
-	        		if(nums[tmpi] > nums[i] && nums[tmpi] > nums[])
-	        			break;
-	        		tmpi++;
-	        	}
-	        	if(tmpi < nums.length){
-		        	int tmp = nums[tmpi];
-	        		nums[tmpi] = nums[i];
-	        		nums[i] = tmp;
-	        	}
-	        }
-	        if(nums[i] > nums[i+1]){
-	        	int tmp = nums[i];
-        		nums[i] = nums[i+1];
-        		nums[i+1] = tmp;
-	        }
-	        else if(nums[i] == nums[i+1]){
-	        	int tmpi = i + 1;
-	        	while(tmpi < nums.length){
-	        		if(nums[tmpi] > nums[i])
-	        			break;
-	        		tmpi++;
-	        	}
-	        	if(tmpi < nums.length){
-		        	int tmp = nums[tmpi];
-	        		nums[tmpi] = nums[i];
-	        		nums[i] = tmp;
-	        	}	        	
-	        }
-       	}
+        int i = 0;
+        while(){
+        	int j = i + 1;
+        	while(j < nums.length && nums[i] >= nums[j])
+        		j++;
+
+        }
     }
 }
