@@ -9,24 +9,22 @@ class Sort{
 	public void quickSort(int[] nums){
 		if(nums.length==0||nums.length==1)
 			return;
-		quickSort(nums,0,nums.length-1);
+		partition(nums,0,nums.length-1);
 	}
 
-	public void quickSort(int[] nums, int l, int r){
-		int index = partition(nums,l,r);
-		if(l<index-1)
-			quickSort(nums,l,index-1);
-		if(r>index)
-			quickSort(nums,index,r);
-	}
-	private int partition(int[] nums, int l, int r){
+	private void partition(int[] nums, int l, int r){
 		int i=l;
 		int j=r;
 		int pivot = nums[l+(r-l)/2];
 		while(i<=j){//why it has to be i<=j not i<j?
-			while(nums[i]<pivot)
+					// this is because, at the end of loop, i, j  could point to the same value,
+					// and this value could be greater than, smaller than, or equal to pivot.
+					// doing one more loop will make sure that, i always point to greater than or equal to pivot
+					// and j always point to smaller than or equal to pivot. hence, we can use i, j 
+					// to do further partition.
+			while(nums[i]<pivot) //i always point to greater than or equal to pivot
 				i++;
-			while(nums[j]>pivot)
+			while(nums[j]>pivot) //j always point to smaller than or equal to pivot
 				j--;
 			if(i<=j){//why it has to be i<=j not i<j?
 				int tmp = nums[i];
@@ -34,9 +32,12 @@ class Sort{
 				nums[j]=tmp;
 				i++;
 				j--;
-			}
+			}			
 		}
-		return i;
+		if(l<j)
+			partition(nums,l,j);// now j points to the first smaller than or equal to pivot
+		if(r>i)
+			partition(nums,i,r);// now i points to the last smaller than or equal to pivot		
 	}
 	//merge sort, Time O(nlogn), Space O(n);
 	//constant O(nlogn)

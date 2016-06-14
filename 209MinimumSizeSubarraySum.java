@@ -18,7 +18,11 @@ If you have figured out the O(n) solution, try coding another solution of which 
 
 */
 
-//2,3,1,2,4,3
+/*
+	Two Pointers: both start from the beginning. 
+	time O(n)
+	space O(1)
+*/
 public class Solution {
     public int minSubArrayLen(int s, int[] nums) {
     	if(nums == null || nums.length == 0)
