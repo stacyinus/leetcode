@@ -1,9 +1,17 @@
 /*
 64. Minimum Path Sum
 
-Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right which minimizes the sum of all numbers along its path.
+Given a m x n grid filled with non-negative numbers, 
+find a path from top left to bottom right which 
+minimizes the sum of all numbers along its path.
 
 Note: You can only move either down or right at any point in time.
+*/
+/*
+    DP: use the dp array to track from top left to the current point, w
+        what is the minimum path. 
+    Time : O(mn)
+    Space: O(1) we can use the input array to be the dp array.
 */
 public class Solution {
     public int minPathSum(int[][] grid) {

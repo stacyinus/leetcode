@@ -7,6 +7,11 @@ Find two lines, which together with x-axis forms a container, such that the cont
 
 Note: You may not slant the container.
 */
+/*
+Two Pointers: 2 pointers start from left most and right most, 
+move the one with smaller height value each time.
+Time: O(n)
+*/
 
 public class Solution {
 	//this is the basic brutal force method, which is slow and stupid
@@ -17,7 +22,7 @@ public class Solution {
         		max = Math.max(max,Math.min(height[i],height[j])*(j-i));
         return max;
     }
-    //this is 
+    //this is two pointers
     public int maxArea(int[] height) {
     	int i=0,h=0,maxArea=0,j = height.length-1;
     	while(i<j){

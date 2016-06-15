@@ -20,8 +20,17 @@ The total number of unique paths is 2.
 Note: m and n will be at most 100.
 */
 
+/*
+    DP:p[i][j] represents the total number of paths to a particular grid(i,j). then we know, p[i][j]=p[i-1][j]+p[i][j-1]
+    we also know that p[i][0] =1 because the robot can only go down
+    p[0][j]=1 because the robot can only go right.
+    T: O(m*n) 
+    S: O(m*n) can be optimize
+*/
+
 public class Solution {
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        //initialization
         int[][] num = new int[obstacleGrid.length][obstacleGrid[0].length];
         for(int i = 0; i < obstacleGrid.length; i++){
             if(obstacleGrid[i][0]==0)
