@@ -9,21 +9,22 @@ click to show more practice.
 */
 
 public class Solution {
+    /**
+     * @param nums: A list of integers
+     * @return: A integer indicate the sum of max subarray
+     */
     public int maxSubArray(int[] nums) {
-        int maxSum=Integer.MIN_VALUE;
-        int sum=0;
-        int max=Integer.MIN_VALUE;
-        for(int i=0;i<nums.length;i++){
-            max = Math.max(max,nums[i]);
-            if(sum+nums[i]<0)
-                sum = 0;
-            else{
+        if (nums==null || nums.length==0) return 0;
+        int i = 0, sum = Integer.MIN_VALUE, max = Integer.MIN_VALUE;
+        while(i < nums.length){
+            if(sum < 0)
+                sum = Math.max(sum, nums[i]);
+            else
                 sum += nums[i];
-                maxSum = Math.max(sum,maxSum);
-            }
-
+            max = Math.max(sum,max);
+            i++;
         }
-        return Math.max(maxSum,max);
+        return max;
     }
     //DP Solution
     public int maxSubArray(int[] nums) {
