@@ -21,18 +21,44 @@ An easy approach is to sort the array first.
 What are the possible values of h-index?
 A faster approach is to use extra space.
 */
+/*
+    understand what h index means: in a sorted array [2 7 8 9], 
+                                    if(citations[i] >= l-i) , h index = l - i;
+
+*/
 
 public class Solution {
+    //no sort: O(n)
+    public int hIndex(int[] citations) {
+        if(citations == null || citations.length == 0)
+            return 0;
+        int max = 0, l = citations.length;
+        int[] tmp = new int[l+1];
+        for(int i = 0; i < l; i++ ){
+            if(citations[i] > l)
+                tmp[l] += 1;
+            else
+                tmp[citations[i]] += 1;
+        }
+        int h = 0;
+        for(int i = l; i >= 0; i--){
+            if(i < l)
+                tmp[i] += tmp[i+1];
+            if(tmp[i] >= i)
+                return i;
+        }
+        return 0;
+    }    
+    //Sort: O(nlogn)
     public int hIndex(int[] citations) {
     	if(citations == null || citations.length == 0)
     		return 0;
         Arrays.sort(citations);
-        int hIndex = 0;
-        for(int i = 0;i<citations.length;i++){
-        	int numOfPaperGreater = citations.length - i;
-        	if(citations[i] <= citations.length - i)
-        		hIndex = i;
+        int l = citations.length;
+        for(int i = 0; i < l; i++ ){
+            if(citations[i] >= l-i)
+                return l - i;
         }
-        return hIndex;
+        return 0;
     }
 }
