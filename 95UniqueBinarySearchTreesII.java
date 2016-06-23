@@ -34,22 +34,26 @@ The above binary tree is serialized as "{1,2,3,#,#,4,#,#,5}".
  *     TreeNode(int x) { val = x; }
  * }
  */
+
+/*
+    DP:  
+*/
 public class Solution {
-    public List<TreeNode> generateTrees(int n) {
-        List<TreeNode> list = new ArrayList<TreeNode>();
-    	for(int i = 1; i <= n; i++){
+    public List<TreeNode> generateTrees(int n) {   
+        if (n <= 0) {
+            return new ArrayList<TreeNode>();
+        }
+        return helper(1, n);
+    }
+    public List<TreeNode> helper(int s, int e) {
+        if () {
 
-    	}
+        }
+        for (int i = s; i <= e; i ++)  {
+            List<TreeNode> left = helper(i - 1, e);
+            List<TreeNode> right = helper(s, e);            
+        }
+
     }
 
-    private List<TreeNode> addNode(TreeNode root, int val){
-    	
-    	while(root != null){
-    		TreeNode tmp = new TreeNode(val);
-    		while()
-    		tmp.left = root;
-    		root = root.right;
-    	}
-    	
-    }
 }
