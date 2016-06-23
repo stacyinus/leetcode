@@ -23,17 +23,22 @@ return true, as there exist a root-to-leaf path 5->4->11->2 which sum is 22.
  *     TreeNode(int x) { val = x; }
  * }
  */
-public class 112PathSum {
+/*
+  Divide and conquer : need to clarify with interviewer what to return when root is null. 
+  Time: O(n)
+
+*/
+public class Solution {
     public boolean hasPathSum(TreeNode root, int sum) {
-        if(root==null)
-        	return false;
-        if(root.left==null&&root.right==null)
-        	return root.val == sum;        
-        boolean hasPath = false;
-        if(root.left!=null)
-        	hasPath = hasPathSum(root.left,sum-root.val);
-        if(!hasPath&&root.right!=null)
-        	hasPath = hasPathSum(root.right,sum-root.val);
-        return hasPath;
+      if (root == null ) {
+        return false;
+      }   
+      if (root.left == null && root.right == null) {
+        return sum == root.val;
+      }
+      if (root.left != null && hasPathSum(root.left, sum - root.val)) {
+        return true;
+      }
+      return hasPathSum(root.right, sum - root.val);
     }
 }

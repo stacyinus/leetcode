@@ -10,6 +10,13 @@ For example,
 Given [5, 7, 7, 8, 8, 10] and target value 8,
 return [3, 4].
 */
+/*
+    binary search for the first index of target, 
+    binary search for the last index of target,
+    return both indexes.
+
+    Time O(logn)
+*/
 public class Solution {
     public int[] searchRange(int[] nums, int target) {
         int[] range = new int[2];

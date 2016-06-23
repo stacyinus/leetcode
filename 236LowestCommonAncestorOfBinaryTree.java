@@ -23,9 +23,19 @@ For example, the lowest common ancestor (LCA) of nodes 5 and 1 is 3. Another exa
  *     TreeNode(int x) { val = x; }
  * }
  */
+/*
+    Divide and conquer : find LCA in left and right subtrees,  
+                        if the root is null, return null.
+                        if the root equals to either one of the target nodes, then return the root
+                        if the left LCA and the right LCA are different, then return the root.
+
+    Time O(n)
+*/
 public class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if(root == null || root == p  || root == q )
+        if(root == null || root == p  || root == q ) // be careful here!!!!!! use root == p
+                                                // instead of root.val == p.val because there could be
+                                                // duplicated val in the tree.
             return root;
         TreeNode left = lowestCommonAncestor(root.left, p, q);
         TreeNode right = lowestCommonAncestor(root.right, p, q);
