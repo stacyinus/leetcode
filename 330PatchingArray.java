@@ -1,6 +1,9 @@
 /*
 330. Patching Array
-Given a sorted positive integer array nums and an integer n, add/patch elements to the array such that any number in range [1, n] inclusive can be formed by the sum of some elements in the array. Return the minimum number of patches required.
+Given a sorted positive integer array nums and an integer n, 
+add/patch elements to the array such that any number in range [1, n] 
+inclusive can be formed by the sum of some elements in the array. 
+Return the minimum number of patches required.
 
 Example 1:
 nums = [1, 3], n = 6
@@ -22,8 +25,58 @@ Return 0.
 
 */
 
+/*
+	Example 1:
+	nums = [1, 3], n = 6	 missing: 2, 5, 6
+	1, 3, 4      +      2
+
+	nums = [2, 3], n = 6	 missing: 1, 4, 6
+	1    : 1 , 2, 3,4, 5, 6
+	
+	 1. find all the combinations in nums, and see which sum is missing. reutrn a[], sorted.
+	 2. for each a[i], 
+*/
 public class Solution {
     public int minPatches(int[] nums, int n) {
-        
+        List<Integer> possibleSums = new ArrayList<Integer>();
+        getPossibleSums(nums, possibleSums, 0);
+        List<Integer> missingSums = new ArrayList<Integer>();
+        for (int i = 1; i <= n; i++) {
+			if (!possibleSums.contains(i)) {
+				missingSums.add(i);
+			}
+        }
+        if (missingSums.size() == 0) {
+        	return 0;
+        }
+        return 
+    }
+
+    private int getMinPatches(List<Integer> possibleSums, List<Integer> missingSums) {
+    	int num = 0;
+    	Set<Integer> checked = new HashSet<Integer>();
+    	int missing = missingSums.get(0);
+    	missingSums.remove(0);
+    	while (missingSums.size() > 0) {
+    		for(Integer sum : possibleSums) {
+    			if (missingSums.contains(sum + missing)) {
+    				missingSums.remove(new Integer (sum + missing));
+    			}
+    		}
+    		num++;
+    		possibleSums.add(missing);
+    	}
+    	return num;
+    }
+
+    private void getPossibleSums(int[] nums, List<Integer> result, int s) { 
+    	if (s >= nums.length) {
+    		return;
+    	}
+    	help(nums, result, s + 1);
+    	for (Integer i : result) {
+    		result.add(i + nums[s]);
+    	}
+    	result.add(nums[s]);
     }
 }
