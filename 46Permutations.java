@@ -34,28 +34,31 @@ public class Solution {
     	return result;
     }	
 
-    //recursive
+    //backtracking
     public List<List<Integer>> permute(int[] nums) {
-    	if(nums==null||nums.length==0)
-    		return null;    	
-    	List<List<Integer>> list = new ArrayList<List<Integer>>();
-    	List<Integer> l = new ArrayList<Integer>();
-    	l.add(nums[0]);
-    	list.add(l);
-    	for(int i=1;i<nums.length;i++)
-    		list = permute(list, nums[i]);
-    	return list;
-        
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if (nums == null || nums.length == 0) {
+            return result;
+        }
+        helper(result, nums, new ArrayList<Integer>());
+        return result;
     }
-	private List<List<Integer>> permute(List<List<Integer>> list, int num) {
-		List<List<Integer>> r = new ArrayList<List<Integer>>();
-		for(List<Integer> l : list)
-			for(int i=0;i<=l.size();i++){
-				List<Integer> newL = new ArrayList<Integer>();
-				newL.addAll(l);
-				newL.add(i, num);
-				r.add(newL);
-			}
-		return r;
-	}
+    /*
+        1, [2,3,4]
+        2, [1,3,4]
+    */
+    private void helper(List<List<Integer>> result, int[] nums, List<Integer> tmp) {
+        if (tmp.size() == nums.length) {
+            result.add(new ArrayList<Integer>(tmp));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (tmp.contains(nums[i])) {
+                continue;
+            }
+            tmp.add(nums[i]); // you can also make a copy of the current tmp, add nums[i], and pass in the new tmp list.
+            helper(result, nums, tmp);
+            tmp.remove(new Integer(nums[i])); 
+        }
+    }
 }
