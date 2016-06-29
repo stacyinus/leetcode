@@ -14,16 +14,15 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
 
 */
 /*
-	1,3,2 -> 2,1,3
-	1,2,3 ->1,3,2
-	1,2,3,4,5 --> 1,2,3,5,4
-	3,2,1  (all descending)  reverse, 123
-	3,1,2  -->3, 2 ,1
-	5,4,2,3,0,1 --> 5,4,2,3,1,0
-	5,4,0,1,2,3 --> 
-
-	revert the last acending 2. 
+	1. starting from right side, find the first nums[i] < nums[i+1].
+	2. starting from right side again, find the first nums[k] that is greater than nums[i] 
+		(the right side of nums[i] are in descending order, so the first greater than nums[i] will be the next permutation)
+	3. swap nums[k] with nums[i], now index i became the next greater value, however, this is not the end, you need to revert 
+		the array starting from i + 1.
+	eg. 1,3,2,0 --> 2,3,1,0 ->2,0,1,3
+	
 */
+
 
 public class Solution {
     public void nextPermutation(int[] nums) {
@@ -32,21 +31,36 @@ public class Solution {
         }
         int i = nums.length - 1;
         while (i > 0) {
-        	if(nums[i] > nums[i - 1]) {
-        		int tmp = nums[i];
-        		nums[i] = nums[i - 1];
-        		nums[i - 1] = tmp;
-        		return;
+        	if	(nums[i-1] < nums[i]) {
+        		break;
         	}
         	i--;
         }
-        int j = nums.length - 1;
-        while (i < j) {
-        	int tmp = nums[i];
-        	nums[i] = nums[j];
-        	nums[j] = tmp;
-        	i++;
-        	j--;
+        if (i == 0) {
+        	reverse(nums, 0 , nums.length - 1);
         }
+        else{
+	        int j = nums.length - 1;
+	        while (j >= i) {
+	        	if (nums[j] > nums[i - 1]) {
+	        		break;
+	        	}
+	      		j--;
+	        }
+	        //swap
+	        int tmp = nums[i - 1];
+	        nums[i - 1] = nums[j];
+	        nums[j] = tmp;
+            reverse(nums, i, nums.length - 1);
+	    }
+    }
+    private void reverse(int[] nums, int i, int j) {
+    	while(i < j) {
+    		int tmp = nums[i];
+	        nums[i] = nums[j];
+	        nums[j] = tmp;
+	        i++;
+	        j--;
+    	}
     }
 }
