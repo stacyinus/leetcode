@@ -10,26 +10,31 @@ We get the following sequence (ie, for n = 3):
 "132"    2
 "213"    3
 "231"    4
-"312"
-"321"
+"312"    5
+"321"    6
 Given n and k, return the kth permutation sequence.
 
 Note: Given n will be between 1 and 9 inclusive.
 */
 /*
 	DFS backtracking is too slow for this problem, we can skip many cases based on the number k, and i!
-	For example: n = 4, k = 15 (4!= 24) f[i] store (i!), so f[1] = 1, f[2] = 2, f[3] = 6, f[4] = 24.
-				if k = 24, return 4321;
-				else starting f[3], k/f[3] = 2. there are 6 permutations for numbers start with 1, same cases for 
-				numbers start with 2,3,4. 
-				k/f[3] = 0 meaning the number will start from 1;
-				k/f[3] = 1, meaning  the number will start from 2;
-				...
-				Here k/f[3] = 2, number will start from 3.    ------3 (1,2,4) 
-				now k = k%f[3] = 3, same logic, k / f[2] = 1, meaning the next number will be 2(we can't conside 3 since it's added already)
-				now k = k%f[2] = 1, same logic, k / f[1] = 1, meaning the next number will be 2(we can't conside 2,3 since they're added already) 1, 4
+	For example: n = 3, k = 4 (3!= 6) f[i] store the value of i!, so f[1] = 1, f[2] = 2, f[3] = 6
+                for the first digit,  it coulde be 1, 2, or 3, and each number has 2! cases
+                so k / (n - 1)! can tell us which number it should be. 
+                here k should start from k - 1 because it could save us a lot of code to pick the first digit， see:
+                
+                  use k ,  use k-1
+                -------------------
+                1/2! = 0, 0/2! = 0;
+                2/2! = 1, 1/2! = 0;
+                3/2! = 1, 2/2! = 1;
+                4/2! = 2, 3/2! = 1;
+                5/2! = 2, 4/2! = 2;
+                6/2! = 3, 5/2! = 2;
 
 
+                now we have first digit k / (n - 1)! , in this case 1, this means, we should pick the #1 unused number,which is 2
+                (1 is #0, 2 is #1, 3 is #2).  now k = k % (n - 1)!.
 */
 
 public class Solution {
