@@ -35,27 +35,34 @@ public class Solution {
         return sb.toString();
 
     }
-    private int dp(String s) {
-    	int max = 0;
-    	boolean[][] dp = new boolean[s.length()][s.length()];
-    	for(int i = 0; i < s.length(); i++) {
-    		dp[i][i] = true;
-    	}
-    	for(int i = 1; i < s.length(); i++) {
-    		dp[i - 1][i] = s.charAt(i - 1) == s.charAt(i);
-    	}
-    	if(dp[0][1]) max = 1;
-    	for(int m = 2; m < s.length(); m++) {
-    		int i = 0, j = m;
-	     	while (j < s.length()) {
-	    		dp[i][j] = dp[i+1][j-1] && s.charAt(i) == s.charAt(j);
-	    		i++;
-	    		j++;
-	    	}
-	    	if(dp[0][m]) max = m;  		
-    	}
-    	return max;
+    //dont use dp to find parlindrome, it's dedicated n2 time complexity
+    // private int dp(String s) {
+    // 	int max = 0;
+    // 	boolean[][] dp = new boolean[s.length()][s.length()];
+    // 	for(int i = 0; i < s.length(); i++) {
+    // 		dp[i][i] = true;
+    // 	}
+    // 	for(int i = 1; i < s.length(); i++) {
+    // 		dp[i - 1][i] = s.charAt(i - 1) == s.charAt(i);
+    // 	}
+    // 	if(dp[0][1]) max = 1;
+    // 	for(int m = 2; m < s.length(); m++) {
+    // 		int i = 0, j = m;
+	   //   	while (j < s.length()) {
+	   //  		dp[i][j] = dp[i+1][j-1] && s.charAt(i) == s.charAt(j);
+	   //  		i++;
+	   //  		j++;
+	   //  	}
+	   //  	if(dp[0][m]) max = m;  		
+    // 	}
+    // 	return max;
+    // }
+
+    private int findLongestParlindromeFromBeginning(String s) {
+        int mid = s.length()/2;
+        
     }
+
     private int findLongestParlindromeFromBeginning(String s) {
     	for (int cur = s.length() - 1; cur > 0; cur--) {
     		int i = 0;

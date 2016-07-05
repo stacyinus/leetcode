@@ -64,25 +64,18 @@ public class Solution {
         return graph;
     }
 	//dfs
-	public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+    public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
         if (node == null)
-        	return null;
+            return null;
         if (allNodes.containsKey(node.label)) {
-        	return allNodes.get(node.label);
+            return allNodes.get(node.label);
         }
         UndirectedGraphNode cur = new UndirectedGraphNode(node.label);
-        List<UndirectedGraphNode> neighbors = new ArrayList<UndirectedGraphNode>();
-        for (UndirectedGraphNode neighbor: node.neighbors){
-        	if (neighbor == node) {
-        		neighbors.add(cur);
-        	}
-        	else {
-        		UndirectedGraphNode child = cloneGraph(neighbor);
-        		neighbors.add(child);
-        	}
-        }
-        cur.neighbors = neighbors;
         allNodes.put(cur.label, cur);
+        for (UndirectedGraphNode neighbor: node.neighbors){
+            UndirectedGraphNode child = cloneGraph(neighbor);
+            cur.neighbors.add(child);
+        }
         return cur;
     }
 

@@ -7,7 +7,7 @@
 */
 
 /*
-	
+	bitwise. 
 */
 public class Solution {
 	// freaking concise solution.
@@ -15,7 +15,7 @@ public class Solution {
         if((a & b )== 0){	// a和b的对应位一定不都为1。（可为10， 01， 00），因此不存在进位的情况， 可直接return a|b
             return a|b;
         }
-        return getSum(a^b, (a&b) <<1);
+        return getSum(a^b, (a&b) <<1); // a^b取出ab不同的位，a&b取出ab相同且都为1的位，他们相加会进位导致前一位变成1， 所以a&b << 1 表示相加后的结果。
     }
     // my solution using carry.
     public int getSum(int a, int b) {
