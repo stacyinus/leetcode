@@ -31,6 +31,32 @@ Return 6.
  * }
  */
 public class Solution {
+	// this is an optimized method from the first version below.  any better idea to further optimize this one? cause it only beats 4%..
+	class Result {
+		int maxCrossRoot; // include root, maxLeft, maxRight
+		int maxFromRoot; // include root, max single path from root to a node.
+		public Result(int x, int y) {
+			maxCrossRoot = x;
+			maxFromRoot = y;
+		}
+	}
+    public Result maxPathSumFromRoot(TreeNode root) {
+        if (root == null) {
+        	return new Result(Integer.MIN_VALUE, 0);
+        }
+        Result left = maxPathSumFromRoot(root.left);
+        Result right = maxPathSumFromRoot(root.right);
+    	int maxFromRoot = Math.max(Math.max(left.maxFromRoot, right.maxFromRoot), 0 ) + root.val; // have to have root as start point
+    	int crossRoot = left.maxFromRoot + right.maxFromRoot + root.val;// have to have root as middle
+    	int maxCrossRoot = Math.max( Math.max(Math.max(left.maxCrossRoot, right.maxCrossRoot), crossRoot ),maxFromRoot);// doesn't have to have root.
+    	return new Result(maxCrossRoot, maxFromRoot);
+    }
+    public int maxPathSum(TreeNode root){
+    	Result result = maxPathSumFromRoot(root);
+    	return Math.max(result.maxCrossRoot, result.maxFromRoot);   
+    }
+
+    // this is etl, so i optimized this to the upper one
     public int maxPathSumFromRoot(TreeNode root) {
         if (root == null) return 0;
         int left = maxPathSumFromRoot(root.left);

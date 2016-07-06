@@ -7,35 +7,44 @@ For "(()", the longest valid parentheses substring is "()", which has length = 2
 
 Another example is ")()())", where the longest valid parentheses substring is "()()", which has length = 4.
 */
-
+/*
+    ")()())"
+*/
 public class Solution {
+    //bfs
     public int longestValidParentheses(String s) {
-        int count = 0;
-        int validP = 0;
-        int longgest = 0;
-        int tmp=0;
-        for(int i=0;i<s.length();i++){
-        	if(s.charAt(i)=='(')
-        		count++;
-        	else if(s.charAt(i)==')'){
-        		if(count>0){
-        			count--;
-        			tmp++;
-        		}
-        		else(count==0){
-        			validP+=tmp;
-        			tmp=0;
-	        		if(i<s.length()-1&&s.charAt(i+1)==')'&&validP>0){
-	        			longgest = Math.max(longgest,validP);
-	        			validP=0;
-	        		}
-        		}
-        	}
+        if (s == null || s.length() == 0) return 0;
+        if (isValid(s)) {
+            return s.length();
         }
-       if(count==0) 
-            longgest = Math.max(longgest,validP);
-        else
-            longgest = validP;
-        return longgest*2;
+        Queue<String> q = new LinkedList<String>();
+        HashSet<String> set = new HashSet<String>();
+        q.add(s);
+        while (!q.isEmpty()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                String cur = q.poll();
+                for (int j = 0; j < cur.length(); j++) {
+                    String first = j == 0 ? "" : s.substring(0,j);
+                    String second = j == cur.length() - 1 ? "" : s.substring(j + 1);
+                    String tmp = first + second;
+                    if (set.contains(tmp)) continue;
+                    if (isValid(tmp)) return tmp.length();
+                    q.add(tmp);
+                    set.add(tmp);
+                } 
+            }
+        }
+        return 0;
+    }
+    private boolean isValid(String s) {
+        int count = 0;
+        char[] a = s.toCharArray();
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] == '(') count++;
+            else if (count == 0) return false;
+            else count--;
+        }
+        return count == 0;
     }
 }
