@@ -18,6 +18,9 @@ word = "ABCCED", -> returns true,
 word = "SEE", -> returns true,
 word = "ABCB", -> returns false.
 */
+/*
+    DFS: remember to set visited back...
+*/
 public class Solution {
 	//DFS
     public boolean exist(char[][] board, String word) {

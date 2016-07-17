@@ -12,6 +12,14 @@ string convert(string text, int nRows);
 convert("PAYPALISHIRING", 3) should return "PAHNAPLSIIGYIR".
 
 */
+/*
+
+     0       8 
+     1     7 9 
+     2   6   10    14
+     3 5     11 13
+     4       12    
+*/
 
 public class 6ZigzagConversion {
     public String convert(String s, int numRows) {
