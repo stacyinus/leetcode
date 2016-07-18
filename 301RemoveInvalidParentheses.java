@@ -24,6 +24,68 @@ Examples:
 	1. find valid pairs, put in string. find invalid
 */
 public class Solution {
+    //bfs
+    public List<String> removeInvalidParentheses(String s) {
+        List<String> result = new ArrayList<String>();      
+        if (isValid(s)) {
+            result.add(s);
+            return result;
+        }
+        Queue<String> queue = new LinkedList<String>();
+        HashSet<String> set = new HashSet<String>();
+        queue.add(s);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int count = 0; count < size; count++) {
+                String cur = queue.poll();
+                for (int i = 0; i < cur.length(); i++) {
+                    if (cur.charAt(i) != '(' && cur.charAt(i) != ')' || i > 0 && cur.charAt(i) == cur.charAt(i - 1)) {
+                        continue;
+                    }
+                    String pre = i == 0 ? "" : cur.substring(0,i);
+                    String aft = i == cur.length() - 1 ? "" : cur.substring(i + 1);
+                    String tmp = pre + aft;
+                    if (set.contains(tmp)) continue;
+                    set.add(tmp);
+                    if (isValid(tmp)) {
+                        result.add(tmp);
+                    } 
+                    else {
+                        queue.add(tmp);
+                    }
+                }
+            }
+            if (result.size() >0) {
+                break;
+            }
+        }
+        if (result.size() == 0) {
+            result.add("");
+        }
+        return result;
+    }
+
+    private boolean isValid(String s) {
+        Stack<Character> stack = new Stack<Character>();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) != '(' && s.charAt(i) != ')' ) {
+                continue;
+            }
+            else if (s.charAt(i) == '(') {
+                stack.push('(');
+            }
+            else if (s.charAt(i) == ')') {
+                if (stack.isEmpty()) {
+                    return false;
+                }
+                else {
+                    stack.pop();
+                }
+            }
+        }
+        return stack.isEmpty();
+    }
+
     public List<String> removeInvalidParentheses(String s) {
         List<String> result = new ArrayList<String>();
         if (s == null || s.length() == 0) {

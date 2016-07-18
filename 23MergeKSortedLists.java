@@ -12,6 +12,16 @@ Merge k sorted linked lists and return it as one sorted list. Analyze and descri
  *     ListNode(int x) { val = x; }
  * }
  */
+/*
+    Two methods: 1) O(n2), repeatedly merge each list into list 1. use merge 2 sorted list method. 
+                    1, 2, 3, 4
+                    2, 3, 4, 5 --> 1,2,2,3,3,4,4,5 ---> 1,2,2,3,3,3,4,4,4,5,5,6
+                    3, 4, 5, 6
+                 2) O(nlogn). this is like merge sort. divde lists into half, call mergeKLists for each half.
+                    and eventually merge these 2 lists;
+                    
+
+*/
 public class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
         if(lists == null || lists.length == 0)

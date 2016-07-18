@@ -35,6 +35,10 @@ public class Solution {
     }
     //iterative
     public List<Integer> postorderTraversal(TreeNode root) {
+        Stack
+    }
+    //iterative
+    public List<Integer> postorderTraversal(TreeNode root) {
     	List<Integer> list = new ArrayList<Integer>();
     	if(root == null)
     		return list;

@@ -56,5 +56,65 @@ public class Solution {
                 }
                 return rematch(str, s, ptr, p+2);
             }
+        }        
+}
+
+/*
+    第二遍思路还是不清晰。。。。。。
+isMatch("aa","a") → false
+isMatch("aa","aa") → true
+isMatch("aaa","aa") → false
+isMatch("aa", "a*") → true
+isMatch("aa", ".*") → true
+isMatch("ab", ".*") → true
+isMatch("aab", "c*a*b") → true
+aa, a    --> false
+aa, aa   --> true
+aa, aa*  --> true
+aaa, a*  --> true
+abbaab, .* --> true
+abb, .*b --> true
+aba, .*b --> false
+ab,* -->false  anything start with * is false.
+aab,c*a*b -->true
+aaa,ab*a -->false
+a,ab* --> true
+"",".*" --true
+"","c*c*" -- > true
+
+input could only be three types  '.', '*', and other chars (we use abc to represent)
+
+keep pointer i, j for one string each,  before i,j is matched, after i,j is to be match
+1) when next of j is not *, then just compare i with current. if not match, return false, otherwise move to next.
+2) when next of j is *, then if j is abc, just com
+
+*/
+public class Solution {
+        public boolean isMatch(String s, String p) {
+            if (s == null && p == null || s.length() == 0 && p.length() == 0) return true;
+            if (s == null || p == null || p.length() == 0 || p.charAt(0) == '*') return false;
+            int i = 0, j = 0;
+            while (i < s.length() && j < p.length()) {
+                if (p.charAt(j) == '*') return false; 
+                if ((j < p.length() - 1 && p.charAt(j + 1) != '*') || j == p.length() - 1){
+                    if (s.charAt(i) != p.charAt(j) && p.charAt(j) != '.') return false;
+                    i++;
+                    j++;
+                }
+                else {
+                    if (isMatch(s.substring(i), p.substring(j + 2))) return true;
+                    if (s.charAt(i) != p.charAt(j) && p.charAt(j) != '.') return false;
+                    int k = i + 1;
+                    for (; k < s.length() && (s.charAt(k) == s.charAt(i) || p.charAt(j) == '.'); k ++) {
+                        if (isMatch(s.substring(k), p.substring(j + 2))) return true;
+                    }
+                    i = k;
+                    j = j + 2;
+                }
+            }
+            if (i < s.length()) return false;
+            
+            return isMatch("", );
         }
+
 }

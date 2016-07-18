@@ -1,0 +1,71 @@
+/*
+	ArrayList/锯齿数组的iterator 删除-O
+
+	给一个2d array,要求写一个顺序访问这个2d array的Iterator,包括hasNext()与
+
+	next()。注意2d array的每行中元素的个数可能不一样,也可能为空。followup是写一个
+
+	remove(),注意是remove当前item,不是下一个item。remove是需要同时删除原来数组里
+
+	的元素,也能在Iterator调用时体现出来。
+*/
+
+public class 2DArray {
+	ArrayList<ArrayList<T>> array;
+
+	public 2DArray() {
+		array = new ArrayList<ArrayList<T>>();;
+	}
+	public void add(ArrayList<T> element) {
+		array.add(element);
+	}
+	public T get(int i, int j) {
+		if (i > array.size() - 1 || array.get(i) == null || j > array.get(i).size() - 1) { //remember to check array.get(i) == null
+			return null;
+		}
+		return array.get(i).get(j);
+	}
+	private class 2DArrayIterator implements Iterator<T> {
+		int row = 0, col = 0;
+		ArrayList<ArrayList<T>> curArray;
+		public 2DArrayIterator() {
+			curArray = array;
+		}
+		@override
+		public boolean hasNext() {
+			return (row < curArray.size() && curArray.get(row) != null && col < curArray.get(row).size());
+		}
+		@override
+		public T next() {
+			if (row >= curArray.size()) return null;
+			ArrayList<T> list = curArray.get();	
+			if (list == null || col >= list.size()) return null;
+			T value = list.get(col);
+			col = col == list.size() - 1? 0 : col+1;
+			row = col == 0 ? row + 1 : row;
+			return value;
+		}
+		@override
+		public void remove() {
+			if (col == 0 && row == 0) return;
+			int r = row, c = col;
+			if (col == 0) {
+				r = row - 1;
+				c = curArray.get(r).size() - 1;
+			} 
+			else {
+				c--;
+			}
+			ArrayList<T> list = curArray.get(r);
+			list.remove(c);
+			if (list.size() == 0) {
+				curArray.remove(row);
+				row--;
+				col = 0;
+			}
+			else {
+				col --;
+			}
+		}
+	}
+}
