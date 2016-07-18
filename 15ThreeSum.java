@@ -12,7 +12,10 @@ The solution set must not contain duplicate triplets.
     (-1, 0, 1)
     (-1, -1, 2)
 */
-
+/*
+    classic 2 pointers: be carful of dupliacted elements in the array.
+    e.g.: -2,0,0,2,2
+*/
 public class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
         Arrays.sort(nums);
