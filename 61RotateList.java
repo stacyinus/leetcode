@@ -30,6 +30,39 @@ return 4->5->1->2->3->NULL.
  *     ListNode(int x) { val = x; }
  * }
  */
+//Round 2
+public class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        ListNode tmp = head;
+        if (head == null || k == 0) return head;
+        int l = 0;
+        while (k > 0 && tmp != null) {
+            tmp = tmp.next;
+            l++;
+            k--;
+        }
+        if (tmp == null) {
+            k = k % l;
+            if (k == 0) return head;
+            tmp = head;
+            while (k > 0) {
+                tmp = tmp.next;
+                k--;
+            }
+        }
+        ListNode tmp2 = head;
+        while (tmp.next != null) {
+            tmp = tmp.next;
+            tmp2 = tmp2.next;
+        }
+        ListNode newHead = tmp2.next;
+        tmp2.next.next = null;
+        tmp.next = head;
+        return newHead;
+
+    }
+}
+//Round 1
 public class Solution {
     public ListNode rotateRight(ListNode head, int k) {
         if (head == null || head.next == null || k == 0) return head;
