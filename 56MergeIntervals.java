@@ -25,50 +25,42 @@ return [1,6],[8,10],[15,18].
 			 	2. if current interval has no overlap with its next, move pointer.
 			 	3. if there's overlap, merge the interval and keep the 
 */
+/**
+ * Definition for an interval.
+ * public class Interval {
+ *     int start;
+ *     int end;
+ *     Interval() { start = 0; end = 0; }
+ *     Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
 public class Solution {
     public List<Interval> merge(List<Interval> intervals) {
-    	List<Interval> result = new ArrayList<Interval>();
-        if (intervals == null || intervals.size() == 0) {
-        	return result;
+    	if (intervals == null || intervals.size() < 2) return intervals;
+        Collections.sort(intervals, new IntervalComparator());
+        List<Interval> result = new ArrayList<Interval>();
+        Interval cur = intervals.get(0);
+        for (int i = 1 ; i < intervals.size(); i ++) {
+        	Interval tmp = intervals.get(i);
+        	if (cur.end < tmp.start) {
+        		result.add(cur);
+        		cur = tmp;
+        	}
+        	else if (cur.end < tmp.end){
+        		cur.end = tmp.end;
+        	}
         }
-        Collections.sort(intervals, new MyComparator());
-		int j = 1; //point to the next interval that compares with cur.
-		Interval cur = intervals.get(0);
-		while (j < intervals.size()) { 
-			if (cur.end < intervals.get(j).start) {//if no overlap。
-				result.add(cur);
-				cur = intervals.get(j);
-				j++;
-			}
-			else { //merge started
-				int start = cur.start;
-				int end = cur.end;
-				while (j < intervals.size() && cur.end >= intervals.get(j).end) {
-					j++;
-				}
-				if (j < intervals.size() && cur.end >= intervals.get(j).start) {
-					end = intervals.get(j++).end;
-				}
-				cur = new Interval(start,end);
-			}
-		}        
-		result.add(cur);
-		return result;
+        result.add(cur);
+        return result;
     }
-
-    public class MyComparator implements Comparator<Interval> {
+    public class IntervalComparator implements Comparator<Interval>{
     	@Override
     	public int compare(Interval i1, Interval i2) {
-    		if(i1.start > i2.start)
-    			return 1;
-    		else if(i1.start < i2.start)
-    			return -1;
-    		else if(i1.end > i2.end) 
-    			return 1;
-    		else if(i1.end < i2.end)
-    			return -1;
+    		if (i1.start > i2.start) return 1;
+    		if (i1.start < i2.start) return -1;
+    		if (i1.end > i2.end) return 1;
+    		if (i1.end < i2.end) return -1;
     		return 0;
-
     	}
     }
 }

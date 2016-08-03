@@ -29,6 +29,7 @@ public class Solution {
         if (nums == null || nums.length == 0) {
         	return;
         }
+        // start from end, find the first num that is greater than its prior num
         int i = nums.length - 1;
         while (i > 0) {
         	if	(nums[i-1] < nums[i]) {
@@ -36,10 +37,12 @@ public class Solution {
         	}
         	i--;
         }
+        // if no one is greater than its prior number, revert the array
         if (i == 0) {
         	reverse(nums, 0 , nums.length - 1);
         }
         else{
+        	// starting from end, find the first greather than 
 	        int j = nums.length - 1;
 	        while (j >= i) {
 	        	if (nums[j] > nums[i - 1]) {

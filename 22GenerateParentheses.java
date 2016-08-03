@@ -8,6 +8,27 @@ For example, given n = 3, a solution set is:
 */
 
 public class Solution {
+    // back tracking
+    public List<String> generateParenthesis(int n) {
+        List<String> result = new ArrayList<String>();
+        if (n > 0) {
+            helper(result, "", n , n);
+        }
+        return result;
+    }
+    private void helper(List<String> result, String cur, int left, int right) {
+        if (left == 0 && right == 0){
+            result.add(cur);
+            return;
+        }
+        if (left > 0) {
+            helper(result, cur + "(", left - 1, right);
+        }
+        if (right > 0 && left < right) {
+            helper(result, cur + ")", left, right - 1);
+        }
+
+    }
     //recursive:5 ms, so freaking slow....
     public List<String> generateParenthesis(int n) {
         List<String> list = new ArrayList<String>();
@@ -32,8 +53,5 @@ public class Solution {
         }
         return list;
     }
-    //use dp.
-    public List<String> generateParenthesis(int n) {
-    
-    }
+
 }
