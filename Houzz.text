@@ -1,0 +1,58 @@
+1. 2Sum: LeetCode
+
+2. Get prime factors
+
+Integer[] decPrime(int n) {  
+    List<Integer> list = new ArrayList<Integer>();  
+    for (int i=2;i <= n;i++){  
+        while(n != i){  
+            if(n%i != 0){  
+                break;//不能整除肯定不是因数，能够整除在这里一定是质数。因为所有的2，3,5,7  
+                      //都被除完之后。剩下的因数只能是奇数，且是质数。  
+            }  
+            list.add(Integer.valueOf(i));  
+            n = n/i;  
+        }  
+    }  
+    list.add(Integer.valueOf(n));  
+    return list.toArray(new Integer[list.size()]);  
+}  
+
+3. 
+
+Beginning: Team structure, what does every team do, I picked his team, which does tools and release stuff.
+. more info on 1point3acres.com
+Algorithm: 2sum(LeetCode), no hashmap
+. more info on 1point3acres.com
+Web:
+1.      What happens when entering www.google.com 
+(send get request, DNS, load balancer, server, find static file or go into MVC and database interactions, send back result)
+2.      Scalability. Now we have one server, one database, what if response time is slow? How to optimize?
+. Waral 鍗氬鏈夋洿澶氭枃绔�,
+Database: Was going to ask database questions, then I said I’m not good at it, so he just asked am I willing to learn.
+
+Front-end: Asked me if I’m good at html and css, rating from 1 to 5, I said average, so 3.
+
+
+
+houzz面筋：
+Q1: print out prime factors. e.g., 20=2x2x5, 90=2x3x3x5
+How to get a list of prime numbers
+Q2: LRU. How to implement linkedHashtable
+Q3: draw architectural picture for a typical web stack.
+Q4: implement thread pool
+
+
+
+Print prime factors/ H3 s+ |$ H8 |! r
+
+店面2
+2 sum
+
+onsite
+给一个数组 判断是否有三个数 可组成三角形
+搜索 target 数组先增后减+ |5 x) ^* i$ @  P) V/ x; G
+Leetcode caculator
+6 ^- V1 M- V" x. D# |+ ]" S* k, m
+数据库设计 写query
+Restful Api 

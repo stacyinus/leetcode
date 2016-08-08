@@ -12,7 +12,23 @@ Your function should return length = 2, with the first two elements of nums bein
 It doesn't matter what you leave beyond the new length.
 */
 
-public class 26RemoveDuplicatesFromSortedArray {
+public class Solution {
+    //Second Round
+    public int removeDuplicates(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        int i = 0, j = 1, tmp = nums[0];
+        while ( j < nums.length) {
+            while ( j < nums.length && tmp == nums[j]) {
+                j++;
+            }
+            if (j == nums.length) break;
+            nums[i + 1] = nums[j];
+            tmp = nums[j++];
+            i++;
+        }
+        return i + 1;
+    }    
+    // first  round
     public int removeDuplicates(int[] nums) {
     	if(nums==null)
     		return 0;

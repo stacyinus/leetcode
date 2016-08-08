@@ -17,20 +17,42 @@ You can assume that you can always reach the last index.
 
 Subscribe to see which companies asked this question
 */
+/*
+    Greedy is the best solution here:
+    2 indices, start and end, both start from 0;
+    from start to end, find the farthest index you can reach, this will be the new end, and new start will be end + 1;
+    
+
+*/
+public class Solution {
+    public int jump(int[] nums) {
+        if (nums.length == 1) return 0;
+        int count = 0, s = 0, e = 0;
+        while (s <= e && e < nums.length - 1) {
+            count++;
+            int farthest = e; 
+            for (int i = s; i <= e; i++) {
+                farthest = Math.max(farthest, nums[i] + i);
+            }
+            s = e + 1;
+            e = farthest;
+        }
+        return count;
+    }
+}
 
 public class Solution {
 	//DP: this is not the fastest approach
     public int jump(int[] nums) {
-        int[] tmp = new int[nums.length];
-        Arrays.fill(tmp , 0);	
-        for(int i = nums.length - 2; i >= 0; i--){
-        	int j = nums.length - 1;
-        	while( j > i ){
-        		if((tmp[j] != 0 || j == nums.length - 1 ) && nums[i] +  i >= j)
-        			tmp[i] = ( tmp[i] == 0 || tmp[i] > 1 + tmp[j] )? 1 + tmp[j] : tmp[i];
-        		j--;
-        	}
+        int[] dp = new int[nums.length];
+        for (int i = nums.length - 2; i >= 0; i -- ){
+            dp[i] = Integer.MAX_VALUE;
+            for (int j = i + 1; j <= nums[i] + i && j < nums.length; j++) {
+                if (dp[j] != Integer.MAX_VALUE) {
+                    dp[i] = Math.min(dp[i], dp[j] + 1);
+                }
+            }
         }
-        return tmp[0]; 
+        return dp[0];
     }
 }

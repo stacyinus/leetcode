@@ -6,6 +6,41 @@ If it is overflow, return MAX_INT.
 
 */
 //http://blog.csdn.net/zmazon/article/details/8262185
+
+/*
+	写完之后，务必思考overflow case, 注意Integer.MIN_VALUE / -1 = Integer.MAX_VALUE
+	eg: 18/2
+	18 - 2 = 16 （+1）
+	16 - 4 = 12 （+2）
+	12 - 8 = 4  （+4）
+	4 < 16 so start over
+	4 - 2 = 2 （+1）
+	2 < 4 so start over
+	2 - 2 = 0 （+1）
+*/
+
+//Second Round: still missing one overflow case: dividend == Integer.MIN_VALUE && divisor == -1
+public class Solution {
+    public int divide(int dividend, int divisor) {
+        int count = 0;
+        if (divisor == 0 || dividend == Integer.MIN_VALUE && divisor == -1) return Integer.MAX_VALUE;
+        boolean pos = (dividend < 0 && divisor < 0) || (dividend > 0 && divisor > 0);
+        long dividendNew = Math.abs((long)dividend);
+        long divisorNew = Math.abs((long)divisor);
+        while (dividendNew >= divisorNew) {
+            int tmpCount = 1;
+            long div = divisorNew;
+            while (dividendNew >= div) {
+                dividendNew -= div;
+                count += tmpCount;
+                tmpCount = tmpCount << 1;
+                div = div << 1;
+            }
+        }
+        return pos ? count : -1 * count;
+    }
+}
+
 public class Solution {
     public int divide(int dividend, int divisor) {
     	if(divisor == 0)
@@ -26,3 +61,5 @@ public class Solution {
     	return (int)result;
 	}
 }
+
+

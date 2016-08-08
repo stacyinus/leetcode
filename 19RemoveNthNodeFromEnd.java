@@ -12,6 +12,24 @@ Given a linked list, remove the nth node from the end of list and return its hea
  * }
  */
 public class 19RemoveNthNodeFromEnd {
+    // second round
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode tmp = head;
+        while (n > 0) {
+            tmp = tmp.next;
+            n--;
+        }
+        ListNode cur = dummy;
+        while (tmp != null) {
+            cur = cur.next;
+            tmp = tmp.next;
+        }
+        cur.next = cur.next.next;
+        return dummy.next;
+    }
+    // first round    
     public ListNode removeNthFromEnd(ListNode head, int n) {
         int i = 0;
         ListNode pointer = head;

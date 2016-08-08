@@ -5,6 +5,9 @@ Given an integer, convert it to a roman numeral.
 
 Input is guaranteed to be within the range from 1 to 3999.
 */
+/*
+    special case: 9, 4
+*/
 
 public class 12IntegerToRoman {
     public String intToRoman(int num) {
@@ -38,4 +41,35 @@ public class 12IntegerToRoman {
         }
         return r;
     }
+}
+// I think this one is clearner.
+public class Solution {
+    public String intToRoman(int num) {
+        String result = "";
+        char[][] chart = new char[][]{{'I','V'},{'X','L'},{'C','D'},{'M','*'}};
+        for (int i = 0; i < 4; i ++) {
+            int tmp = num % 10;
+            StringBuilder sb = new StringBuilder();
+            if (tmp == 9) {
+                sb.append(chart[i][0]).append(chart[i + 1][0]);
+                tmp -= 9;
+            }
+            else if (tmp == 4) {
+                sb.append(chart[i][0]).append(chart[i][1]);
+                tmp -= 4;
+            }
+            else if (tmp >= 5) {
+                sb.append(chart[i][1]);
+                tmp -= 5;
+            }
+            while (tmp > 0) {
+                sb.append(chart[i][0]);
+                tmp--;
+            }
+            num /= 10;
+            result = sb.toString() + result;
+        }
+        return result;
+    }
+
 }

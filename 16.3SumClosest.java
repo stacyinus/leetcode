@@ -18,6 +18,28 @@ Return the sum of the three integers. You may assume that each input would have 
 */
 
 public class Solution {
+    //Second Round solution.
+    public int threeSumClosest(int[] nums, int target) {
+        if (nums == null || nums.length == 0) return 0;
+        Arrays.sort(nums);
+        int result = Integer.MAX_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            int s = i + 1, e = nums.length - 1, tmp = 0;
+            while ( s < e ) {
+                if (nums[s] + nums[e] + nums[i] == target) return target;
+                tmp = nums[i] + nums[s] + nums[e];
+                if (tmp < target) {
+                    s++;
+                }else {
+                    e--;
+                }
+                result = result == Integer.MAX_VALUE || Math.abs(result - target) > Math.abs(tmp - target) ? tmp : result;
+            }
+        }
+        return result;
+    }
+
+    // first round solution. long...
     public int threeSumClosest(int[] nums, int target) {
         Arrays.sort(nums);
         int r = 0, min = Integer.MAX_VALUE;

@@ -11,7 +11,32 @@ Given an integer n, generate the nth sequence.
 
 Note: The sequence of integers will be represented as a string.
 */
-public class 38CountAndSay {
+// second round
+public class Solution {
+    public String countAndSay(int n) {
+        String r = "1";
+        while (n > 1) {
+            char[] a = r.toCharArray();
+            char cur = a[0];
+            char count = '1';
+            StringBuilder sb = new StringBuilder();
+            for (int i = 1 ; i < a.length; i ++) {
+                if (a[i] == cur) count ++;
+                else {
+                    sb.append(count).append(cur);
+                    cur = a[i];
+                    count = '1';
+                }
+            }
+            sb.append(count).append(cur);
+            r = sb.toString();
+            n--;
+        }
+        return r;
+    }
+}
+// first round
+public class Solution {
 	//recursive
     public String countAndSay(int n) {
     	if(n==1) return "1";

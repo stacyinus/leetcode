@@ -14,7 +14,27 @@ If n = 4 and k = 2, a solution is:
   [1,4],
 ]
 */
-
+//second round
+public class Solution {
+    //1,2,3,4,5
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        helper(result, new ArrayList<Integer>(), n , k, 1);
+        return result;
+    }
+    private void helper(List<List<Integer>> result, List<Integer> list, int n, int k, int start) {
+        if (k == 0) {
+            result.add(new ArrayList<Integer>(list));
+            return;
+        }
+        for (int i = start; i <= n - k + 1; i++ ) {
+            list.add(i);
+            helper(result, list, n, k - 1, i + 1);
+            list.remove(list.size() - 1);
+        }
+    }
+}
+//first round. what the hell did i wrote?
 public class Solution {
 
   public List<List<Integer>> combine(int n, int k) {

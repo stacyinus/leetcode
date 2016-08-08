@@ -13,6 +13,33 @@ Note:
 Although the above answer is in lexicographical order, your answer could be in any order you want.
 */
 public class Solution {
+    // second round solution
+    public List<String> letterCombinations(String digits) {
+        if (digits == null || digits.length() == 0)  return new ArrayList<String>();
+        HashMap<Character, List<String>> map = new HashMap<Character, List<String>>();
+        map.put('2', Arrays.asList("a","b","c") );
+        map.put('3', Arrays.asList("d","e","f") );
+        map.put('4', Arrays.asList("g","h","i") );
+        map.put('5', Arrays.asList("j","k","l") );
+        map.put('6', Arrays.asList("m","n","o") );
+        map.put('7', Arrays.asList("p","q","r","s") );
+        map.put('8', Arrays.asList("t","u","v") );
+        map.put('9', Arrays.asList("w","x","y","z") );
+        List<String> result = map.get(digits.charAt(0));
+        for (int i = 1; i < digits.length(); i++) {
+            List<String> cur = map.get(digits.charAt(i));
+            List<String> tmp = new ArrayList<String>();
+            for (String s : result) {
+                for (String t : cur) {
+                    tmp.add(s + t);
+                }
+            }
+            result = tmp;
+        }
+        return result;
+    }    
+
+    //first round solution
     public List<String> letterCombinations(String digits) {
     	List<String> list = new ArrayList<String>();
         if(digits==null||digits.length()==0)

@@ -27,4 +27,20 @@ public class Solution {
         head.next = swapPairs(next);
         return newHead;
     }
+     public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null) return head;
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode pre = dummy, cur = head, next = head.next;
+        while (next != null) {
+            ListNode nextCur = next.next;
+            pre.next = next;
+            next.next = cur;
+            cur.next = nextCur;
+            pre = cur;
+            cur = nextCur;
+            next = cur == null ? null : nextCur.next;
+        }
+        return dummy.next;
+    }   
 }

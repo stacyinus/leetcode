@@ -1,4 +1,4 @@
-/*
+    /*
 55. Jump Game  
 Given an array of non-negative integers, you are initially positioned at the first index of the array.
 
@@ -12,10 +12,11 @@ A = [2,3,1,1,4], return true.
 A = [3,2,1,0,4], return false.
 
 Subscribe to see which companies asked this question
+
 */
 
 public class Solution {
-	//greedy method
+	//fastest greedy method
     public boolean canJump(int[] nums) {
     	if(nums == null || nums.length <= 1)
     		return true;
@@ -25,8 +26,22 @@ public class Solution {
     			i = j;
     		j--;
     	}
-    	return nums[j] + j >= i;
+    	return nums[j] >= i;
     }
+    //another greedy method
+    public boolean canJump(int[] nums) {
+        int s = 0, e = 0;
+        while (s <= e && e < nums.length - 1) {
+            int farthest = e;
+            for (int i = s; i <= e; i ++){
+                int tmp = i + nums[i];
+                if (tmp > farthest) farthest = tmp;
+            }
+            s = e + 1;
+            e = farthest;
+        }
+        return s <= e;
+    }    
     //DP
     public boolean canJump(int[] nums) {
     	if(nums == null || nums.length <= 1)
