@@ -429,8 +429,49 @@ public class Solution {
     }
 }
 
+22. 给你一个graph每一个node都是一个facebook的user，然后找出这个user的两度关系以内所有和他last name一样的人的email address
 
-21. Find the Least Common Ancestor given two nodes of a binary tree. 
+public List<String> getEmail(Node node){
+        List<String> result = new ArrayList<String>();
+        Queue<Node> queue = new Queue<Node>();
+        queue.add(node);
+        int count = 2;
+        while(!queue.isEmpty()){
+                Node curr = queue.poll();
+                for(Node neighbor : neighbors){
+                        if(neighbor.user != node && neighbor.user.lastname.equals(curr.lastname)){
+                                result.add(neighbor.email);
+                        }
+                        queue.add(neighbor);
+                }
+                count--;
+                if(count == 0){
+                        break;
+                }
+        }
+        return result;
+}
+
+class Node {
+        User user;
+        String email;
+        List<Node> neighbors;
+        public Node (User user, String email){
+                this.user = user;
+                this.email = email;
+        }
+}
+
+class User {
+        String firstname;
+        String lastname;
+        public User(String first, String last){
+                fisrtname = first;
+                lastname = last;
+        }
+}
+
+?22. Find the Least Common Ancestor given two nodes of a binary tree. 
 The nodes each have a reference to their parent node and you do not have the root node of the tree
 
 https://www.careercup.com/question?id=56769
@@ -471,56 +512,75 @@ class Node {
         }
 }
 
-Determine if two rectangular are overlapped
+23. Determine if two rectangular are overlapped
 //check两个rectangle是否重叠
-public class overlapRectangle {
-        public static boolean check(Node topLeftA, Node topLeftB, Node bottomRightA, Node bottomRightB){
-                //左右关系，用x
-                if(bottomRightA.x <= topLeftB.x || bottomRightB.x <= topLeftA.x){
-                        return false;
-                }
-                //上下关系，用y
-                if(topLeftA.y <= bottomRightB.y || topLeftB.y <= bottomRightA.y){
-                        return false;
-                }
-                return true;
-        }
-       
-        public static class Node {
+
+// 问面试官如果边重合算不算重叠。
+public class Solution {
+	public boolean overLap(Node topLeftA, Node topLeftB, Node bottomRightA, Node bottomRightB) {
+		if (bottomRightA.x < topLeftB.x || bottomRightB.x < topLeftA.x 
+			bottomRightA.y > topLeftB.y || bottomRightB.y > topLeftA.y)
+			return false；
+		return true;
+	}
+
+	public class Node {
                 double x;
                 double y;
                 public Node(double x, double y){
                         this.x = x;
                         this.y = y;
                 }
-        }
+        }	
 }
 
-First non-repeat character in a given string
+24. First non-repeat character in a given string
+
 http://javarevisited.blogspot.com/2014/03/3-ways-to-find-first-non-repeated-character-String-programming-problem.html
 /*
-	hashset<character>
+	hashmap<character, integer>
 	bolean[256]
-	aabcdbde
+	abcddeabb
+	abcd
+	abc
 
 */
-
+//two pass, and O(n) space
 public char getChar(String s) {
-	if ()
+	char[] array = s.toCharArray();
+	HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+	for (char c : array) {
+		if (!map.containsKey(c)) {
+			map.put(c, 1);
+		}
+		else {
+			map.put(c , map.get(c) + 1);
+		}
+	}
+	for (char c : array) {
+		if (map.get(c) == 1) return c;
+	}
+	return '';
 }
-Triangle
-https://leetcode.com/problems/triangle/
+//one pass.
+public char getChar(String s) {
+	char[] array = s.toCharArray();
+	HashSet<Character> set = new HashSet<Character>();
+	List<Character> list = ArrayList<Character>();
+	for (char c : array) {
+		if (!set.contains(c)) {
+			set.add(c);
+			list.add(c);
+		} 
+		else{
+			list.remove(c);// O(n)
+		}
+	}
+	return list.size() == 0? '' :list.get(0);
+}
 
-Pascal's Triangle
-https://leetcode.com/problems/pascals-triangle/
 
-Pascal's Triangle II
-https://leetcode.com/problems/pascals-triangle-ii/
-
-Implement Trie (Prefix Tree)
-https://leetcode.com/problems/implement-trie-prefix-tree/
-
-Implement a function for blackjack that returns the score of your hand
+25. Implement a function for blackjack that returns the score of your hand
 public int score(Hand hand){
         int score = 0;
         for(Card currentCard : hand){
@@ -576,63 +636,7 @@ public int score(Hand hand){
         return score;
 }
 
-
-
-Validate Binary Search Tree
-https://leetcode.com/problems/validate-binary-search-tree/
-
-Merge Two Sorted Lists
-https://leetcode.com/problems/merge-two-sorted-lists/
-Merge k Sorted Lists
-https://leetcode.com/problems/merge-k-sorted-lists/
-LRU Cache
-https://leetcode.com/problems/lru-cache/
-
-
-给你一个graph每一个node都是一个facebook的user，然后找出这个user的两度关系以内所有和他last name一样的人的email address
-
-public List<String> getEmail(Node node){
-        List<String> result = new ArrayList<String>();
-        Queue<Node> queue = new Queue<Node>();
-        queue.add(node);
-        int count = 2;
-        while(!queue.isEmpty()){
-               
-                Node curr = queue.poll();
-                for(Node neighbor : neighbors){
-                        if(neighbor.user.lastname.equals(curr.lastname)){
-                                result.add(neighbor.email);
-                        }
-                        queue.add(neighbor);
-                }
-                count--;
-                if(count == 0){
-                        break;
-                }
-        }
-        return result;
-}
-
-class Node {
-        User user;
-        String email;
-        List<Node> neighbors;
-        public Node (User user, String email){
-                this.user = user;
-                this.email = email;
-        }
-}
-
-class User {
-        String firstname;
-        String lastname;
-        public User(String first, String last){
-                fisrtname = first;
-                lastname = last;
-        }
-}
-
-给你一个log file，每一行都有一条记录，包括三个数据：访问时间，user id，访问的page id。然后让你找出访问次数最多的10组3个连续访问page。就是如果user A访问了page 1 2 3，这样 1 2 3 就算被访问了一次。不用考虑时间间隔所以我昨天访问1，今天2，后天3，也能算作连续访问page。我的做法是先用map统计了所有用户的按时间顺序排列好的访问page，然后三个三个加到另一个map里面去count(我用最土的办法 id1_id2_id3 下划线连接)，最后用minHeap找出前10个
+26. 给你一个log file，每一行都有一条记录，包括三个数据：访问时间，user id，访问的page id。然后让你找出访问次数最多的10组3个连续访问page。就是如果user A访问了page 1 2 3，这样 1 2 3 就算被访问了一次。不用考虑时间间隔所以我昨天访问1，今天2，后天3，也能算作连续访问page。我的做法是先用map统计了所有用户的按时间顺序排列好的访问page，然后三个三个加到另一个map里面去count(我用最土的办法 id1_id2_id3 下划线连接)，最后用minHeap找出前10个
 public int[] maxFrequencyPage(List<Log> logFile){
         int len = logFile.size();
         //userId 对应一个list，每个list是个hashmap<pageId_list ： 个数>
@@ -693,6 +697,76 @@ class Log{
                 this.pageId = pageId;
         }
 }
+
+Triangle
+https://leetcode.com/problems/triangle/
+
+Pascal's Triangle
+https://leetcode.com/problems/pascals-triangle/
+
+Pascal's Triangle II
+https://leetcode.com/problems/pascals-triangle-ii/
+
+Implement Trie (Prefix Tree)
+https://leetcode.com/problems/implement-trie-prefix-tree/
+
+
+
+
+Validate Binary Search Tree
+https://leetcode.com/problems/validate-binary-search-tree/
+
+Merge Two Sorted Lists
+https://leetcode.com/problems/merge-two-sorted-lists/
+
+Merge k Sorted Lists
+https://leetcode.com/problems/merge-k-sorted-lists/
+
+LRU Cache
+https://leetcode.com/problems/lru-cache/
+
+Find Median from Data Stream
+https://leetcode.com/problems/find-median-from-data-stream/
+
+PathSum
+
+public boolean hasSum(TreeNode root, int sum) {
+	if (root == null) {
+		return false;
+	}
+	if (root.left == null && root.right == null) {
+		return root.val == sum;
+	}
+	if (root.left == null) return hasSum(root.right, sum - root.val);
+	if (root.right == null) return hasSum(root.left, sum - root.val);
+	return hasSum(root.right, sum - root.val) || hasSum(root.left, sum - root.val);
+
+}
+
+PathSumII:https://leetcode.com/problems/path-sum-ii/
+public class Solution {
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if (root == null) return result;
+        helper(result, new ArrayList<Integer>(), root, sum);
+        return result;
+    }
+    private void helper(List<List<Integer>> result, List<Integer> list, TreeNode root, int sum) {
+        list.add(root.val);
+        if (root.left == null && root.right == null && sum == root.val) {
+            result.add(new ArrayList<Integer>(list));
+            return;
+        }       
+        if (root.left != null) {
+            helper(result, list, root.left, sum - root.val);
+        }
+        if (root.right != null) {
+            helper(result, list, root.right, sum - root.val);
+        }
+        list.remove(list.size() - 1);
+    }
+}
+
 
 
 判断一个node 是否是另一个 node 的 child 很简单一个 DFS 搞定
