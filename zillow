@@ -378,7 +378,7 @@ public class Solution {
     }
 }
 
-20. reverse integer https://leetcode.com/problems/reverse-integer/
+n. reverse integer https://leetcode.com/problems/reverse-integer/
 /* 
 	1234 -- 4321
 	1000 -- 1 remove heading 0
@@ -396,7 +396,7 @@ public int reverse(int x) {
 	return r > Math.MAX_VALUE? 0 : (x < 0 ? -1 * r : r);
 }
 
-20. ?????
+n. ?????
 reverseBitValue： 1010000 --> 0000101。 这题没见过啊，面经里都没有啊~~~想了想，只能用最navie的方法，说每次右移0到31位，并且将移位完的数跟1这个数做&。 这样看每一位是1还是0，赋给一个变量，然后每次再左移32 - i 位， 再加起来。最后返回。 说完思路，他说他没听懂， 但是他感觉是对的，我擦擦擦擦，都没听懂，还能感觉，这么安慰我。又让我问了问题，然后挂了
     // you need treat n as an unsigned value
 public int reverseBits(int n) {        
@@ -514,7 +514,6 @@ class Node {
 
 23. Determine if two rectangular are overlapped
 //check两个rectangle是否重叠
-
 // 问面试官如果边重合算不算重叠。
 public class Solution {
 	public boolean overLap(Node topLeftA, Node topLeftB, Node bottomRightA, Node bottomRightB) {
@@ -535,8 +534,8 @@ public class Solution {
 }
 
 24. First non-repeat character in a given string
-
-http://javarevisited.blogspot.com/2014/03/3-ways-to-find-first-non-repeated-character-String-programming-problem.html
+Brent Elphick
+http://javarevisited.blogspot.com/n14/03/3-ways-to-find-first-non-repeated-character-String-programming-problem.html
 /*
 	hashmap<character, integer>
 	bolean[256]
@@ -636,7 +635,7 @@ public int score(Hand hand){
         return score;
 }
 
-26. 给你一个log file，每一行都有一条记录，包括三个数据：访问时间，user id，访问的page id。然后让你找出访问次数最多的10组3个连续访问page。就是如果user A访问了page 1 2 3，这样 1 2 3 就算被访问了一次。不用考虑时间间隔所以我昨天访问1，今天2，后天3，也能算作连续访问page。我的做法是先用map统计了所有用户的按时间顺序排列好的访问page，然后三个三个加到另一个map里面去count(我用最土的办法 id1_id2_id3 下划线连接)，最后用minHeap找出前10个
+??26. 给你一个log file，每一行都有一条记录，包括三个数据：访问时间，user id，访问的page id。然后让你找出访问次数最多的10组3个连续访问page。就是如果user A访问了page 1 2 3，这样 1 2 3 就算被访问了一次。不用考虑时间间隔所以我昨天访问1，今天2，后天3，也能算作连续访问page。我的做法是先用map统计了所有用户的按时间顺序排列好的访问page，然后三个三个加到另一个map里面去count(我用最土的办法 id1_id2_id3 下划线连接)，最后用minHeap找出前10个
 public int[] maxFrequencyPage(List<Log> logFile){
         int len = logFile.size();
         //userId 对应一个list，每个list是个hashmap<pageId_list ： 个数>
@@ -698,6 +697,118 @@ class Log{
         }
 }
 
+27. PathSum
+public boolean hasSum(TreeNode root, int sum) {
+	if (root == null) {
+		return false;
+	}
+	if (root.left == null && root.right == null) {
+		return root.val == sum;
+	}
+	if (root.left == null) return hasSum(root.right, sum - root.val);
+	if (root.right == null) return hasSum(root.left, sum - root.val);
+	return hasSum(root.right, sum - root.val) || hasSum(root.left, sum - root.val);
+
+}
+
+28. PathSumII:https://leetcode.com/problems/path-sum-ii/
+follow up 1.假设不用以leaf node为path的终点，返回所有path
+follow up 2.假设path不只是从root开始，从任意一个节点开始都可以 （follow-up of 3）。这里写得稍久了一点，感觉代码也不是很精简，她说对了，就不改了。
+public class Solution {
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if (root == null) return result;
+        helper(result, new ArrayList<Integer>(), root, sum);
+        return result;
+    }
+    private void helper(List<List<Integer>> result, List<Integer> list, TreeNode root, int sum) {
+        list.add(root.val);
+        if (root.left == null && root.right == null && sum == root.val) {
+            result.add(new ArrayList<Integer>(list));
+            return;
+        }       
+        if (root.left != null) {
+            helper(result, list, root.left, sum - root.val);
+            list.remove(list.size() - 1);
+        }
+        if (root.right != null) {
+            helper(result, list, root.right, sum - root.val);
+            list.remove(list.size() - 1);
+        }
+        
+    }
+}
+
+29. 第二个是给一个n*n的matrix，点代表通＃号代表不通，从左上角走到右下角，能不能找到一条可行的路径。这里和lc里面path find不太一样，
+上下左右只要通的话都是可以走的，并且不是计算多少条路径，而是能不能至少有一条路径。其实还是蛮简单的用bfs即可，
+只是这里面试官不让用递归，说是数据量大容易栈溢出，
+于是要我用栈来实现，我中间写错一个小地方还是搞出来了，然后就问我要怎么给这个例子写单元测试，我以前根本没搞过这个，
+就说写一个随机生成通或者不通的map的生成器来测试，最后才知道他的意思是写用例的时候要按结果分类。。。
+/*
+	ooooxoox
+	xxxoooox
+	oooooooo
+	xxoxoxoo
+
+	oox
+	ooo
+	xoo
+	[0,0] -- >[0,1] ---> [0,2]
+			  [0,1] ---> [1,1] -- > [1,2] 		 
+*/
+//iterative
+
+public boolean findPath(char[][] m, int n) {
+	if (m[0][0] == '#' || m[n - 1][n - 1] == '#') return false;
+	Stack<Node> stack = new Stack<Node>();
+	boolean[][] visited = new boolean[n][n];
+	stack.push(new Node(0,0));
+	visited[0][0] = true;
+	while (!stack.isEmpty()) {
+		Node cur = stack.peek();
+		int i = cur.i;
+		int j = cur.j;
+		if (i == n - 1 && j == n - 1 ) return true;
+		if (j + 1 < n && m[i][j + 1] != '#' && !visited[i][j + 1]) {
+			stack.push(new Node(i, j + 1));
+			visited[i][j + 1] = true;
+		}
+		else if (i + 1 < n && m[i + 1][j] != '#' && !visited[i + 1][j]){
+			stack.push(new Node(i + 1, j ));
+			visited[i + 1][j] = true;
+		}
+		else if (i - 1 >= 0 && m[i - 1][j] != '#' && !visited[i - 1][j]){
+			stack.push(new Node(i - 1, j ));
+			visited[i - 1][j] = true;
+		}
+		else if (j - 1 >= 0 && m[i][j - 1] != '#' && !visited[i][j - 1]){
+			stack.push(new Node(i, j - 1 ));
+			visited[i][j - 1] = true;
+		}
+		else {
+			stack.pop();
+		}
+	}
+	return false;
+}
+
+// recursive is trival
+public boolean findPath(char[][] m) {
+	boolean[][] visited = new boolean[n][n];
+	return find(m, 0, 0, visited);
+}
+public boolean find(char[][] m, int i, int j , boolean[][] visited) {
+	if (i < 0 || i >= n || j < 0 || j >= n || m[i][j] == '#' || visited[i][j]) {
+		return false;
+	}
+	visited[i][j] = true;
+	boolean found = find(m, i - 1, j , visited) || find(m, i + 1, j , visited) || 
+					find(m, i, j - 1, visited)|| find(m, i, j + 1, visited);
+	visited[i][j] = false;				
+	return found;
+} 
+
+
 Triangle
 https://leetcode.com/problems/triangle/
 
@@ -728,49 +839,40 @@ https://leetcode.com/problems/lru-cache/
 Find Median from Data Stream
 https://leetcode.com/problems/find-median-from-data-stream/
 
-PathSum
 
-public boolean hasSum(TreeNode root, int sum) {
-	if (root == null) {
-		return false;
-	}
-	if (root.left == null && root.right == null) {
-		return root.val == sum;
-	}
-	if (root.left == null) return hasSum(root.right, sum - root.val);
-	if (root.right == null) return hasSum(root.left, sum - root.val);
-	return hasSum(root.right, sum - root.val) || hasSum(root.left, sum - root.val);
+
+BST traverse, 要从左到右竖着输出， vertical print
+
+public List<List<Integer>> traverse(TreeNode root) {
+	List<List<Integer>> result = new ArrayList<List<Integer>>();
+	if (root == null) return result;
 
 }
+private void helper(TreeNode root, List<List<Integer>> result, List<Integer> list) {
+	if (root.left == null) {
+		list.add(root.val);
+		if (root.right != null) {
+			helper(root.right, result, list);
+		}
+		else {
+			result.add(list);
+		}
+	}
+	else {
+		helper(root.left, result);
 
-PathSumII:https://leetcode.com/problems/path-sum-ii/
-public class Solution {
-    public List<List<Integer>> pathSum(TreeNode root, int sum) {
-        List<List<Integer>> result = new ArrayList<List<Integer>>();
-        if (root == null) return result;
-        helper(result, new ArrayList<Integer>(), root, sum);
-        return result;
-    }
-    private void helper(List<List<Integer>> result, List<Integer> list, TreeNode root, int sum) {
-        list.add(root.val);
-        if (root.left == null && root.right == null && sum == root.val) {
-            result.add(new ArrayList<Integer>(list));
-            return;
-        }       
-        if (root.left != null) {
-            helper(result, list, root.left, sum - root.val);
-        }
-        if (root.right != null) {
-            helper(result, list, root.right, sum - root.val);
-        }
-        list.remove(list.size() - 1);
-    }
+	}
+	
+
 }
-
-
 
 判断一个node 是否是另一个 node 的 child 很简单一个 DFS 搞定
 ?????????????????????????????
+
+public boolean isChild(TreeNode parent, TreeNode child) {
+	
+}
+word ladder
 
 
 
@@ -778,10 +880,9 @@ public class Solution {
 
 没有design的题目， 地里的面经好像出现不多， 都是其他LC中的， 能记住的有：
 BST traverse, 要从左到右竖着输出， vertical print
-word ladder
 
 
-第一轮: java细节。flood fill类似，然后一个求解jigsaw啥的。不难. more info on 1point3acres.com
+第一轮: java细节。flood fill类似，然后一个求解jigsaw啥的。
 第二轮：blackjack求分数。tic-tac-toe求胜利 or not， 给的棋盘很大，要用hashmap存，这轮没写完，因为面试官会在写到一半跟我说这样写是不是好些，然后我就全擦了重新写。。
 第三轮：atoi，data stream track median
 第四轮： hiring manager。zigzag iterator，然后聊项目啥的
@@ -792,22 +893,15 @@ word ladder
 
 
 二面是个美国大叔，上来第一个问题是java static关键字的意义并且拿例子问了下，
-第二个是给一个20*20的matrix，点代表通＃号代表不通，从左上角走到右下角，能不能找到一条可行的路径。这里和lc里面path find不太一样，
-上下左右只要通的话都是可以走的，并且不是计算多少条路径，而是能不能至少有一条路径。其实还是蛮简单的用bfs即可，只是这里面试官不让用递归，说是数据量大容易栈溢出，
-于是要我用栈来实现，我中间写错一个小地方还是搞出来了，然后就问我要怎么给这个例子写单元测试，我以前根本没搞过这个，
-就说写一个随机生成通或者不通的map的生成器来测试，最后才知道他的意思是写用例的时候要按结果分类。。。
 
-1. Path Sum: https://leetcode.com... (打开github开始抄。。 2. Path Sum II: https://leetcode.com... （继续抄。。 3. 假设不用以leaf node为path的终点，返回所有path （follow-up of 2) 4. 假设path不只是从root开始，从任意一个节点开始都可以 （follow-up of 3）。这里写得稍久了一点，感觉代码也不是很精简，她说对了，就不改了。 5. 她只准备了以上四题，临时又从题库里找了一题 Reverse Integer, 像这样：int reverse(1234), 返回4321. 写完，她说你这个代码可能会出什么问题？我说int超出范围吧，然后加了个判断，当时有点紧张，不知道写得对不对。
 
-然后刚刚面完二面，名字是Brent Elphick, 第一次面试，这个哥们说是听不到我声音，让我重新约了，本来周二面，又重新约到周五。刚刚面完，之前看地里有人说，他面的会挂。把地里面经全看了一遍。第一题是让找first non-repeat character, 楼主装逼， 用linkedhashmap做， 然后他说可以，但是悲剧来了，他问我linkedhashmap怎么实现的，我擦擦擦。 真没准备啊，只能胡扯，说原来的hashmap是数组和linkedlist，那linkedhashmap把数组换成linkedlist， 能保证元素相领。 然后每次put一个key的时候直接加到linkedlist的末尾。胡扯了一顿，他也没说对还是不对，小伙伴们，装逼有风险啊~~~  这会还有五分钟，我以为他会让我问问问题， 结果又来第三道题， 妈蛋啊~~~ 是说我前两道答的不好么？呜呜呜~第三题： 
+这里写得稍久了一点，感觉代码也不是很精简，她说对了，就不改了。 5. 她只准备了以上四题，临时又从题库里找了一题 Reverse Integer, 像这样：int reverse(1234), 返回4321. 写完，她说你这个代码可能会出什么问题？我说int超出范围吧，然后加了个判断，当时有点紧张，不知道写得对不对。
 
 
 
 
 
 
-链接: https://instant.1point3acres.com/thread/148267
-来源: 一亩三分地
 
 
 第二题是写扫雷的OnClick方法，不用考虑UI相关的东西，输入是一个已经把雷埋好数字标好的board。他说主要想看的是你点了一个数字为0的格子时候如何把周围一圈都reveal然后如何继续把是0的格子给处理下去。 
