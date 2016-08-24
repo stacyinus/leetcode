@@ -23,4 +23,13 @@ public class 70ClimbingStairs {
         }
         return result;        
     }
+    // tail recursion
+    public int climbStairs(int n) {
+        return help(n, 1 , 0);
+    }
+    public int help(int term, int val = 1, int prev = 0) {
+         if(term == 0) return prev;
+         if(term == 1) return val;
+         return fib(term - 1, val+prev, val);
+    }
 }

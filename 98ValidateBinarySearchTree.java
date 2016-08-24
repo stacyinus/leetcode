@@ -18,7 +18,30 @@ Both the left and right subtrees must also be binary search trees.
  *     TreeNode(int x) { val = x; }
  * }
  */
+
 public class Solution {
+    // iterative, use extra space 
+    public boolean isValidBST(TreeNode root) {
+        if (root == null) return true;
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        TreeNode pre = null;
+        while (root != null || !stack.isEmpty()) {
+            if (root == null) {
+                TreeNode tmp = stack.pop();
+                if (pre != null && pre.val >= tmp.val ) {
+                    return false;
+                }
+                pre = tmp;
+                root = tmp.right;
+            }
+            else {
+                stack.push(root);
+                root = root.left;   
+            }
+        }
+        return true;
+    }   
+     
     //traverse and see if it is acending order, this traverse only once.
     TreeNode prev = null;
     public boolean isValidBST(TreeNode root) {
