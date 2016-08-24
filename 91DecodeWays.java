@@ -14,6 +14,11 @@ Given encoded message "12", it could be decoded as "AB" (1 2) or "L" (12).
 
 The number of ways decoding "12" is 2.
 */
+
+/*
+    DP Solution: Be careful of the case when there are 0 in the number. 
+                 When there's a 0, it has to be combined with the prievious digit. 
+*/
 public class Solution {
     public int numDecodings(String s) {
         if(s == null || s.length() == 0 || s.charAt(0) == '0') 

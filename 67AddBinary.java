@@ -8,6 +8,32 @@ b = "1"
 Return "100".
 */
 
+// secound round
+public class Solution {
+    public String addBinary(String a, String b) {
+        if (a == null || a.length() == 0) return b;
+        if (b == null || b.length() == 0) return a;
+        int i1 = a.length() - 1 , i2 = b.length() - 1;
+        boolean carry = false;
+        StringBuilder sb = new StringBuilder();
+        while (i1 >= 0 || i2 >= 0) {
+            char cur = i1 >= 0 ? a.charAt(i1--) : '0';
+            cur = i2 >= 0 ? (char) (cur + (b.charAt(i2--) - '0')) : cur;
+            if (carry) {
+                cur ++;
+                carry = false;
+            } 
+            if (cur > '1') {//0 1 2 3
+                cur = (char) (cur - 2);
+                carry = true;
+            }
+            sb.append(cur);
+        }
+        if (carry) sb.append('1');
+        return sb.reverse().toString();
+    }
+}
+
 public class 67AddBinary {
 	//iterative
     public String addBinary(String a, String b) {
