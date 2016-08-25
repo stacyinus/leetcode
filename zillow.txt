@@ -3,14 +3,6 @@
 
 补充：第二题是地里有面经的，给你n个点，坐标（x，y，z），找一个点离其他点的距离之和是最小的。这个题地里面经的答案说是算xyz平均值然后取离这个最近的那个点，我一开始非常嗨皮的给了这个答案，结果面试官说你这个不对，然后要我写了个On2的解法做优化，我当时想了一会儿确实想不出来怎么优化，结果小哥说用全局变量存当前最小距离，如果当前距离和已经比最小距离小就直接看下一个点。。。 这个优化暂且不说，我想问下神通广大的一亩三分地ers， 这个题能有线性时间的解法吗？我问过我一个acm的同学，他说曼哈顿距离确实没有线性的。。。 
 
-/*
-	for each locaction in list, find total distance, and store in hashmap O(n ^ n) scary....
-	a b c d e
-	a: ab + ac + ad + ae
-	b: ab + bc + bd + be
-	c: ac + bc + cd + ce
-	e: ae + be + ce + de 
-*/
 class Location{
 	int x;
 	int y;
@@ -23,7 +15,30 @@ class Location{
 }
 
 public Location getClub(List<Location> locations) {
-	
+	int sumx = 0, sumy = 0, sumz = 0;
+	for (Location l : locations) {
+		sumx += l.x;
+		sumy += l.y;
+		sumz += l.z; 
+	}
+	sumx = sumx/locations.size();
+	sumy = sumy/locations.size();
+	sumz = sumz/locations.size();
+	Location c = new Location(sumx, sumy, sumz);
+	double dis = Double.MAX_VALUE;
+	Location club = null;
+	for (Location l : locations) {
+		int tmp = getDistance(l, c);
+		if (tmp < dis) {
+			dis = tmp;
+			club = l;
+		}
+	}
+	return club;
+}
+
+private double getDistance(Location a, location b) {
+	return Math.sqrt(Math.pow((a.x - b.x),2) + Math.pow((a.y - b.y),2) + Math.pow((a.z - b.z),2));
 }
 
 
@@ -430,6 +445,61 @@ public class Solution {
             }
         }
         return sb.toString();
+    }
+}
+
+public class Solution {
+    public String reverseWords(String s) {
+        s = s.trim();
+        String[] array = s.split(" ");
+        StringBuilder sb = new StringBuilder();
+        for (int i = array.length - 1; i >= 0 ; i --) {
+            if (array[i].length() > 0){
+                sb.append(array[i]);
+                if (i > 0) {
+                    sb.append(" ");   
+                }
+            }
+        }
+        return sb.toString();
+    }
+}
+// better solution
+public class Solution {
+    public String reverseWords(String s) {
+    	char[] a = s.toCharArray();
+    	int start = 0, end = a.length - 1;
+    	while (start <= end && a[start] == ' ') start++;
+    	while (start <= end && a[end] == ' ') end--;
+        if (start > end) return "";
+    	int i = start, j = start, k = start;
+    	while (i <= end) {
+    		// make sure i is point to the start of a string
+    		while (i <= end && a[i] == ' ') i++;
+    		j = i;
+    		// j is point to end of the string
+    		while (j <= end && a[j] != ' ') j++;
+    		// reverse sting from i to j - 1
+    		System.out.println("1 reverting " + i + " with " + (j - 1) );
+    		reverse(a, i ,j - 1);
+    		while (i < j ) {
+    			a[k++] = a[i++];
+    		}
+    	    if (j < end)   a[k++] = ' ';
+    	}
+    	System.out.println("2 reverting " + start + " with " + (k - 1));
+    	reverse(a, start, k - 1 );
+    	return new String(a, start, k - start);
+    }
+    
+    private void reverse(char[] a, int i, int j ) {
+    	while ( i < j )  {
+    		char t = a[i];
+    		a[i] = a[j];
+    		a[j] = t;
+    		i++;
+    		j--;
+    	}
     }
 }
 
