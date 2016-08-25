@@ -812,58 +812,22 @@ public boolean find(char[][] m, int i, int j , boolean[][] visited) {
 	return found;
 } 
 
-31. reverseBitValue： 1010000 --> 0000101。 这题没见过啊，面经里都没有啊~~~想了想，只能用最navie的方法，说每次右移0到31位，并且将移位完的数跟1这个数做&。 这样看每一位是1还是0，赋给一个变量，然后每次再左移32 - i 位， 再加起来。最后返回。 说完思路，他说他没听懂， 但是他感觉是对的，我擦擦擦擦，都没听懂，还能感觉，这么安慰我。又让我问了问题，然后挂了
-    public int reverseBits(int n) {
-        int result = 0;
-        for(int i=0;i<32;i++){
-            if((n&(1<<i))!=0)//here use <>0 because int is signed, when the front digit is 1, the value is <0
-                result+= (1<<(31-i));
-        }       
-        return result;  
-    }
+n. ?????
+reverseBitValue： 1010000 --> 0000101。 这题没见过啊，面经里都没有啊~~~想了想，只能用最navie的方法，说每次右移0到31位，并且将移位完的数跟1这个数做&。 这样看每一位是1还是0，赋给一个变量，然后每次再左移32 - i 位， 再加起来。最后返回。 说完思路，他说他没听懂， 但是他感觉是对的，我擦擦擦擦，都没听懂，还能感觉，这么安慰我。又让我问了问题，然后挂了
+    // you need treat n as an unsigned value
+public int reverseBits(int n) {        
+    /* 
+        for each bit do an xor with 1
+        1010000 
+        1
+    */
+    return n ^ ( -1);
+
 
 }
-
-32. Triangle
+Triangle
 https://leetcode.com/problems/triangle/
-/*
-    [
-         [2],
-        [3,4],
-       [6,5,7],
-      [4,1,8,3]
-    ]
-        2    0    1 
-      5   6  0 1  1 2
-    11 10  13
-  15  11     
-*/
-public class Solution {
-    public int minimumTotal(List<List<Integer>> t) {
-        if (t == null || t.size() == 0) return Integer.MIN_VALUE;
-        for (int i = 1 ; i < t.size(); i ++) {
-            List<Integer> cur = t.get(i);
-            List<Integer> pre = t.get(i - 1);
-            for (int j = 0; j < cur.size(); j ++) {
-                if (j == 0) {
-                    cur.set(j, cur.get(j) + pre.get(j));
-                }
-                else if (j == cur.size() - 1) {
-                    cur.set(j, cur.get(j) + pre.get(j - 1));
-                }
-                else {
-                    cur.set(j, Math.min(pre.get(j) , pre.get(j - 1)) + cur.get(j));
-                }
-            }
-        }
-        List<Integer> lastRow = t.get(t.size() - 1);
-        int min = Integer.MAX_VALUE;
-        for (int i = 0; i < lastRow.size(); i++) {
-            min = Math.min(min, lastRow.get(i));
-        }
-        return min;
-    }
-}
+
 Pascal's Triangle
 https://leetcode.com/problems/pascals-triangle/
 
@@ -878,10 +842,6 @@ https://leetcode.com/problems/implement-trie-prefix-tree/
 
 Validate Binary Search Tree
 https://leetcode.com/problems/validate-binary-search-tree/
-
-public boolean isValid(TreeNode node) {
-    
-}
 
 Merge Two Sorted Lists
 https://leetcode.com/problems/merge-two-sorted-lists/
@@ -899,72 +859,27 @@ https://leetcode.com/problems/find-median-from-data-stream/
 
 BST traverse, 要从左到右竖着输出， vertical print
 
-           1
-        /    \
-       2      3
-      / \    / \
-     4   5  6   7
-             \   \
-              8   9 
-The output of print this tree vertically will be:
-4
-2
-1 5 6
-3 8
-7
-9 
-public class Node {
-    TreeNode node;
-    int col;
-    public Node(TreeNode node, int col) {
-        this.node = node;
-        this.col = col;
-    }
-}
 public List<List<Integer>> traverse(TreeNode root) {
 	List<List<Integer>> result = new ArrayList<List<Integer>>();
-    int left = findLeft(root);
-    int right = findRight(root);
-    for (int i = 0; i < left + right + 1; i ++) {
-        result.add(new ArrayList<Integer>());
-    }
-    //now bfs
-    Queue<Node> q = new LinkedList<Node>();
-    q.add(new Node(root, left));
-    while (!q.isEmpty()) {
-        int size = q.size();
-        for (int i = 0; i < size; i ++) {
-            Node cur = q.poll();
-            TreeNode curNode = cur.node;
-            int col = cur.col;
-            List<Integer> list = result.get(col);
-            list.add(curNode.val);
-            if (curNode.left != null) {
-                q.add(new Node(curNode.left, col - 1));
-            }
-            if (curNode.right != null) {
-                q.add(new Node(curNode.right, col + 1));
-            }
-        }
-    }
-    return result;
+	if (root == null) return result;
 
 }
-private int findLeft(TreeNode root) {
-    int i = 0;
-    while (root != null) {
-        root = root.left;
-        i++;
-    }
-    return i;
-}
-private int findRight(TreeNode root) {
-    int i = 0;
-    while (root != null) {
-        root = root.right;
-        i++;
-    }
-    return i;    
+private void helper(TreeNode root, List<List<Integer>> result, List<Integer> list) {
+	if (root.left == null) {
+		list.add(root.val);
+		if (root.right != null) {
+			helper(root.right, result, list);
+		}
+		else {
+			result.add(list);
+		}
+	}
+	else {
+		helper(root.left, result);
+
+	}
+	
+
 }
 
 判断一个node 是否是另一个 node 的 child 很简单一个 DFS 搞定
@@ -973,8 +888,6 @@ private int findRight(TreeNode root) {
 public boolean isChild(TreeNode parent, TreeNode child) {
 	
 }
-
-
 word ladder
 
 
@@ -992,20 +905,31 @@ BST traverse, 要从左到右竖着输出， vertical print
 
 
 
-第二题是写扫雷的OnClick方法，不用考虑UI相关的东西，输入是一个已经把雷埋好数字标好的board。
-他说主要想看的是你点了一个数字为0的格子时候如何把周围一圈都reveal然后如何继续把是0的格子给处理下去。 
+ 
+
+
+二面是个美国大叔，上来第一个问题是java static关键字的意义并且拿例子问了下，
+
+
+这里写得稍久了一点，感觉代码也不是很精简，她说对了，就不改了。 5. 她只准备了以上四题，临时又从题库里找了一题 Reverse Integer, 像这样：int reverse(1234), 返回4321. 写完，她说你这个代码可能会出什么问题？我说int超出范围吧，然后加了个判断，当时有点紧张，不知道写得对不对。
+
+
+
+
+
+
+
+
+第二题是写扫雷的OnClick方法，不用考虑UI相关的东西，输入是一个已经把雷埋好数字标好的board。他说主要想看的是你点了一个数字为0的格子时候如何把周围一圈都reveal然后如何继续把是0的格子给处理下去。 
 
 
 第二轮：美国人，第一题是要求用递归的方式来求一个string的长度，不允许用任何求length相关的libary method。我用substring的方式做出来了。写完后follow up是说我substring复杂度太高，因为要把所有char都copy一遍，所以要我想一个O(n)的。想死都没想出来最后他说你可以用exception的try-catch呀－ －我当时就听醉了。
 
 
-第二题是给你一个graph每一个node都是一个facebook的user，然后找出这个user的两度关系以内所有和他last name一样的人的email address。＝ ＝这一题很简单但是我当时状态不是很好，BFS写出了两个很傻逼的bug，还都被他抓出来了，所以最后要挂估计就是挂这里了。 
+第二题是给你一个graph每一个node都是一个facebook的user，然后找出这个user的两度关系以内所有和他last name一样的人的email address。＝ ＝这一题很简单但是我当时状态不是很好，BFS写出了两个很傻逼的bug，还都被他抓出来了，所以最后要挂估计就是挂这里了。 第三轮：美国人，第一题是给一个string找第一个unique character，我扫两次做的。follow up，给你的是一个iterator，只能顺着这个iterator走一遍，不允许存下来从头扫。我用linkedHashSet做的＝ ＝，估计他不懂这是什么鬼，现场去查了下发现确实可以，然后follow up就变成了让我讲讲怎么实现一个linkedHashSet。第二题就是leetcode的那个reverse word in string，我嘴贱说可以用split 然后倒着加，他就把input 换成了char[] 然后让我in-place做，然后说如果两个单词中有3个空格，也要reverse到另一边去。无论如何最后是顺利做出来了＝ ＝ 第四轮：亚洲人，比较实际的数据处理题，给你一个log file，每一行都有一条记录，包括三个数据：访问时间，user id，访问的page id。然后让你找出访问次数最多的10组3个连续访问page。就是如果user A访问了page 1 2 3，这样 1 2 3 就算被访问了一次。不用考虑时间间隔所以我昨天访问1，今天2，后天3，也能算作连续访问page。我的做法是先用map统计了所有用户的按时间顺序排列好的访问page，然后三个三个加到另一个map里面去count，最后用minHeap找出前10个。follow up是如何优化空间，我那个时候大脑已经跪了，想了二十分钟想不出来就投降要hint了，然后经过提示就用大小为3的queue来存那连续三个page id，count完之后就扔掉第一个然后读第三个就好，不占用空间。 总体感觉就是题都很简单，但是连续面4个小时真的很吃力，状态一差就容易出低级bug。。。 
 
-第三轮：美国人，第一题是给一个string找第一个unique character，我扫两次做的。follow up，给你的是一个iterator，只能顺着这个iterator走一遍，不允许存下来从头扫。我用linkedHashSet做的＝ ＝，估计他不懂这是什么鬼，现场去查了下发现确实可以，然后follow up就变成了让我讲讲怎么实现一个linkedHashSet。第二题就是leetcode的那个reverse word in string，我嘴贱说可以用split 然后倒着加，他就把input 换成了char[] 然后让我in-place做，然后说如果两个单词中有3个空格，也要reverse到另一边去。无论如何最后是顺利做出来了＝ ＝ 
-
-第四轮：亚洲人，比较实际的数据处理题，给你一个log file，每一行都有一条记录，包括三个数据：访问时间，user id，访问的page id。然后让你找出访问次数最多的10组3个连续访问page。就是如果user A访问了page 1 2 3，这样 1 2 3 就算被访问了一次。不用考虑时间间隔所以我昨天访问1，今天2，后天3，也能算作连续访问page。我的做法是先用map统计了所有用户的按时间顺序排列好的访问page，然后三个三个加到另一个map里面去count，最后用minHeap找出前10个。follow up是如何优化空间，我那个时候大脑已经跪了，想了二十分钟想不出来就投降要hint了，然后经过提示就用大小为3的queue来存那连续三个page id，count完之后就扔掉第一个然后读第三个就好，不占用空间。 总体感觉就是题都很简单，但是连续面4个小时真的很吃力，状态一差就容易出低级bug。。。 
-
-
+链接: https://instant.1point3acres.com/thread/144269
+来源: 一亩三分地
 
 一题是斐波那契数列求和，一题是给一个数组，问你从左上走到右下一共多少种路径 https://leetcode.com... 然后直接给了osite 
 
