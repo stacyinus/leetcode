@@ -1,16 +1,9 @@
 1. 常见题目。 给了一堆Home的三位坐标（x,y,z)，找出其中一个Home最为Club，使得其到其他Home的距离和最短。 和面试官讨论了，但是他还是比较想要找离各坐标均值最近的Home作为Club的这个做法。 面试官后来也问如果不是Mean，而是Median会怎么样？当时没有答出来，后来和朋友讨论，觉得在此题目中，因为寻找的Club是Home中的一个，
 所以Median和Mean在这个题目中的作用是相同的。 
 
-补充：第二题是地里有面经的，给你n个点，坐标（x，y，z），找一个点离其他点的距离之和是最小的。这个题地里面经的答案说是算xyz平均值然后取离这个最近的那个点，我一开始非常嗨皮的给了这个答案，结果面试官说你这个不对，然后要我写了个On2的解法做优化，我当时想了一会儿确实想不出来怎么优化，结果小哥说用全局变量存当前最小距离，如果当前距离和已经比最小距离小就直接看下一个点。。。 这个优化暂且不说，我想问下神通广大的一亩三分地ers， 这个题能有线性时间的解法吗？我问过我一个acm的同学，他说曼哈顿距离确实没有线性的。。。 
+补充：第二题是地里有面经的，给你n个点，坐标（x，y，z），找一个点离其他点的距离之和是最小的。这个题地里面经的答案说是算xyz平均值然后取离这个最近的那个点，
+我一开始非常嗨皮的给了这个答案，结果面试官说你这个不对，然后要我写了个On2的解法做优化，我当时想了一会儿确实想不出来怎么优化，结果小哥说用全局变量存当前最小距离，如果当前距离和已经比最小距离小就直接看下一个点。。。 这个优化暂且不说，我想问下神通广大的一亩三分地ers， 这个题能有线性时间的解法吗？我问过我一个acm的同学，他说曼哈顿距离确实没有线性的。。。 
 
-/*
-	for each locaction in list, find total distance, and store in hashmap O(n ^ n) scary....
-	a b c d e
-	a: ab + ac + ad + ae
-	b: ab + bc + bd + be
-	c: ac + bc + cd + ce
-	e: ae + be + ce + de 
-*/
 class Location{
 	int x;
 	int y;
@@ -23,8 +16,32 @@ class Location{
 }
 
 public Location getClub(List<Location> locations) {
-	
+	int sumx = 0, sumy = 0, sumz = 0;
+	for (Location l : locations) {
+		sumx += l.x;
+		sumy += l.y;
+		sumz += l.z; 
+	}
+	sumx = sumx/locations.size();
+	sumy = sumy/locations.size();
+	sumz = sumz/locations.size();
+	Location c = new Location(sumx, sumy, sumz);
+	double dis = Double.MAX_VALUE;
+	Location club = null;
+	for (Location l : locations) {
+		int tmp = getDistance(l, c);
+		if (tmp < dis) {
+			dis = tmp;
+			club = l;
+		}
+	}
+	return club;
 }
+
+private double getDistance(Location a, location b) {
+	return Math.sqrt(Math.pow((a.x - b.x),2) + Math.pow((a.y - b.y),2) + Math.pow((a.z - b.z),2));
+}
+
 
 
 2. Fibonaci那题目,没记错的话应当是求和吧。 [1, 1, 2, 3, 5, ...]  sum(1) =1, sum(2)=1+1, sum(3)=1+1+2, ....
@@ -253,7 +270,17 @@ public class Solution {
     }
 }
 
+/*
+pool  BGRR
+guess RGYY
 
+int[] = new int[4];
+int l = 0, c = 0;
+if l and c both match, l ++;
+else {
+	int[i]++;
+}
+*/
 9. A solution consists of four balls from a set of four different colors. The user tries to guess the solution.
 If they guess the right color for the right spot, record it as being in the correct 'Location'. 
 If it's the right color, but the wrong spot, record it as a correct 'Color'. 
@@ -411,7 +438,12 @@ public int reverseBits(int n) {
 }
 
 21. reverse words in a string， leetcode原题。我当时用没有额外空间的方法做了一下，小哥说你这个two pass能不能优化?
-
+/*
+Given s = "the     sky  is blue",
+return "blue is sky the".
+1. consice.
+2.
+*/
 public class Solution {
     public String reverseWords(String s) {
         s = s.trim();
@@ -426,6 +458,44 @@ public class Solution {
             }
         }
         return sb.toString();
+    }
+}
+// better solution
+public class Solution {
+    public String reverseWords(String s) {
+    	char[] a = s.toCharArray();
+    	int start = 0, end = a.length - 1;
+    	while (start <= end && a[start] == ' ') start++;
+    	while (start <= end && a[end] == ' ') end--;
+        if (start > end) return "";
+    	int i = start, j = start, k = start;
+    	while (i <= end) {
+    		// make sure i is point to the start of a string
+    		while (i <= end && a[i] == ' ') i++;
+    		j = i;
+    		// j is point to end of the string
+    		while (j <= end && a[j] != ' ') j++;
+    		// reverse sting from i to j - 1
+    		System.out.println("1 reverting " + i + " with " + (j - 1) );
+    		reverse(a, i ,j - 1);
+    		while (i < j ) {
+    			a[k++] = a[i++];
+    		}
+    	    if (j < end)   a[k++] = ' ';
+    	}
+    	System.out.println("2 reverting " + start + " with " + (k - 1));
+    	reverse(a, start, k - 1 );
+    	return new String(a, start, k - start);
+    }
+    
+    private void reverse(char[] a, int i, int j ) {
+    	while ( i < j )  {
+    		char t = a[i];
+    		a[i] = a[j];
+    		a[j] = t;
+    		i++;
+    		j--;
+    	}
     }
 }
 
@@ -904,7 +974,8 @@ BST traverse, 要从左到右竖着输出， vertical print
 
 
 
-第二题是写扫雷的OnClick方法，不用考虑UI相关的东西，输入是一个已经把雷埋好数字标好的board。他说主要想看的是你点了一个数字为0的格子时候如何把周围一圈都reveal然后如何继续把是0的格子给处理下去。 
+第二题是写扫雷的OnClick方法，不用考虑UI相关的东西，输入是一个已经把雷埋好数字标好的board。
+他说主要想看的是你点了一个数字为0的格子时候如何把周围一圈都reveal然后如何继续把是0的格子给处理下去。 
 
 
 第二轮：美国人，第一题是要求用递归的方式来求一个string的长度，不允许用任何求length相关的libary method。我用substring的方式做出来了。写完后follow up是说我substring复杂度太高，因为要把所有char都copy一遍，所以要我想一个O(n)的。想死都没想出来最后他说你可以用exception的try-catch呀－ －我当时就听醉了。
