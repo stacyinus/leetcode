@@ -1,0 +1,51 @@
+1. Reverse a UTF-8 string  
+
+
+2. Given a collection of meetings (each has a start and end time), 
+see whether if all meetings can be held in the meeting hall (i.e. check whether any meetings have overlapping time slots).
+
+Follow-up: See how many meeting rooms are needed to hold all the meetings if there are indeed overlaps.  
+
+
+3. The system design question was about designing a caching scheme for a web application.  
+
+Map<String, Object > 
+get(curtTime, key). Get the key's value, return 2147483647 if key does not exist.
+set(curtTime, key, value, ttl). Set the key-value pair in memcache with a time to live (ttl). 
+The key will be valid from curtTime to curtTime + ttl - 1 and it will be expired after ttl seconds. if ttl is 0, the key lives forever until out of memory.
+delete(curtTime, key). Delete the key.
+incr(curtTime, key, delta). Increase the key's value by delta return the new value. Return 2147483647 if key does not exist.
+decr(curtTime, key, delta). Decrease the key's value by delta return the new value. Return 2147483647 if key does not exist.
+It's guaranteed that the input is given with increasingcurtTime.
+4. Find all pairs that have a specified difference among a set of n integers.  (two sum)
+
+
+5. Given a integer list and a range (min and max), find out if there is a combination of integers that add up to a number within the given range. 
+
+You can use any integer as many times as you like. You don't have to find out how many such combinations are possible / enumerate all of them. 
+
+Just return true or false.  
+
+
+6. You are given a magazine and a ransom note. Write an algorithm to determine if the magazine contains sufficient characters to cut out and 
+
+construct the ransom note
+
+7. Design interview with a tech lead, who gave me the option of choosing to design one of two systems. The first system was more about 
+
+structuring database tables, and the second (which I ended up choosing) was more about custom classes and algorithms. This didn't involve any 
+
+coding; I just laid out the data structures and methods required to implement the system.
+
+
+8. Given an input list of words and a string, output every different set of words that you can find in the string from the given words. For 
+
+example,
+input: word_list = ['dog', 'cats', 'sand', 'cat', 'and'], string = "catsanddog"
+output: [ ['cat', 'sand', 'dog'], ['cats', 'and', 'dog'] ]  
+
+
+9. Given a string and a dictionary of words, find all of the possible partitions of words within the string.  
+
+
+10.Given an integer as a string, convert it to an int without using any casting  
