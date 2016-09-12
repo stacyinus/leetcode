@@ -48,6 +48,23 @@ private double getDistance(Location a, location b) {
 做完，又问这是最优的么？又说DP的数组可以用滚动数组，开常数空间就好了，他说对，然后又问时间上能优化么？
 答可以把dp数组设成全局的，每次调用sum（）这个函数算和的时候，直接去fib（）这个函数里面找就完了。他没再问优化的事情了。
 
+public int fib(int i) {
+    if (i <= 0) return 0;
+    if (i == 1 || i == 2) return 1;
+    int[] fibs = new int[2];
+    fibs[0] = 0;
+    fibs[1] = 1;//f[2] = 0 + 1;f 
+    int j = 2, sum = 1;
+    while (j <= i) {
+        int tmp = fibs[1];
+        fibs[1] = fibs[0] + fibs[1];
+        fibs[0] = tmp;
+        sum += fibs[1];
+        j++;
+    }
+    return sum;
+}
+
 
 public int fib(int i) {
 	if (i <= 0) return 0;
@@ -213,9 +230,44 @@ public static boolean isSame(char[][] matrix) {
 
 
 7. Median of Two sorted Arrays https://leetcode.com/problems/median-of-two-sorted-arrays/
+/*   2 3
+1,2, 3,5  4 i -  
+4,6
 
+1,2, 3,5,6    
+2nd 2 < 6 ===> 1,2, 
+1st 3 < 4 ===> 1,2,3
 
+-----4th largest element in the array
 
+1,2,2
+1,2,3,3,4 -- 3
+
+1,1,2,2,2,3,3,4
+
+*/
+
+class Solution {
+
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int l = nums1.length + nums2.length;
+        if (l % 2 == 1 )
+            return findKthLargest(l/2 + 1, nums1, 0, nums2, 0);
+        return (findKthLargest(l/2 + 1, nums1, 0, nums2, 0) + findKthLargest(l/2, nums1, 0, nums2, 0))/2;
+    }
+
+    public double findKthLargest(int l, int[] nums1, int i, int[] nums2, int j) {
+        if (nums1.length - i > nums2.length - j) return findKthLargest(l, nums2, j, nums1, i);
+        if (i >= nums1.length) return nums2[j + l - 1];
+        if (l == 1) return (double) Math.min(nums1[i], nums2[j]);
+        int l1 = l/2;           
+        if (l1 > nums1.length - i) l1 = nums1.length - i;
+        int l2 = l - l1;     
+        if (nums1[i + l1 - 1] > nums2[j + l2 - 1]) return findKthLargest(l - l2, nums1, i, nums2, j + l2);
+        return findKthLargest(l - l1, nums1, i + l1, nums2, j);
+    }
+
+}
 
 8. Product of Array Except Self https://leetcode.com/problems/product-of-array-except-self/
 /*
@@ -329,12 +381,167 @@ public class Solution {
 }
 
 13. Factorial Trailing Zeroes https://leetcode.com/problems/factorial-trailing-zeroes/
+/*
+ 1! = 1
+ 2! = 2
+ 3! = 6
+ 4! = 24 
+ 5! = 24 * 5 =  120 -----1
+ 6! = 120 * 6= 720
+ 7! = 720 * 7 
+ 8! = 720 * 56 =
+ 9! = 720 * 56 * 9 = 
+ 10! = 720 * 56 * 9 * 10------2
+ 15! = 3
+ 20! = 4
+ 25! = 5 * 5 * 10 = 5 + 1
+ 30! = 3 * 10 = 7
+ 35! = 8
+ 40  = 9 
+ 45 = 10
+ 50 = 5 * 10 = 
+ 100! = 5 * 5 * 4 = 20
+
+*/
+
+public class Solution {
+    public int trailingZeroes(int n) {
+        int num = 0;
+        while (n / 5 > 0) {
+            num += n / 5;
+            n /=5;
+        }    
+        return num;
+    }
+}
 
 14. Given a 2^31 x 2^31 tic tac toe board, describe how you would store the state of the game to check if there is a winner.
 	https://www.careercup.com/question?id=4871704801181696
 
-15. Maximum Subarray https://leetcode.com/problems/maximum-subarray/
+Design a Tic-tac-toe game that is played between two players on a n x n grid.
 
+You may assume the following rules:
+
+A move is guaranteed to be valid and is placed on an empty block.
+Once a winning condition is reached, no more moves is allowed.
+A player who succeeds in placing n of their marks in a horizontal, vertical, or diagonal row wins the game.
+Example:
+Given n = 3, assume that player 1 is "X" and player 2 is "O" in the board.
+
+TicTacToe toe = new TicTacToe(3);
+
+toe.move(0, 0, 1); -> Returns 0 (no one wins)
+|X| | |
+| | | | // Player 1 makes a move at (0, 0).
+| | | |
+
+toe.move(0, 2, 2); -> Returns 0 (no one wins)
+|X| |O|
+| | | | // Player 2 makes a move at (0, 2).
+| | | |
+
+toe.move(2, 2, 1); -> Returns 0 (no one wins)
+|X| |O|
+| | | | // Player 1 makes a move at (2, 2).
+| | |X|
+
+toe.move(1, 1, 2); -> Returns 0 (no one wins)
+|X| |O|
+| |O| | // Player 2 makes a move at (1, 1).
+| | |X|
+
+toe.move(2, 0, 1); -> Returns 0 (no one wins)
+|X| |O|
+| |O| | // Player 1 makes a move at (2, 0).
+|X| |X|
+
+toe.move(1, 0, 2); -> Returns 0 (no one wins)
+|X| |O|
+|O|O| | // Player 2 makes a move at (1, 0).
+|X| |X|
+
+toe.move(2, 1, 1); -> Returns 1 (player 1 wins)
+|X| |O|
+|O|O| | // Player 1 makes a move at (2, 1).
+|X|X|X|
+Follow up:
+Could you do better than O(n2) per move() operation?
+
+Hint:
+
+Could you trade extra space such that move() operation can be done in O(1)?
+You need two arrays: int rows[n], int cols[n], plus two variables: diagonal, anti_diagonal.
+0,0,
+1,1,
+2,2,
+3,3,
+0,3
+1,2
+2,1
+3,0
+class TicTacToe {
+    char[][] toe;
+    Set<Integer> player1Row;
+    Set<Integer> player1Col;
+    int player1Diagonal;
+    int player1AntiDiagonal;
+    Set<Integer> player2Row;
+    Set<Integer> player2Col;
+    int player2Diagonal;
+    int player2AntiDiagonal;
+
+    public TicTacToe(int n) {
+        toe = new char[n][n];
+        player1Row = new HashSet<Integer>();
+        player2Row = new HashSet<Integer>();
+        player1Col = new HashSet<Integer>();
+        player2Col = new HashSet<Integer>();
+    }
+
+    public int move(int x, int y, int player) {
+        if (toe[x][y] != '') return 0;
+        if (player == 1) {
+            toe[x][y] = 'x';
+            player1Row.add(x);
+            player1Col.add(y);
+            if (x == y)  player1Diagonal++;
+            if (x + y == n - 1) player1AntiDiagonal++;
+            if (player1Row.size() == n || player1Col.size() == n || player1Diagonal == n || player1AntiDiagonal == n) return 1; 
+        }
+        else {
+            toe[x][y] = 'o';
+            player2Row.add(x);
+            player2Col.add(y);
+            if (x == y)  player2Diagonal++;
+            if (x + y == n - 1) player2AntiDiagonal++;
+            if (player2Row.size() == n || player2Col.size() == n || player2Diagonal == n || player2AntiDiagonal == n) return 2; 
+        }
+        return 0;
+    }
+
+}    
+
+15. Maximum Subarray https://leetcode.com/problems/maximum-subarray/
+/*
+
+Find the contiguous subarray within an array (containing at least one number) which has the largest sum.
+
+For example, given the array [-2,1,-3,4,-1,2,1,-5,4],
+the contiguous subarray [4,-1,2,1] has the largest sum = 6.
+*/
+
+public class Solution {
+    public int maxSubArray(int[] nums) {
+        int[] sums = new int[nusm.length];
+        sums[0] = nums[0];
+        int max = nums[0];
+        for (int i = 1 ; i < nums.length; i ++) {
+            sums[i] = Math.max(nums[i], sums[i - 1] + nums[i]);
+            max = Math.max(max, sums[i]);
+        }
+        return max;
+    }
+}
 
 16. Find all subsets of a set https://leetcode.com/problems/subsets/
 
@@ -399,14 +606,12 @@ public class Solution {
 
 public class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null || p == null || q == null) return null;
-        if (root == p || root == q) return root;
+        if (root == null || p == null || q == null || root == p || root == q) return root;
         TreeNode left = lowestCommonAncestor(root.left, p, q);
-        TreeNode right = lowestCommonAncestor(root.right, p , q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
         if (left != null && right != null) return root;
-        if (left != null) return left;
-        if (right != null) return right;
-        return null;
+        if (left == null && right == null) return null;
+        return left != null? left : right;
     }
 }
 
@@ -430,7 +635,9 @@ public int reverse(int x) {
 
 
 21. reverse words in a string， leetcode原题。我当时用没有额外空间的方法做了一下，小哥说你这个two pass能不能优化?
-
+Solution 1: using string.split 
+Solution 2: 2 pass, revert the entire string , and for each individal string, revert again.
+Solution 3: 1 pass. 
 public class Solution {
     public String reverseWords(String s) {
         s = s.trim();
@@ -448,23 +655,9 @@ public class Solution {
     }
 }
 
-public class Solution {
-    public String reverseWords(String s) {
-        s = s.trim();
-        String[] array = s.split(" ");
-        StringBuilder sb = new StringBuilder();
-        for (int i = array.length - 1; i >= 0 ; i --) {
-            if (array[i].length() > 0){
-                sb.append(array[i]);
-                if (i > 0) {
-                    sb.append(" ");   
-                }
-            }
-        }
-        return sb.toString();
-    }
-}
-// better solution
+/* 
+    better solution:
+*/
 public class Solution {
     public String reverseWords(String s) {
     	char[] a = s.toCharArray();
@@ -505,27 +698,6 @@ public class Solution {
 
 22. 给你一个graph每一个node都是一个facebook的user，然后找出这个user的两度关系以内所有和他last name一样的人的email address
 
-public List<String> getEmail(Node node){
-        List<String> result = new ArrayList<String>();
-        Queue<Node> queue = new Queue<Node>();
-        queue.add(node);
-        int count = 2;
-        while(!queue.isEmpty()){
-                Node curr = queue.poll();
-                for(Node neighbor : neighbors){
-                        if(neighbor.user != node && neighbor.user.lastname.equals(curr.lastname)){
-                                result.add(neighbor.email);
-                        }
-                        queue.add(neighbor);
-                }
-                count--;
-                if(count == 0){
-                        break;
-                }
-        }
-        return result;
-}
-
 class Node {
         User user;
         String email;
@@ -545,48 +717,28 @@ class User {
         }
 }
 
-?23. Find the Least Common Ancestor given two nodes of a binary tree. 
-The nodes each have a reference to their parent node and you do not have the root node of the tree
-
-https://www.careercup.com/question?id=56769
-public Node LCA(node A, node B){
-        if(height(A) > height(B)){
-                return LCA(B, A);
+public void List<String> getEmail(Node node) {
+    List<String> emails = new ArrayList<String>();
+    int count = 0;
+    Queue<Node> q = new LinkedList<Node>();
+    q.add(node);
+    while (!q.isEmpty()) {
+        int size = q.size();
+        for (int i = 0; i < size; i ++) {
+            Node n = q.pop();
+            if (count < 2) {
+                q.addAll(n.neighbors);
+            }            
+            if (n.user.lastname.equals(node.user.lastname)) {
+                emails.add(n.email);
+            }
         }
-        node t1 = A;
-        node t2 = B;
-        while(t1 != t2){
-                if(t2.parent == null){
-                        if(t1.parent == null){
-                                return null;
-                        }else{
-                                t1 = t1.parent;
-                        }
-                }else{
-                        t2 = t2.parent;
-                }
-        }
-        return t1;
+        count++;
+    }
+    return emails;
 }
 
-private int height(node A){
-        int count = 0;
-        while(A.parent != null){
-                count++;
-                A = A.parent;
-        }
-        return count;
-}
-
-class Node {
-        int val;
-        Node parent;
-        Node(int x){
-                val = x;
-        }
-}
-
-24. Determine if two rectangular are overlapped
+23. Determine if two rectangular are overlapped
 //check两个rectangle是否重叠
 // 问面试官如果边重合算不算重叠。
 public class Solution {
@@ -607,7 +759,7 @@ public class Solution {
         }	
 }
 
-25. First non-repeat character in a given string
+24. First non-repeat character in a given string
 Brent Elphick
 http://javarevisited.blogspot.com/n14/03/3-ways-to-find-first-non-repeated-character-String-programming-problem.html
 /*
@@ -618,7 +770,12 @@ http://javarevisited.blogspot.com/n14/03/3-ways-to-find-first-non-repeated-chara
 	abc
 
 */
-//two pass, and O(n) space
+
+/*  
+    two pass, and O(n) space: 
+    this is not very efficient when the input string is huge, and you have to loop the 
+    entire string twice
+*/
 public char getChar(String s) {
 	char[] array = s.toCharArray();
 	HashMap<Character, Integer> map = new HashMap<Character, Integer>();
@@ -635,7 +792,10 @@ public char getChar(String s) {
 	}
 	return '';
 }
-//one pass.
+/* 
+    one pass:
+    this is better, 
+*/
 public char getChar(String s) {
 	char[] array = s.toCharArray();
 	HashSet<Character> set = new HashSet<Character>();
@@ -651,12 +811,33 @@ public char getChar(String s) {
 	}
 	return list.size() == 0? '' :list.get(0);
 }
+//LinkedHashMap
+public char getChar(String s) {
+    char[] array = s.toCharArray();
+    LinkedHashMap<Character, Integer> map = new LinkedHashMap<Character, Integer>();
+    for (int i = 0 ; i < array.length; i ++) {
+        if (map.containsKey(array[i])) {
+            map.put(array[i], map.get(array[i]) + 1);
+        }
+        else {
+            map.put(array[i], 1);
+        }
+    }
+    for (Map.Entry entry : map.entrySet()) {
+        if (entry.getValue() == 1) {
+            return entry.getKey();
+        }
+    }
+    return '';
+}
 
 
-26. Implement a function for blackjack that returns the score of your hand
+25. Implement a function for blackjack that returns the score of your hand
 public int score(Hand hand){
         int score = 0;
-        for(Card currentCard : hand){
+        int countAce = 0;
+        for(int i = 0; i < hand.cards.size() && score <= 21; i++){
+                Card currentCard = hand.cards.get(i);
                 switch(currentCard.value){
                         case value.Two:
                                 score += 2;
@@ -690,6 +871,7 @@ public int score(Hand hand){
                                 break;
                         case value.Ace:
                                 score += 11;
+                                countAce++;
                                 break;
 
                 }
@@ -697,19 +879,81 @@ public int score(Hand hand){
         // after evaluating with 11 for each ace, if score has busted,
         //then change each ace value from 11 to 1
         if(score > 21){
-                for(Card currentAcecard : hand){
-                        if(score < 21){
-                                break;
-                        }
-                        if(currentAcecard.val == value.Ace){
-                                score -= 10;
-                        }
-                }
+            for (int i = 0; i < countAce; i ++) {
+                if (score < 21) break;
+                score -= 10;
+            }
         }
         return score;
 }
 
-??27. 给你一个log file，每一行都有一条记录，包括三个数据：访问时间，user id，访问的page id。然后让你找出访问次数最多的10组3个连续访问page。就是如果user A访问了page 1 2 3，这样 1 2 3 就算被访问了一次。不用考虑时间间隔所以我昨天访问1，今天2，后天3，也能算作连续访问page。我的做法是先用map统计了所有用户的按时间顺序排列好的访问page，然后三个三个加到另一个map里面去count(我用最土的办法 id1_id2_id3 下划线连接)，最后用minHeap找出前10个
+26. 给你一个log file，每一行都有一条记录，包括三个数据：访问时间，user id，访问的page id。然后让你找出访问次数最多的10组3个连续访问page。
+就是如果user A访问了page 1 2 3，这样 1 2 3 就算被访问了一次。不用考虑时间间隔所以我昨天访问1，今天2，后天3，也能算作连续访问page。
+我的做法是先用map统计了所有用户的按时间顺序排列好的访问page，然后三个三个加到另一个map里面去count(我用最土的办法 id1_id2_id3 下划线连接)，
+最后用minHeap找出前10个
+
+ask: does order matter? eg, if user A visit page 1, 2, 3, and user B vist page 3, 2, 1, doest 1,2,3 the same with 3,2,1
+     if user visit 1,2,1  or 1,1,1, does this count as 3 consecutive pages?
+     if the log is sorted by time stamp?
+for each user, 
+user a : page id 
+// my solution
+public List<List<Integer>> maxFrequencyPage(List<Log> logFile){
+    Collections.sort(logFile, new LogComparator());
+    Map<Integer, List<Log>> userIdToLogfiles = new Hashmap<Integer>, List<Log>> ();
+    Map<String, Integer> count = new Map<String, Integer> ();
+    for (Log log : logFile) {
+        List<Log> list = null;
+        if (map.containsKey(log.userId)) {
+            list = map.get(log.userId);
+        }
+        else {
+            list = new ArrayList<Log>();
+        }
+        list.add(log);
+        if (list.size() >= 3) {
+            int i  = list.size() - 1;
+            String key = list.get(i - 2).pageId + "_" + list.get(i - 1).pageId + "_" + list.get(i).pageId;
+            if (count.containsKey()) {
+                count.put(key, count.get(key) + 1);
+            }
+            else {
+                count.put(key, 1);
+            }
+        }
+        Set<Map.Entry<String, Integer>> set = count.entrySet(); 
+        Collections.sort(set, new EntryComparator());
+        int i = 0 ;
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        for (Entry<String, Integer> entry : set) {
+            if (i == 10) break;
+            result.add(turnStringToListOfPageId(entry));
+        }
+    }
+    return result;
+
+}
+private List<Integer> turnStringToListOfPageId(String s) {
+    String[] array = s.split("_");
+    List<Integer> list = new ArrayList<Integer>();
+    for (String pageId : array) {
+        list.add(Integer.parseInt(pageId));
+    }
+    return list;
+}
+class EntryComparator implements Comparator<Map.Entry<String, Integer>> {
+    @override 
+    public int compare(Map.Entry<String, Integer> entry1, Map.Entry<String, Integer> entry2) {
+        return entry1.getValue() - entry2.getValue();
+    }
+}
+class LogComparator implements Comparator<Log> {
+    @override
+    public int compare(Log l1, Log l2) {
+        return l1.time - l2.time;
+    }
+}
+/* this is example code provided by others
 public int[] maxFrequencyPage(List<Log> logFile){
         int len = logFile.size();
         //userId 对应一个list，每个list是个hashmap<pageId_list ： 个数>
@@ -759,7 +1003,7 @@ public int[] maxFrequencyPage(List<Log> logFile){
         }
         return result;
 }
-
+*/
 class Log{
         date time;
         int userId;
@@ -771,20 +1015,31 @@ class Log{
         }
 }
 
-28. PathSum
-public boolean hasSum(TreeNode root, int sum) {
-	if (root == null) {
-		return false;
-	}
-	if (root.left == null && root.right == null) {
-		return root.val == sum;
-	}
-	if (root.left == null) return hasSum(root.right, sum - root.val);
-	if (root.right == null) return hasSum(root.left, sum - root.val);
-	return hasSum(root.right, sum - root.val) || hasSum(root.left, sum - root.val);
+27. PathSum  https://leetcode.com/problems/path-sum/
 
+public class Solution {
+    public boolean hasPathSum(TreeNode root, int sum) {
+        if (root == null) return false;
+        if (root.left == null && root.right == null && root.val == sum) return true;
+        return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
+    }
 }
-
+//follow up 1: from root to any node, not necessarily leaf node 
+public class Solution {
+    public boolean hasPathSum(TreeNode root, int sum) {
+        if (root == null) return false;
+        if (root.val == sum) return true;
+        return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
+    }
+}
+//follow up 2: from any node to leaf.
+public class Solution {
+    public boolean hasPathSum(TreeNode root, int sum) {
+        if (root == null) return false;
+        if (root.left == null && root.right == null && root.val == sum) return true;
+        return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
+    }
+}
 29. PathSumII:https://leetcode.com/problems/path-sum-ii/
 follow up 1.假设不用以leaf node为path的终点，返回所有path
 follow up 2.假设path不只是从root开始，从任意一个节点开始都可以???
