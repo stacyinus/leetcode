@@ -20,9 +20,39 @@ The palindromes are ["dcbaabcd", "abcddcba", "slls", "llssssll"]
 	"lls"
 	"abcd" , "dcba"
 	"sssll"
+	
+
 */
 public class Solution {
+    
+    TrieNode {
+    	TrieNode[] next;
+    	int i ;
+
+    	public TrieNode () {
+    		next = new TrieNode[256];
+    	}
+
+    	public void insert (String s) {
+    		if (s == null || s.length() == 0) {
+    			
+    		} 
+    		char c = s.charAt(0);
+    	}
+
+    	public boolean search(String s) {
+
+    	}
+    }
+
+    Trie {
+    	TrieNode root;
+
+    }
     public List<List<Integer>> palindromePairs(String[] words) {
         
     }
+
+
+    public boolean 
 }

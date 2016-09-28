@@ -1041,8 +1041,6 @@ public class Solution {
     }
 }
 29. PathSumII:https://leetcode.com/problems/path-sum-ii/
-follow up 1.假设不用以leaf node为path的终点，返回所有path
-follow up 2.假设path不只是从root开始，从任意一个节点开始都可以???
 public class Solution {
     public List<List<Integer>> pathSum(TreeNode root, int sum) {
         List<List<Integer>> result = new ArrayList<List<Integer>>();
@@ -1068,7 +1066,60 @@ public class Solution {
     }
 }
 
-30. 第二个是给一个n*n的matrix，点代表通＃号代表不通，从左上角走到右下角，能不能找到一条可行的路径。这里和lc里面path find不太一样，
+follow up 1.假设不用以leaf node为path的终点，返回所有path
+public class Solution {
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if (root == null) return result;
+        helper(result, new ArrayList<Integer>(), root, sum);
+        return result;
+    }
+    private void helper(List<List<Integer>> result, List<Integer> list, TreeNode root, int sum) {
+        list.add(root.val);
+        if (sum == root.val) {              // here is the difference
+            result.add(new ArrayList<Integer>(list));
+        }       
+        if (root.left != null) {
+            helper(result, list, root.left, sum - root.val);
+            list.remove(list.size() - 1);
+        }
+        if (root.right != null) {
+            helper(result, list, root.right, sum - root.val);
+            list.remove(list.size() - 1);
+        }
+        
+    }
+}
+follow up 2.假设path不只是从root开始，从任意一个节点开始都可以???
+/*
+              5
+             / \
+            4   8
+           /   / \
+          11  13  4
+         /  \    / \
+        7    2  5   1
+
+*/
+public class Solution {
+    public List<List<Integer>> pathSum(TreeNode root, int sum) { 
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if (root == null) return result;
+        Stack<Integer> stack = new Stack<Integer>();
+        stack.push(root);
+        while (!stack.isEmpty() || root != null) {
+
+        }
+
+        return result;
+    }
+    private int helper(TreeNode root, List<Integer> list) {
+
+
+    }
+}
+
+28. 第二个是给一个n*n的matrix，点代表通＃号代表不通，从左上角走到右下角，能不能找到一条可行的路径。这里和lc里面path find不太一样，
 上下左右只要通的话都是可以走的，并且不是计算多少条路径，而是能不能至少有一条路径。其实还是蛮简单的用bfs即可，
 只是这里面试官不让用递归，说是数据量大容易栈溢出，
 于是要我用栈来实现，我中间写错一个小地方还是搞出来了，然后就问我要怎么给这个例子写单元测试，我以前根本没搞过这个，
@@ -1086,7 +1137,6 @@ public class Solution {
 			  [0,1] ---> [1,1] -- > [1,2] 		 
 */
 //iterative
-
 public boolean findPath(char[][] m, int n) {
 	if (m[0][0] == '#' || m[n - 1][n - 1] == '#') return false;
 	Stack<Node> stack = new Stack<Node>();
@@ -1137,8 +1187,7 @@ public boolean find(char[][] m, int i, int j , boolean[][] visited) {
 	return found;
 } 
 
-n. ?????
-reverseBitValue： 1010000 --> 0000101。 这题没见过啊，面经里都没有啊~~~想了想，只能用最navie的方法，说每次右移0到31位，并且将移位完的数跟1这个数做&。 这样看每一位是1还是0，赋给一个变量，然后每次再左移32 - i 位， 再加起来。最后返回。 说完思路，他说他没听懂， 但是他感觉是对的，我擦擦擦擦，都没听懂，还能感觉，这么安慰我。又让我问了问题，然后挂了
+29. reverseBitValue： 1010000 --> 0000101。 这题没见过啊，面经里都没有啊~~~想了想，只能用最navie的方法，说每次右移0到31位，并且将移位完的数跟1这个数做&。 这样看每一位是1还是0，赋给一个变量，然后每次再左移32 - i 位， 再加起来。最后返回。 说完思路，他说他没听懂， 但是他感觉是对的，我擦擦擦擦，都没听懂，还能感觉，这么安慰我。又让我问了问题，然后挂了
     // you need treat n as an unsigned value
 public int reverseBits(int n) {        
     /* 
@@ -1150,117 +1199,298 @@ public int reverseBits(int n) {
 
 
 }
-Triangle
+
+30.Triangle
 https://leetcode.com/problems/triangle/
 
-Pascal's Triangle
+Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.
+
+For example, given the following triangle
+[
+     [2],    2
+    [3,4],   5, 6
+   [6,5,7],  9, 5
+  [4,1,8,3]  1: 0 , 1
+             2: 1,  2
+]
+
+
+The minimum path sum from top to bottom is 11 (i.e., 2 + 3 + 5 + 1 = 11).
+
+public class Solution {
+    public int minimumTotal(List<List<Integer>> t) {
+        int min = Integer.MAX_VALUE;
+        for (int i = 1; i < t.size() ; i++) {
+            List<Integer> pre = t.get(i - 1);
+            List<Integer> cur = t.get(i);
+            for (int j = 0; j < cur.size(); j ++) {
+                if (j == 0) {
+                    cur.set(j, cur.get(j) + pre.get(j));
+                }
+                else if (j == cur.size() - 1) {
+                    cur.set(j, cur.get(j) + pre.get(j - 1));
+                }
+                else {
+                    cur.set(j, Math.min(pre.get(j - 1), pre.get(j) + cur.get(j));
+                }
+                if (i == t.size() - 1) {
+                    min = Math.min(cur.get(j), min);
+                }
+            }
+        }
+        return min;
+    }
+}    
+
+31.Pascal's Triangle
 https://leetcode.com/problems/pascals-triangle/
 
-Pascal's Triangle II
-https://leetcode.com/problems/pascals-triangle-ii/
 
-Implement Trie (Prefix Tree)
+32.Pascal's Triangle II
+https://leetcode.com/problems/pascals-triangle-ii/
+public class Solution {
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> list = new ArrayList<Integer> ();
+        if (rowIndex < 0) return list;
+        list.add(1);
+        for (int i = 1; i <= rowIndex; i ++) {
+            //1,i-1
+            int pre = list.get(0);
+            for (int j = 1; j < i; j++) {
+                int tmp = list.get(j);
+                list.set(j, list.get(j) + pre);
+                pre = tmp;
+            }
+            list.add(1);
+        }
+        return list;
+    }
+}
+
+33.Implement Trie (Prefix Tree)
 https://leetcode.com/problems/implement-trie-prefix-tree/
 
+class TrieNode {
+    // Initialize your data structure here.
+    boolean isword;
+    Map<Character, TrieNode> map;
+    public TrieNode() {
+        map = new HashMap<Character, TrieNode>();
+    }
+    
+    public void insert(String word) {
+        if (word == null) return;
+        if (word.length() == 0) {
+            isword = true;
+            return;
+        }
+        char c = word.charAt(0);
+        if (!map.containsKey(c)) {
+            map.put(c , new TrieNode());
+        }
+        TrieNode node = map.get(c);
+        node.insert(word.substring(1));
+    }
+    public boolean search(String word) {
+        if (word == null) return false;
+        if (word.length() == 0) return isword;
+        char c = word.charAt(0);
+        if(!map.containsKey(c)) return false;
+        TrieNode node = map.get(c);
+        return node.search(word.substring(1));
+    }
+    
+    public boolean startsWith(String prefix) {
+        if (prefix == null) return false;
+        if (prefix.length() == 0) return true;
+        char c = prefix.charAt(0);
+        if(!map.containsKey(c)) return false;
+        TrieNode node = map.get(c);
+        return node.startsWith(prefix.substring(1));        
+    }
+    
+}
 
+public class Trie {
+    private TrieNode root;
 
+    public Trie() {
+        root = new TrieNode();
+    }
 
-Validate Binary Search Tree
+    // Inserts a word into the trie.
+    public void insert(String word) {
+        root.insert(word);
+    }
+
+    // Returns if the word is in the trie.
+    public boolean search(String word) {
+        return root.search(word);
+    }
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    public boolean startsWith(String prefix) {
+        return root.startsWith(prefix);
+    }
+}
+
+34.Validate Binary Search Tree
 https://leetcode.com/problems/validate-binary-search-tree/
 
-Merge Two Sorted Lists
+35.Merge Two Sorted Lists
 https://leetcode.com/problems/merge-two-sorted-lists/
 
-Merge k Sorted Lists
+36.Merge k Sorted Lists
 https://leetcode.com/problems/merge-k-sorted-lists/
 
-LRU Cache
+37.LRU Cache
 https://leetcode.com/problems/lru-cache/
 
-Find Median from Data Stream
+38.Find Median from Data Stream
 https://leetcode.com/problems/find-median-from-data-stream/
 
 
 
-BST traverse, 要从左到右竖着输出， vertical print
+39.BST traverse, 要从左到右竖着输出， vertical print
 
 public List<List<Integer>> traverse(TreeNode root) {
-	List<List<Integer>> result = new ArrayList<List<Integer>>();
-	if (root == null) return result;
-
-}
-private void helper(TreeNode root, List<List<Integer>> result, List<Integer> list) {
-	if (root.left == null) {
-		list.add(root.val);
-		if (root.right != null) {
-			helper(root.right, result, list);
-		}
-		else {
-			result.add(list);
-		}
-	}
-	else {
-		helper(root.left, result);
-
-	}
-	
 
 }
 
-判断一个node 是否是另一个 node 的 child 很简单一个 DFS 搞定
-?????????????????????????????
+
+40.判断一个node 是否是另一个 node 的 child 很简单一个 DFS 搞定
 
 public boolean isChild(TreeNode parent, TreeNode child) {
 	
 }
-word ladder
+40.word ladder
+https://leetcode.com/problems/word-ladder/
+
+public class Solution {
+    //Version  2 : 2 sides BFS , this is a faster solution
+    public int ladderLength(String start, String end, Set<String> dict) {
+        // write your code here
+        Set<String> s1 = new HashSet<String>();
+        Set<String> s2 = new HashSet<String>();
+        if(start.equals(end))
+            return 1;
+        s1.add(start);
+        s2.add(end);
+        return helper(s1,s2,dict,1);
+    }
+    
+    private int helper( Set<String> s1,  Set<String> s2,  Set<String> dict, int len){
+        if(s1.isEmpty()||s2.isEmpty())
+            return 0;
+        Set<String> tmp = new HashSet<String>();
+            for(String s: s1){
+                for(int i = 0; i < s.length(); i++){
+                    char[] array = s.toCharArray();
+                    for(char c = 'a';c<'z';c++){
+                        if(array[i] == c)
+                            continue;
+                        array[i] = c;
+                        String stmp = new String(array);
+                        if(s2.contains(stmp))
+                            return len+1;
+                        if(dict.contains(stmp)){
+                            dict.remove(stmp);
+                            tmp.add(stmp);    
+                        }
+                    }    
+                }
+            }
+            return helper(s2, tmp, dict, len+1);
+    }
+
+    //Version 1 : BFS
+    public int ladderLength(String beginWord, String endWord, Set<String> wordList) {
+        int len = 1;
+        Queue<String> q = new LinkedList<String>();
+        q.offer(beginWord);
+        wordList.remove(beginWord);
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int k = 0; k < size; k++){
+                String str = q.poll();
+                for(int i = 0; i < str. length() ;i++){
+                    for(char c = 'a' ; c < 'z'; c+=1){
+                        if(str.charAt(i) == c) continue;
+                        String tmp = replace(str, i, c);
+                        if(endWord.equals(tmp))
+                            return len + 1;
+                        if(wordList.contains(tmp)){
+                            q.offer(tmp);
+                            wordList.remove(tmp);
+                        }
+                    }
+                }
+            }
+            len += 1;   
+        }
+        return 0;
+    }
+
+    private String replace(String str, int pos, char c){
+        char[] a = str.toCharArray();
+        a[pos] = c;
+        return new String(a);
+    }
+}
+
+41.zigzag iterator
+
+/*
+Given two 1d vectors, implement an iterator to return their elements alternately.
+For example, given two 1d vectors:
+v1 = [1, 2]
+v2 = [3, 4, 5, 6]
+By calling next repeatedly until hasNext returns false, the order of elements returned by next should be: [1, 3, 2, 4, 5, 6].
+Follow up: What if you are given k 1d vectors? How well can your code be extended to such cases?
+*/
+
+public class ZigzagIterator {
+    List<List<Integer>> lists;
+    int indexOfLists;
+    int[] index;
+    int numOfElementsLeft;
+
+    public ZigzagIterator(List<List<Integer>> lists){
+        this.lists = lists;
+        this.index = new int[lists.size()];
+        for(int i:this.index)
+            this.index[i]=-1;
+        this.indexOfLists = -1;
+        for(List<Integer> l:lists)
+            this.numOfElementsLeft += l.size();
+        
+    }
+
+    public boolean hasNext(){
+        return numOfElementsLeft == 0; 
+    }
+
+    public void next(){
+        if(!hasNext())
+            return;
+        indexOfLists = indexOfLists+1>=lists.size()?indexOfLists+1-lists.size():indexOfLists+1;
+        while(index[indexOfLists]+1>=list.get(indexOfLists).size())
+            indexOfLists = indexOfLists+1>=lists.size()?indexOfLists+1-lists.size():indexOfLists+1;
+        index[indexOfLists] = index[indexOfLists]+1;
+        numOfElementsLeft--;
+    }
+}
 
 
+41.美国人，第一题是要求用递归的方式来求一个string的长度，不允许用任何求length相关的libary method。我用substring的方式做出来了。写完后follow up是说我substring复杂度太高，因为要把所有char都copy一遍，所以要我想一个O(n)的。想死都没想出来最后他说你可以用exception的try-catch呀－ －我当时就听醉了。
 
+public int stringLen (String s) {
+    char[] arr = s.toCharArray();
 
+}
 
-没有design的题目， 地里的面经好像出现不多， 都是其他LC中的， 能记住的有：
-BST traverse, 要从左到右竖着输出， vertical print
-
-
-第一轮: java细节。flood fill类似，然后一个求解jigsaw啥的。
-第二轮：blackjack求分数。tic-tac-toe求胜利 or not， 给的棋盘很大，要用hashmap存，这轮没写完，因为面试官会在写到一半跟我说这样写是不是好些，然后我就全擦了重新写。。
-第三轮：atoi，data stream track median
-第四轮： hiring manager。zigzag iterator，然后聊项目啥的
-
-
-
- 
-
-
-二面是个美国大叔，上来第一个问题是java static关键字的意义并且拿例子问了下，
-
-
-这里写得稍久了一点，感觉代码也不是很精简，她说对了，就不改了。 5. 她只准备了以上四题，临时又从题库里找了一题 Reverse Integer, 像这样：int reverse(1234), 返回4321. 写完，她说你这个代码可能会出什么问题？我说int超出范围吧，然后加了个判断，当时有点紧张，不知道写得对不对。
-
-
-
-
-
-
-
-
-第二题是写扫雷的OnClick方法，不用考虑UI相关的东西，输入是一个已经把雷埋好数字标好的board。他说主要想看的是你点了一个数字为0的格子时候如何把周围一圈都reveal然后如何继续把是0的格子给处理下去。 
-
-
-第二轮：美国人，第一题是要求用递归的方式来求一个string的长度，不允许用任何求length相关的libary method。我用substring的方式做出来了。写完后follow up是说我substring复杂度太高，因为要把所有char都copy一遍，所以要我想一个O(n)的。想死都没想出来最后他说你可以用exception的try-catch呀－ －我当时就听醉了。
-
-
-第二题是给你一个graph每一个node都是一个facebook的user，然后找出这个user的两度关系以内所有和他last name一样的人的email address。＝ ＝这一题很简单但是我当时状态不是很好，BFS写出了两个很傻逼的bug，还都被他抓出来了，所以最后要挂估计就是挂这里了。 第三轮：美国人，第一题是给一个string找第一个unique character，我扫两次做的。follow up，给你的是一个iterator，只能顺着这个iterator走一遍，不允许存下来从头扫。我用linkedHashSet做的＝ ＝，估计他不懂这是什么鬼，现场去查了下发现确实可以，然后follow up就变成了让我讲讲怎么实现一个linkedHashSet。第二题就是leetcode的那个reverse word in string，我嘴贱说可以用split 然后倒着加，他就把input 换成了char[] 然后让我in-place做，然后说如果两个单词中有3个空格，也要reverse到另一边去。无论如何最后是顺利做出来了＝ ＝ 第四轮：亚洲人，比较实际的数据处理题，给你一个log file，每一行都有一条记录，包括三个数据：访问时间，user id，访问的page id。然后让你找出访问次数最多的10组3个连续访问page。就是如果user A访问了page 1 2 3，这样 1 2 3 就算被访问了一次。不用考虑时间间隔所以我昨天访问1，今天2，后天3，也能算作连续访问page。我的做法是先用map统计了所有用户的按时间顺序排列好的访问page，然后三个三个加到另一个map里面去count，最后用minHeap找出前10个。follow up是如何优化空间，我那个时候大脑已经跪了，想了二十分钟想不出来就投降要hint了，然后经过提示就用大小为3的queue来存那连续三个page id，count完之后就扔掉第一个然后读第三个就好，不占用空间。 总体感觉就是题都很简单，但是连续面4个小时真的很吃力，状态一差就容易出低级bug。。。 
-
-链接: https://instant.1point3acres.com/thread/144269
-来源: 一亩三分地
-
-一题是斐波那契数列求和，一题是给一个数组，问你从左上走到右下一共多少种路径 https://leetcode.com... 然后直接给了osite 
-
-链接: https://instant.1point3acres.com/thread/141528
-来源: 一亩三分地
-
+private int count (char[] ) 
 
 有OOD，简单的饭店reservation
 
@@ -1273,8 +1503,6 @@ BST traverse, 要从左到右竖着输出， vertical print
  find 
 （4）reverse 字符串的单词顺序
 
-
-1. find first un-repeatted character in a stream.(注意是stream)
 2. given an array, find the pair(A + B) sum which is closest to 0.
 3. given a binary code, check whether it is a palindrome binary code.
 4. given an integer, reverse its all digits. (eg. 1234 ->4321, we need consider the overflow)
@@ -1282,31 +1510,20 @@ BST traverse, 要从左到右竖着输出， vertical print
 6. algorithm design, how to design a load balancer for a web system(we need design a good partition or hash methods).
 
 
-第一轮：中国哥哥. 鐗涗汉浜戦泦,涓€浜╀笁鍒嗗湴
-1. Spark是什么？executor是什么？. visit 1point3acres.com for more.
-2. SQL table: user_id string. 鐗涗汉浜戦泦,涓€浜╀笁鍒嗗湴
-              page_id string
-              time string
-   Find 1) Recent 90 days. 1point 3acres 璁哄潧
-        2) the page that is viewed most by a user
-        3) and not viewed by any other 2 users
-3. LC原题 Triangle.
-4. Given a list of Locations (x, y, z), find the nearest Location to all.
-5. Projects: Describe a time when you had a conflict with your teammates?.鐣欏璁哄潧-涓€浜�-涓夊垎鍦�
+
+
+5. Projects: Describe a time when you had a conflict with your teammates?
              What’s your biggest achievement in life?
-             ……
-. 1point 3acres 璁哄潧
-第二轮：印度哥哥
+
 1. float sqrt(int number, float tolerance)
 2. Web site hit counter
-   Implement this interface: Interface hit counter {. visit 1point3acres.com for more.
+   Implement this interface: Interface hit counter {
                                 void increment();
                                 int gethits();
-                             }. From 1point 3acres bbs
+                             }
    to calculate the web site hits within 1 minute.
 
-第三轮：印度哥哥
-这个印度哥哥比较奇葩，不要求写程序，画图或者pseudo code让他理解你思路就行了
+
 1. find median(int[] array)
 2. col1 col2
     x     5
@@ -1318,11 +1535,11 @@ BST traverse, 要从左到右竖着输出， vertical print
 3. 25 photos in total. One transaction can rate <= 5 photos.
    How to find the 1st, 2nd, 3rd best photo with least transactions?
    (Hint: 找第二的时候可以用找第一的结果)
-4. 忘了...但记得不难lol
+
 
 第四轮：白manager Bryant
 感觉他没准备算法问题，想到哪儿问到哪儿。。。＝＝
-1. MapReduce是啥，spark跟普通mapreduce啥区别，什么时候用哪个更好？. Waral 鍗氬鏈夋洿澶氭枃绔�,
+1. MapReduce是啥，spark跟普通mapreduce啥区别，什么时候用哪个更好？.
 2. 列举几个spark的函数哪个只存内存，哪个会写到文件系统上面？.1point3acres缃�
 3. 给你个钟的时间，返回时针&分针之间小于180度的那个角的角度: 7点50分 －> (10 - (7 + 5/6)) * 30 = 65度。
                                                   3点50分 －> ((3 + 5/6) + 12 - 10) * 30 = 175度。
@@ -1334,12 +1551,6 @@ BST traverse, 要从左到右竖着输出， vertical print
                         变成: B -> A -> D -> C -> F -> E -> G
 3. 聊projects...
 
-之后就HR过来问问面试情况blabla 然后催你说我们发offer一般就只给一周时间答（这也太短了＝＝
-
-面完之后楼主的内心是崩溃的。。说好的就四轮呢？呢？呢？？
-
-anyways总归印象很不错，楼主走的时候（5pm＋？）员工基本都下班了所以工作貌似很有规律～走前HR还带逛办公室，确实是巨大的落地窗啊海景美翻了！～～晚上去market street吃了个生蚝犒劳自己哈哈。。对西雅图好感＋＋！ 鏉
-
 
 2. Given data like
    Column1   Column2
@@ -1350,6 +1561,38 @@ anyways总归印象很不错，楼主走的时候（5pm＋？）员工基本都�
 问，最合适的data structure to store this data？
 我用的是C++, 所以举了一些例子，比如HashMap，pair<char, int>, or define a struct.
 
-3. introduce a simple machine learning algorithm that you are most familiar with. from: 1point3acres.com/bbs 
-.鐣欏璁哄潧-涓€浜�-涓夊垎鍦�
 4. Valid parentheses （LC原题）
+
+
+Onsite历时不到5个小时，从12点半到5点多，4轮技术+最后一轮hiring manager闲聊。面了差不多10来道题，剩下的都是聊简历项目啥的，地里的面经帮助很大。
+上题：
+1: reverse a cycle linked list a->b->c->d->a  —>  a->d->c->b->a
+
+2: Given a map, mark its nodes as Black or Red, no two adjacent nodes have the same color. Return true or false. 
+    Follow up: the problem with saving color data inside node class. 当有不同的thread同时跑在同一个graph上的时候，如果把color存在Node类里就会出问题，比如一个thread先把一个node染色后，之后的thread看到这个node就已经有颜色了。这时候用个hashmap把node-color信息存在function里就能避免这个问题。. Waral 鍗氬鏈夋洿澶氭枃绔�,
+3: Search a 2D Matrix II (Leetcode)
+4: 两种方法找出intersections of two integer arrays，
+    arr1 [4,5,2,4,2,2,6] arr2 [4,5,5,2,2], return [4,5,2,2]
+mlog m, n log n, n log m
+
+nlog n +  m * log n ( n + m ) * log n
+
+
+5: remove duplicates in a sorted array (Leetcode)
+6: Buy and sell stock (Leetcode). 鐗涗汉浜戦泦,涓€浜╀笁鍒嗗湴
+7：找出first unique char in streaming data.
+8: 给你一个 SortedArray和一个Threshold，找出大于等于这个threshold的数里面的median。注意dups
+9: 解释一下B+ Tree Indexing
+10: Permutations I & II (input char array)
+11: Word Ladder II
+
+
+
+1. Find median of two sorted arrays. (LC 4)
+2. Find all subsets of a set. (LC 78)
+3. Swap nodes in pairs in a linked list. (LC 24)
+4. Find LCA of two nodes in a binary tree, given the parent pointer for each node.
+5. Decision Tree construction (i.e., how to compute entropy and information gaim).
+
+
+
