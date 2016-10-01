@@ -23,6 +23,46 @@ The palindromes are ["dcbaabcd", "abcddcba", "slls", "llssssll"]
 
 	["a","abc","aba",""]
 */
+
+public class Solution {
+    public List<List<Integer>> palindromePairs(String[] words) {
+    	List<List<Integer>> result = new ArrayList<List<Integer>>();
+    	if (words == null) return result;
+		Map<String, Integer> map = new HashMap<String, Integer>();
+    	for (int i = 0; i < words.length; i++) {
+    		map.put(words[i], i);
+    	}
+		for (int i = 0; i < words.length; i ++) {
+			for (int j = 0; j <= words[i].length(); j ++) {
+				String x = words[i].substring(0,j);
+				String y = words[i].substring(j);
+				if (isPalindrome(x)) {
+					//check revert y
+					String reverty = (new StringBuilder(y)).reverse().toString();
+					if (map.containsKey(reverty) && map.get(reverty) != i) {
+						result.add(Arrays.asList(map.get(reverty), i));
+					}
+				} 
+				if (isPalindrome(y)) {
+					String revertx = (new StringBuilder(x)).reverse().toString();
+					if (map.containsKey(revertx) && map.get(revertx) != i && y.length() != 0) {
+						result.add(Arrays.asList(i, map.get(revertx)));
+					}
+				}
+			}
+		}
+    	return result;
+    }
+    private boolean isPalindrome (String s) {
+		int i = 0, j = s.length() - 1;
+		while (i < j) {
+			if (s.charAt(i) != s.charAt(j)) return false;
+			i++;
+			j--;
+		}
+		return true;
+	}	
+}	
 public class Solution {
 	class TrieNode {
 		TrieNode[] next;

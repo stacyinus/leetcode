@@ -1,4 +1,106 @@
-1. LeetCode: stack/Maximal Rectangle-O https://leetcode.com/problems/maximal-rectangle/
+Phone:
+1. There's a menu, items are listed with prices of a double. If you are given n dollars,  return all the combos that can be sumed to n.
+	Similar Questions :https://leetcode.com/problems/combination-sum/ 
+				 	   https://leetcode.com/problems/combination-sum-ii/ 	
+	If the price is in dollars(18.35), you can change it to cents(1835) first and then use the below function to solve. 
+	Ask: 	Can you order the same thing many times?  
+		 	Are there any items with the same prices? 
+[1], 1
+[2,3,4,5,8] sum=12 
+[1,1,2,2]
+public class Solution {
+	public List<List<Integer>> combinationSum(int[] prices, int sum) {
+		List<List<Integer>> result = new ArrayList<List<Integer>>();
+		Arrays.sort(prices);
+		helper(prices, sum, result, new ArrayList<Integer>(), 0);
+		return result;        
+    }
+	private void helper(int[] prices, int sum, List<List<Integer>> result, List<Integer> list, int k) {
+		if (sum < 0) return;
+		if (sum == 0) {
+			result.add(new ArrayList<Integer>(list));
+			return;
+		}
+		for (int i = k; i < prices.length; i ++) {
+			if (i > k && prices[i] == prices[i - 1]) continue;//if there are no dup in prices, no need to add this line.
+			list.add(prices[i]);
+			helper(prices, sum - prices[i], result, list, i);// if the same item can't be ordered 2 times, start from i + 1
+			list.remove(list.size() - 1);
+		}
+	}  
+	private int findFirstSmallerThanOrEqualTo(int[] prices, int sum, int k) {
+		if (k < 0) return -1;
+		int s = 0, e = k;
+		while (s  + 1 < e) {
+			int m = s + (e - s) / 2;
+			if (prices[m] <= sum) {
+				s = m;
+			}
+			else {
+				e = m;
+			}
+		}
+		if (prices[e] <= sum) return e;
+		return prices[s] <= sum ? s : -1;
+	}
+
+}
+
+2. Parlindrome Pairs https://leetcode.com/problems/palindrome-pairs/
+	http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=203949&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26searchoption%5B3046%5D%5Bvalue%5D%3D37%26searchoption%5B3046%5D%5Btype%5D%3Dradio%26sortid%3D311
+
+["abcd", "dcba", "dcbaee","eedcba","","a","aaa"]
+abcd, dcba
+
+eedcba(i th), if s1 is palindrome, then check if the reverse of s2 exists in the list , if so, j + i
+			  if s2 is palindrome,  check if reverse of s1 exists in the list, i + j
+abcd
+"",abcd j, i
+abcd,"" i, j
+
+bcda
+["", a]
+a
+s1 = ""
+s2 = "a"
+public class Solution {
+    public List<List<Integer>> palindromePairs(String[] words) {
+    	List<List<Integer>> result = new ArrayList<List<Integer>>();
+    	Map<String, Integer> map = new HashMap<String, Integer>();
+    	for (int i = 0 ; i < words.length; i ++) {
+    		map.put(words[i], i);
+    	}
+    	for (int i = 0; i < words.length; i ++) {
+    		for (int j = 0 ; j <= words[i].length; j ++) {
+    			String s1 = words[i].substring(0,j);//""
+    			String s2 = words[i].substring(j);
+    			if (isPalindrome(s1)) {
+    				String reverseS2 = (new StringBuilder(s2)).reverse().toString(); 
+    				if (map.containsKey(reverseS2) && map.get(reverseS2) != i) {
+    					result.add(Arrays.asList(map.get(reverseS2), i));
+    				}
+    			}
+    			if (s2.length() > 0 && isPalindrome(s2)) {
+    				String reverseS1 = (new StringBuilder(s1)).reverse().toString(); 
+    				if (map.containsKey(reverseS1) && map.get(reverseS1) != i) {
+    					result.add(Arrays.asList(i, map.get(reverseS1)));
+    				}
+    			}
+    		}
+    	}
+    	return result;
+    }
+    private boolean isPalindrome(String s) {
+    	int i = 0, j = s.length() - 1;
+    	while (i < j) {
+    		if (s.charAt(i) != s.charAt(j)) return false;
+    		i++;
+    		j--;
+    	}
+    	return true;
+    }
+}	
+LeetCode: stack/Maximal Rectangle-O https://leetcode.com/problems/maximal-rectangle/
 /*
 Given a 2D binary matrix filled with 0's and 1's, find the largest rectangle containing only 1's and return its area.
 
@@ -44,3 +146,5 @@ public class Solution {
     }
 
 }
+
+ nested iterator, follow-up: remove function
