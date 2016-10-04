@@ -492,8 +492,12 @@ public class Solution {
 }
 
 9. CSV Parser
+如何Parse csv file:举个例子,给定一个CSV文件,格式是 “some_name|some_address|some_phone|some_job”,
+要求输出Json format “{name:some_name,address:some_addres,phone:some_phone, job:some_job}”
+
+特殊情为两个引号之间的分号,不可作为分割字符 http://itjob.io/post/349
 /*
-John,                        Smith,                john.smith@gmail.com,        Los Angeles,                1
+John,                   Smith,     john.smith@gmail.com,        Los Angeles,                1
 Jane,                        Roberts,        janer@msn.com,                "San Francisco, CA",        0
 "Alexandra ""Alex""",        Menendez,        alex.menendez@gmail.com,        Miami,                        1
 """Alexandra Alex"""
@@ -501,10 +505,29 @@ John|                        Smith |                john.smith@gmail.com |      
 Jane|                        Roberts|        janer@msn.com|                San Francisco, CA|        0
 Alexandra "Alex"|        Menendez|        alex.menendez@gmail.com|        Miami|                        1
 "Alexandra Alex"
+
+deliminater: , |
+""
+read file line by line , line
+for each line:
+1. scan through the line, change all , to | except when , is in between ""(use stack)
+  how to handle ""?
+
 */
 
-public void parse(String ) {
-    
+/*
+John,Smith,john.smith@gmail.com,Los Angeles,1
+Jane,Roberts,janer@msn.com,"San Francisco, CA",0
+"Alexandra ""Alex""",Menendez,alex.menendez@gmail.com,Miami,1
+"""Alexandra Alex"""
+John|Smith|john.smith@gmail.com|Los Angeles|1
+Jane|Roberts|janer@msn.com|San Francisco, CA|0
+Alexandra "Alex"|Menendez|alex.menendez@gmail.com|Miami|1
+"Alexandra Alex"
+*/
+public List<String> parse(String path) {
+    BufferedReader file = new BufferedReader(new FileReader("path"));
+
 }
 alien dictionary 和 merge intervals 但有点变化～
 

@@ -1,0 +1,24 @@
+My Experience:
+
+Zillow :
+1.Find duplicated URL:
+Given a file (size is huge) with urls. How do you find a duplicated ones?
+
+2.Given a directory, find all the duplicated files in this directory(including all it’s sub directories)
+Follow up: how do you improve you function to avoid reading all files.
+
+3.Find all primes that is smaller than a given number n.
+
+4. 1) Black Jack. 
+     2)Tic tac toe (no coding ,just design the best data structure to store the board, note here the board is huge, so I don’t think a 2D array is good)
+
+Yelp :
+1.	I forgot…easy, something to do with hashmap…
+2.	Implement a hashmap.  A lot of follow ups . basically trying to get n
+3.	Fibinacci (DP solution, O(1) space) 
+4.	Find 
+
+Oscar:
+1.	Graph clone
+2.	Implement min stack
+3.	System design : 
