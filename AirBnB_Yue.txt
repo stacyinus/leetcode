@@ -393,9 +393,32 @@ public class WaterToOcean {
 }
 
 7.  find median from large file of integers
+0,1,2,5,6,7,9
 
-public int findMedian(File file) {
+2,6,5,1,7,9,0
+0,      7 9 6
+public int findMedian(int[] input) {
+    min
+}
+//index from s to e, find the kth element
+public int quickSelection(int[] input, int s, int e, int k) {
     
+}
+
+public int partition(int[] input, int s, int e) {
+    int p = input[s];
+    while (s < e) {
+        while(s < e && input[e] >= p) {
+            e--;
+        }
+        if (s < e) {
+            input[s] = input[e];
+        }
+        while(s < e && input[s]<= p) {
+            s++;
+        }
+        input[e] = input[s];
+    }
 }
 
 8. Mini Parser
@@ -506,12 +529,18 @@ Jane|                        Roberts|        janer@msn.com|                San F
 Alexandra "Alex"|        Menendez|        alex.menendez@gmail.com|        Miami|                        1
 "Alexandra Alex"
 
-deliminater: , |
+deliminater: ,"abc"",""abc", = abc","abc
 ""
 read file line by line , line
 for each line:
-1. scan through the line, change all , to | except when , is in between ""(use stack)
-  how to handle ""?
+
+
+i = first  index of ","
+    while (charAt(0) == '"' && charAt(i - 1) != '"') {
+
+    }
+
+
 
 */
 
@@ -520,15 +549,70 @@ John,Smith,john.smith@gmail.com,Los Angeles,1
 Jane,Roberts,janer@msn.com,"San Francisco, CA",0
 "Alexandra ""Alex""",Menendez,alex.menendez@gmail.com,Miami,1
 """Alexandra Alex"""
+
+
 John|Smith|john.smith@gmail.com|Los Angeles|1
 Jane|Roberts|janer@msn.com|San Francisco, CA|0
 Alexandra "Alex"|Menendez|alex.menendez@gmail.com|Miami|1
 "Alexandra Alex"
+,"AA,""AA""",
 */
-public List<String> parse(String path) {
-    BufferedReader file = new BufferedReader(new FileReader("path"));
+public List<String> parse(List<String> list) {
+    //BufferedReader file = new BufferedReader(new FileReader("path"));
+    for (String s : list) {
+        
+        int start = 0 , end = 0;
+        while (end < s.length()) {
+            end = start;
+            int count = 0;
+            while (end < s.length()) {
+                char c = s.charAt(end);
+                if (c == '"') {
+                    count ++;
+                }
+                else if (c == ',' && count % 2 == 0) {
+                    break;
+                }
+                end ++;
+            }
+            if (end < s.length()){
+                String cur = s.charAt(start, end);
+                String processed = processQuote(cur);
+                start = end ++;
+            }
+        }    
+    }
 
 }
+
+private String processQuote(String s) {
+    if (s.length() > 0 && s.charAt(0) == '"') {
+        s.substring(1, s.length() - 1);
+    }
+    if (s.indexOf("/"/"") >= 0) {
+
+    }
+
+    
+}
+
+10. Decode
+Given a method decode(testEncStr) which will return the decoded int id if testEncStr is decodeable or will throw an exception (or return null) if not, implement a new method decodeFind(String badEncStr) which takes a string and returns the decoded int id
+
+
+
+
+
+
+11. 
+
+
+3.给一个2d array，要求写一个顺序访问这个2d array的Iterator，包括hasNext()与next()。注意2d array的每行中元素的个数可能不一样，也可能为空。跪在这最后一面上了。
+二面的时候他忘了问culture， 所以加了一面。最后跪在最后一面上了，估计是culture不fit。 求加分，求安慰
+
+
+
+
 alien dictionary 和 merge intervals 但有点变化～
 
 
