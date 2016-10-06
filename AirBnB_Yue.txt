@@ -395,30 +395,39 @@ public class WaterToOcean {
 7.  find median from large file of integers
 0,1,2,5,6,7,9
 
-2,6,5,1,7,9,0
-0,      7 9 6
+2,6,5,1,7,9,0   3
+0,1,2,5 7 9 6
 public int findMedian(int[] input) {
-    min
+    if (input.length % 2 != 0) {
+        return quickSelection(input, 0 , input.length - 1, input.length / 2);
+    }
+    return (quickSelection(input, 0 , input.length - 1, input.length / 2) + quickSelection(input, 0 , e, input.length / 2 - 1))/2;
 }
 //index from s to e, find the kth element
-public int quickSelection(int[] input, int s, int e, int k) {
-    
+public int quickSelection(int[] input, int s, int e, int k) {// k is index
+    if (k == 0) return input[s];
+    int index = partition(input, s, e);
+    if (index == k) return input[k];
+    if (index < k) {
+        return quickSelection(input, index + 1, e, k - index - 1);
+    }
+    return quickSelection(input, s , index - 1, k);
 }
 
-public int partition(int[] input, int s, int e) {
+public int partition(int[] input, int s, int e) {//0,1,2,6,5
     int p = input[s];
     while (s < e) {
         while(s < e && input[e] >= p) {
             e--;
         }
-        if (s < e) {
-            input[s] = input[e];
-        }
+        input[s] = input[e];
         while(s < e && input[s]<= p) {
             s++;
         }
         input[e] = input[s];
     }
+    input[s] = p;
+    return s;
 }
 
 8. Mini Parser
