@@ -1,0 +1,264 @@
+Linkedin
+Phone
+1. Two Sum Interface  LC 170
+2. Shortest Word Distance II LC 244. 
+
+
+题目是Shortest Word Distance. 鍥磋鎴戜滑@1point 3 acres
+
+followup: two word distance 改成three word distance, 目的是让三个word相互之间的distance和最小
+
+最优解当场没想出来，当场想到的是two pointer往里收缩。每次移动left/right pointer中一个，直到停在三个target word中的一个。每挪动其中一个ponter，检查第三个word存不存在two pointer之间。时间复杂度的话，不用额外的memory，应该是O（n^2）吧
+
+
+3. Maximun Subarray
+Isomorphic String（一遍过）和Nearest K Points
+1. leetcode 170 follow up：find函数调用很多次怎么办
+2. leetcode 244 shortest word distance
+
+
+
+1. two. from: 1point3acres.com/bbs 
+2. find the maximum sum of contiguous sub array in an array
+3. find the maximum product of contiguous sub array in an array
+
+
+电面：
+Isomorphic String（一遍过）和Nearest K Points（当时先给了堆然后写了筷排的优化总共两种方法）
+1. LC 65, Valid Number
+面试官对限制条件说得并不是很清楚，就说你写吧。跟他简单商量了一下，最后我只考虑了leading/trailing spaces和小数点，指数的情况我问了，他说不用考虑了。没有LC上的难。. 1point 3acres 璁哄潧
+.1point3acres缃�
+2. LC 170, Two Sum III
+Discuss里有人讨论了不同方法的tradeoff，面试的时候就问到了，先写了一种方法，分析了复杂度，接着又写了另一种方法。原题，不难。
+
+
+1. Implement two sum interface, Leetcode 170原题;
+2. Nested List Weight Sum II, Leetcode 364原题.
+
+
+LinkedIn 现在码农只招senior的了
+
+电面第一题实现pow（a，b）. Waral 鍗氬鏈夋洿澶氭枃绔�,
+第二题tree level traversal， follow up 是带间距的输出. 涓€浜�-涓夊垎-鍦帮紝鐙鍙戝竷
+/**
+* Sample input:
+*
+*          1
+*         / \. 鐣欏鐢宠璁哄潧-涓€浜╀笁鍒嗗湴
+*        3   5. Waral 鍗氬鏈夋洿澶氭枃绔�,
+*       /   / \
+*      2   4   7
+*     / \   \. From 1point 3acres bbs
+*    9   6   8.1point3acres缃�
+
+*
+* Expected output:
+*    1
+*    3 5
+*    2 4 7
+*    9 6 8
+*    ==========. from: 1point3acres.com/bbs 
+* follow up expected output
+*          1. 鐗涗汉浜戦泦,涓€浜╀笁鍒嗗湴
+*        3   5
+*      2   4   7
+*    9   6   8
+
+第一个是leetcode 原题102. Binary Tree Level Order Traversal
+follow up 是level order print 的zigzag 打印 就是alternative的left to right 和right to left的打印
+
+第二题是shortest word distance 的 OO 设计 这题问了time complexity 
+. 涓€浜�-涓夊垎-鍦帮紝鐙鍙戝竷
+解法参考 leetcode . 涓€浜�-涓夊垎-鍦帮紝鐙鍙戝竷
+
+中间出了些小bug 被三哥哥指出了  
+
+
+
+1. LeetCode原题  LC339. Nested List Weight Sum 这个很简单。.鏈枃鍘熷垱鑷�1point3acres璁哄潧
+2. tournament tree 求 second minimum。就是胜者树找第二名的问题。
+这次面试之前我都根本不知道胜者树这种东西。。
+这题我先给了一个DFS O(n)的解法，不过小哥不满意，让再想想，但是想了大概5分钟还是不行。
+然后我问小哥要提示，小哥说第二名只能被最后的冠军打败。
+所以我就想到只需要考虑被root打败过的node就可以了，就想到了O(logn)的解法，写出来了。
+
+希望小哥给个positive让我去下onsite。。。
+
+
+Implement a data structure that supports: add(), remove(), removeRand().
+
+店面1
+find influencer
+店面2
+word distance i, ii
+
+
+Two simple coding question:
+. 鐗涗汉浜戦泦,涓€浜╀笁鍒嗗湴
+1. NestedList number depth sum:
+example: {{1}  2 {3} {{4}}} = 1 * 2 + 2 + 3 * 2 + 4 * 3 => return 22
+
+2. Print binary tree in level order:
+BFS
+
+
+
+1. compute mean of n data from streaming in real time
+2. compute variance of n data from streaming in real time
+
+老天保佑遇见了面经
+1. LC 53 MaximumSubarray
+2. LC 364 NestListWeight_Sum II
+
+
+一共就考了两道题，一个是binary tree (not BST)，给两个节点，求lowest common ancestor。与原题区别在于每个node有parent pointer
+
+第二题是2 sum的变种，要实现一个接口，包含两个函数，addNumber(int num)和hasSum(int target)，check if there is a sum of two elements equals to the target。Follow-up是如果hasSum调用很多次，如何改进time complexity。hint是pre-compute results
+
+
+
+1， power(a, b) 这个是leetcode原题， 一遍bug free写完了也没问followup
+2， 版上常见的那个interval题目， 要实现一个接口，实现addInterval和getTotalCoverage两个函数。 基本算是leetcode的两个interval题目的变种， 第一遍bug free写了一个add O(n)和get O(1)的方法， 然后交流了一下之后做了些小优化。 followup是问有没有让add方法更efficient的写法, 然后我说了下add O(1), get O(nlogn)的方法， 然后又讨论了一些优化的问题。
+
+
+onsite：
+普通的5轮+lunch
+两轮coding（都是题库题，但是会问各种细节，边界条件，为什么这么做，最后还跑了test case）：
+1LCA（和lc不太一样，是那种自己带父节点指针的那种）. 鍥磋鎴戜滑@1point 3 acres
+2重复dna
+3求平方根
+4数据流中返回最大的k个数.1point3acres缃�
+系统设计：
+设计日历（不用考虑重复事件，用户少）
+tech communication，hiring manager和lunch全程聊天+behavior
+
+onsite:
+1. 以色大叔，全程黑脸
+paint house 1&2
+word ladder
+2. 聊天 天竺经理
+3. 吃饭 白人经理
+4. desig设计过去5min 1hr 24hr各类系统的exception
+5. 算法 insert interval and get_length， de/seriliaze binary tree
+6. 介绍自己工作
+
+最后挂在design，也不知道错在哪，都准备过，题库痕迹明显
+
+
+
+补充内容 (2016-9-25 05:37):
+design 题目这里有讨论. From 1point 3acres bbs
+http://www.mitbbs.com/article_t/JobHunting/33226795.html	
+
+
+
+onsite：
+SF的office今年三月份才开始使用，整个building都是他们的。面试是在一个小房间里，十六层，view特别好，视野开阔，有海有桥的。白板上写着"Welcome In XXX"，还有小礼物，挺用心的。
+-google 1point3acres
+先跟HR见了个面，说了说今天的安排，畅想了一下美好的未来，说是面完了2到5天就有结果啊，offer等着你啊，公司benefits好啊，你要放松啊，你要加油啊。。。
+
+Coding 1
+(1) 从一个数组里找出能够组成三角形的三个数。没见过。
+当时脑子一时短路，一组数据也没试，给出了一种方法，其实是错的。有可能是当时我没说清楚，面试官说应该没问题，写完后他说貌似不对啊。。。我换了一种方法，two pointers，复杂度是O(n^2)。他说你再想想吧，有O(n)的，要是想不出来你就先写这个吧。想了半天想出来了，结果时间不够了，他说别写了，知道我懂了。
+方法貌似不是很难。比如 1 2 3 3，1 + 2 == 3 <= 3, 这种情况下1就可以不考虑了，用到了不等式的性质。即使 1 3 3 是一个结果，2 3 3 也是一个结果，1 + 3 < 2 + 3，所以1就不用考虑了。
+
+(2) LC 200, Number of Islands
+原题。说了思路，算是常规吧，扫描，看到1加1，然后用dfs去flip。面试官一开始貌似没理解，试了几个例子，觉得没问题让我写了。
+
+Coding 2
+LC 265, Paint House II
+这道题当天早上看面经看到了，心中窃喜。在Discuss里看到了大神给出的最优解，O(nk)，constant space。我就把这种方法说了，结果悲剧了。有可能是我说不清楚，面试官一直没理解，我又举例子又画图的，将近半小时后面试官恍然大悟，让我写了。五分钟写完代码，在接下来的讨论中，我发现面试官其实还是没理解，我的哥。。。接下来先让我跑了个他的test，过了，他不服，当场想例子要challenge大神的最优解，结果可想而知啊。最后他应该是懂了，说了个“酷”。一个小时就这么过去了，只写了一道题。说实话啊，这个方法虽说比较巧妙，但还不至于辣么巧妙啊，我那天早上看的，看了看大神简短的解释和整洁的代码，二十分钟也就搞定了，不知道咋回事儿。
+
+我觉得大家面算法的时候一定要跟面试官解释清楚，确定面试官理解了再写，否则时间就白白浪费了。解释dp的时候还是先从比较直接的方法开始比较好，如果有需要再慢慢优化，一上来就给最优解有时确实不太好理解。
+
+午餐. 1point3acres.com/bbs
+这个必须要提一下。一个中国小哥带我吃的，人特别好，给我推荐了好吃的饭菜和甜点。LinkedIn的食堂确实好啊，中餐的味道很不错。吃饭的时候小哥说了LinkedIn的很多好，能看出来在那工作还是很开心的，谈话的内容也为下午和manage聊提供了很多素材，赞一个。
+
+Manager
+人很nice，比较好聊，问了些常规的问题，比如你在上一份工作里有没有得到什么mentorship啊，我也根据中午的聊天内容问了些问题。我看他一直在那写，你问的问题他也会做记录，不知道用来干啥。
+问了一道小设计题。大家知道有些工作在LinkedIn上能直接申请，点那个“Apply”按钮。问题是如果让你设计你会考虑那些问题。他就说你尽量想吧，想不出来告诉他一声。我就想到三个。考虑多少人会用，从而知道QPS。因为要把用户的信息发给第三方网站，感觉要考虑隐私。有的工作需要cover letter有的不需要，感觉需要考虑data format。他接着又问需要返回什么error。我也只想到了三个。我说有的job过期了，需要返回error。第三方网站挂了需要返回一下。各种network connection，比如前后端连接，service和db之间的连接。前两个他说行，第三个他就说还好。说实话不太知道他想问啥。。。
+
+Technical Communication
+讲了个project。小哥挺活泼的，简单问了问。有几个问题自己以前没仔细考虑过。最大的难点？在test过程中哪部分最容易出错？如果重来，你会对哪部分做修改？大家有时间可以考虑一下啊。.鐣欏璁哄潧-涓€浜�-涓夊垎鍦�
+
+System Design
+LinkedIn有个share功能，在里面会出现一些URL，问题是找出在过去一天，一小时，五分钟被share的top 5/10/...多的URL。-google 1point3acres
+
+以前没面过这种，有点儿没底，还好面试官很nice，会给提示。
+
+算是两部分吧。当用户分享的时候，这里有一个client-server。当用户query top 5/10/...多的URL的时候，这里还有一个client-server。
+
+先说第一部分。一开始说我们有10M users，我上过XX算法的系统设计，按照里面的方法，先算了QPS，面试官用自己的电脑给算的，大概150。没等我开口，面试官说要考虑Peak QPS哦，我说那就3X吧，450，他表示同意。我一看不是很高，感觉DB有很多选择，就先试试MySQL吧，还能跟面试官讨论一下。结果面试官说不用把这些数据存起来，第二天就不用了。感觉这是在给我提示。我说那就用in-memory key-value store吧，memcached，key是URL，value是count。说实话我不是很懂这些NoSQL的工具，没上手用过，这样瞎扯真是没底。DB算是先选好了。我接着说加个"URL Extractor"service吧，用户把请求发过来，这个service把URL找出来然后存到数据库里。他问如果想让用户得到快速的响应应该咋办。这里我也不太懂，他说你加个message queue，Kafka那种，类似producer-consumer。这个我是真不知道。然后就是如何把统计数据加起来了，这里也有点儿不太会。我的疑问是咋判断URL在过去的五分钟里出现过呢？他说你可以用好几个db。一开始真的没懂。他看我没懂，说第一个db存0~5min的，第二个db存6~10min的，等等，还有存过去一个小时的，一天的。我一开始还是没懂，比如说我想要3min~8min的咋办？一开始我没问，想了一会儿才问，他说不用太real time，忘跟你说了，不好意思。他说其实要做到3min~8min也行，你有60个db就好了，到时候一加就行了。
+
+接下来就是咋找出来top5/10/...的URL了，窃以为要用heap啥的呢，面试官说memcached功能不太行啊，对value部分没啥操作啊，你换个别的吧。我一想那就Redis吧，听说那个比较厉害，有一些set操作啥的，直接找出top多的URL。面试官表示一拍即合，Redis应该是不错的选择。我说再加个service吧，用于处理这些请求。他说怎么处理这些请求呢？是直接从数据库里读数据还是咋办？我一想这是read-only啊，加个cache吧，另一个deamon定时去读数据库做计算，然后把算好的数据写到cache里，用户直接读cache就行了，反正也不用太real time。他表示同意，然后时间就到了。
+. 1point3acres.com/bbs
+我只能给出这么多了，只想出了working solution，都没问啥scale方面的，希望大神能做个补充，让我开阔一下眼界。.1point3acres缃�
+
+写得不是很好，大家凑和看看吧，主要是想给没面过system design的小伙伴们找找感觉。我在网上没找到比较具体的，所以准备的时候比较忐忑，只看到题目“LinkedIn有个share功能，在里面会出现一些URL，问题是找出在过去一天，一小时，五分钟被share的top 5/10/...多的URL。”表示很懵逼。我的这个面试官会一直给出提示，还挺好的。
+. visit 1point3acres.com for more.
+周一接到电话说是跪了，feedback也没有，说是有更强的选手呢。 鏉ユ簮涓€浜�.涓夊垎鍦拌鍧�. 
+
+感觉LinkedIn是有题库的，面试题基本在面经里都出现过。.1point3acres缃�
+希望能够帮到大家。也希望自己在接下来的面试里能够好好表现，早日找到工作。. 鐗涗汉浜戦泦,涓€浜╀笁鍒嗗湴
+
+
+补充内容 (2016-10-10 11:13):.1point3acres缃�
+三角形那道题，输入不是排好序的，面试官的意思是排好序后O(n)啊，大家联系语境感受一下吧，就那个意思啊。谢谢楼下指出。
+
+
+电话面试过了之后下一周就onsite
+. Waral 鍗氬鏈夋洿澶氭枃绔�,
+1. coding，二叉树里lowest common ancestry，leetcode原题. visit 1point3acres.com for more.
+2. behavior, 天竺经理，问怎么设计linkedin referral系统
+3. design, 天竺码农，怎么设计cold start recommendation system，怎么设计video recommendation system
+4. design，怎么设计ads CTR prediction系统，以及模型的实现
+5. coding，给定users，movies和rating，怎么预测某个用户对某个电影的评分。collaborative filtering.
+
+
+
+一轮是一个刚工作几个月的加拿大小哥，问了skiplist。以前大概知道这个东西但是从来没了解过其implementatiion。先写了个查找的API，还比较好写，然后让写插入，于是就跪了。一直想着每一层insert node之后就把上下左右都连好，但这样写着很复杂。最后没写出来，好像应该每一层插入新node时只连左右，然后用个stack存新node，最后再把stack里的node上下连起来。. 鐗涗汉浜戦泦,涓€浜╀笁鍒嗗湴
+
+第二轮是两个人假设是你们组新来的，你给他们讲一个项目，要求讲完之后他们足够熟悉能够开始做这个项目相关的工作。
+
+第三轮是LC 265 149
+. 涓€浜�-涓夊垎-鍦帮紝鐙鍙戝竷
+第四轮印度女Manager聊天，感觉这轮应该最重要但是没有发挥好。
+
+最后一轮设计hangman，见其他面筋. 鍥磋鎴戜滑@1point 3 acres
+
+感觉L家遇到的几个国人精神面貌都不怎么好，萎靡不振的样子，两个小印反而神采奕奕比较热情。
+
+
+onsite
+1 needle and hay, bruteforce or kmp isomorphic strings
+2 tiny url-google 1point3acres
+3 max points on a line, 问了保存double精度等问题
+求加大米，下周就面fb了，感觉题目都好难～-
+
+
+LC53 －Maximum Subarray
+
+Follow up:Maximum Product Subarray
+
+
+
+
+
+
+
+
+1. Host manager. 像是中东人，但本科是UIUC读的，很年轻，刚升经理没几个月。behavior问题加一些小的设计问题，大概就是给你一个任务，你从哪些方面着手之类的。
+. From 1point 3acres bbs
+2.      2. Coding, 小韩和老中.
+1) Same Tree; 2) Word Ladder II (Only needto return one shortest path)见到这道题我就觉得基本可以结束今天的面试了。根本没看这道题，心想面到这道题，我就认栽。按照word ladder I 的写法往外扩展，写的很乱。写完第一道题的时候，被小韩BS了一下，问我不是学CS的为什么要找码工的工作。
+
+3.       3. Lunch. 小美。瞎扯。
+4.      
+4.4. 4. System Design. 国人大哥+小美.
+In shared articles, some URLs maybecontained. Design a system that can return top shared URLs in past 5 minutes, 1hour and 1 day. Suppose the article sharing service and URL extracting functionsare already there. 当时就觉的他们不喜欢我的设计，国人大哥坐在椅子上都快成葛优躺的姿势了。
+5.      
+5. C5.Coding. 小中和小印.
+小中说给我一道"VERY simple problem", 其实也是道面经题，看到但没有想过怎么做，所以做的不好。设计一个数据结构使得 add(T t), remove(T t), removeRandom() 都是O(1). 第二题，LC原题。二叉树求lowest common ancestor.
+.1point3acres缃�
+6.       6. Technical communication. 国人大哥+烙印。讲自己做过的一个项目。
+LinkedIn 明显感觉不像是在招人。面试官都是资料较浅的，懂的东西也不是很多的样子，有些还挺拽的。两天后悲剧。
