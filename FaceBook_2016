@@ -1,22 +1,548 @@
 http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=203983&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26sortid%3D311
 
-15. 3Sum
-.1point3acres缃�
-139. Word Break I/II
+1. 3Sum
 
-91. Decode Ways
+2. Word Break I
+/*
+s = "apple bee",
+dict = ["apple", "bee", "app"].
+a pplebee
+app lebee
 
-209. Minimum Size Subarray Sum
+	apple bee
+   100101 0	
+    j - i + 1 = max
+    max + i - 1
+*/
+//too slow : this is dfs but we can improve using DP
+public class Solution {
+    public boolean wordBreak(String s, Set<String> wordDict) {
+        if (wordDict.contains(s)) return true;
+        for (int i = 1; i < s.length(); i++) {
+            String tmp = s.substring(0,i);
+            if (wordDict.contains(tmp)) {
+                if (wordBreak(s.substring(i), wordDict)) return true;
+            }
+        }
+        return false;
+    }
+}
+/*
+	dp:
+	some more improvement...
+	min, max
+	applebee
+	0010100
+	j      = i - max
+	i - j + 1 <= max
+*/
+public class Solution {
+    public boolean wordBreak(String s, Set<String> wordDict) {
+    	boolean[] a = new boolean[s.length + 1];
+    	a[0] = true; 
+    	int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+    	for (String t: wordDict) {
+    		min = Math.min(s.length(), min);
+    		max = Math.max(s.length(), max);
+    	}
+    	for (int i = min; i < a.length; i++) {
+    		for (int j = i - min; j >= 0 && i - j  <= max ; j--) {
+    			if (a[j] && wordDict.contains(s.substring(j, i))) {
+    				a[i] = true;
+    				break;
+    			}
+    		}
+    	}
+    	return a[s.length];
+    }
+}
+
+3. Word Break II
+/*
+DP Memory search
+s = "catsanddog",
+dict = ["cat", "cats", "and", "sand", "dog"].
+
+cat sand dog
+sand dog
+
+A solution is ["cats and dog", "cat sand dog"].
+*/
+public class Solution {
+	Map<String, List<String>> map = new HashMap<String, List<String>>();
+	public List<String> wordBreak(String s, Set<String> wordDict) {
+		List<String> result = new ArrayList<String>();
+		if (s == null || s.length() == 0) return result;
+		if (map.containsKey(s)) return map.get(s);
+		for (int i = 1; i <= s.length() ; i ++) {
+			String tmp = s.substring(0,i);
+			if (wordDict.contains(tmp)) {
+				List<String> tmpList = wordBreak(s.substring(i), wordDict);
+				if (tmpList.size() > 0) {
+					for (String t : tmpList) {
+						result.add(tmp + " " + t);
+					}
+				}
+				else if (i == s.length()){
+					result.add(tmp);
+				}
+			}
+		}
+		map.put(s, result);
+		return result;
+	}
+    
+}
+
+4. Decode Ways
+/*
+dp[i] = number of decode ways for substring from 0  ~ i
+3 scenarios : if charAt(i) == 0, dp[i] = dp[i - 2]
+			  if charAt(i - 1, i) <= 26 && > 10, dp[i] = dp[i - 1] + dp[i - 2] 
+			  if charAt(i - 1, i) > 26, dp [i] = dp[i - 1]
+*/
+public class Solution {
+    public int numDecodings(String s) {
+    	if (s == null || s.length() == 0 || s.charAt(0) == '0') return 0;
+    	int[] dp = new int[s.length() + 1];
+    	dp[0] = 1;
+    	dp[1] = 1;
+    	for (int i = 2; i <= s.length(); i ++) {
+    		if (s.charAt(i - 1) == '0') {
+    		    if (!isValid(s.substring(i - 2, i))) return 0;
+    			dp[i] = dp[i - 2];
+    		}
+    		else if (isValid(s.substring(i - 2, i))) {
+    			dp[i] = dp[i - 1] + dp[i - 2];
+    		}
+    		else {
+    			dp[i] = dp[i - 1];
+    		}
+    	}
+    	return dp[s.length()];
+    }
+    private boolean isValid(String s) {
+    	if (s.charAt(0) == '0') return false;
+    	return Integer.parseInt(s) <= 26;
+    }
+}
+
+5. Minimum Size Subarray Sum
+public class Solution {
+    /*
+        [1,2,3,4,5] and s = 11
+         i
+                 j
+    */
+    public int minSubArrayLen(int s, int[] nums) {
+        int min = Integer.MAX_VALUE, i = 0, j = 0, sum = 0 ;
+        while (j < nums.length) {
+            sum += nums[j];
+            while (i <= j && sum >= s) {
+                min = Math.min(min, j - i + 1);
+                sum -= nums[i++];
+            }
+            j++;
+        }
+        return min == Integer.MAX_VALUE ? 0 : min;
+    }
+}
+
+6. Add and Search Word - Data structure design 
+Follow up: support “*” which matchs 0 or more characters
+
+public class WordDictionary {
+    TrieNode trie = new TrieNode();
+    class TrieNode {
+        TrieNode[] nodes;
+        boolean isword;
+        public TrieNode() {
+            nodes = new TrieNode[26];
+            isword = false;
+        }
+        public void addWord(String s) {
+            if (s.length() == 0) {
+                isword = true;
+                return;
+            }
+            char c = s.charAt(0);
+            if (nodes[c - 'a'] == null) nodes[c - 'a'] = new TrieNode();
+            nodes[c - 'a'].addWord(s.substring(1));
+        }
+        
+        public boolean search(String s) {
+            if (s.length() == 0) {
+                return isword;
+            }
+            char c = s.charAt(0);
+            if (c == '.') {
+                for (TrieNode n : nodes) {
+                    if(n != null && n.search(s.substring(1))) return true;
+                }
+                return false;
+            }
+            else if (c == '*') {
+            	//if * represents 0 characters
+            	String tmp = s.substring(1);
+            	if(search(tmp)) return true;
+            	//if * represents >=1 chars
+            	for (TrieNode n : nodes) {
+                    if(n != null && n.search(s)) return true;
+                }
+                return false;
+            }
+            else {
+                if (nodes[c - 'a'] == null) return false;
+                return nodes[c - 'a'].search(s.substring(1));
+            }
+        }
+    }
+    public void addWord(String word) {
+        trie.addWord(word);
+    }
+
+    public boolean search(String word) {
+        return trie.search(word);
+    }
+}
+
+7. Intersection of Two Arrays I/II
+
+Intersection of Two Arrays I: array nums1 and nums1 with size of m and n
+
+1.if arrays are sorted, we can binary search , for each element in the smaller array, binary search that 
+element in the large array.
+
+2.if nums1 is significantly smaller than nums2, nums2 is in a disk and can not load to memory at once. we should use the 
+hashset method, load everything in nums1 into the set, and divide nums2 into small chuncks to process.
+
+public class Solution {
+    //  use hashset:no sort  O(m + n)
+        public int[] intersection(int[] nums1, int[] nums2) {
+        Set<Integer> set = new HashSet<Integer>();
+        for (int i = 0; i < nums1.length; i ++) { // O(m)
+            set.add(nums1[i]);
+        }
+        Set<Integer> intersection = new HashSet<Integer>();
+        for (int i = 0; i < nums2.length; i++) { // O(n)
+            if (set.contains(nums2[i])) intersection.add(nums2[i]);
+        }
+        int[] result = new int[intersection.size()];
+        int index = 0;
+        for (Integer i : intersection) {
+            result[index++] = i;
+        }
+        return result;
+    }
+}	
+
+Intersection of Two Arrays II: almost same with above problem...
+
+
+8. 蓄水池问题：给一个数组和一个数N， 随机返回该数组中任意一个不大于N的数。
+http://www.geeksforgeeks.org/reservoir-sampling/
+
+public int randome(int[] nums, int n) {
+	
+}
+变种1：给一个l*w的矩阵，要随机取k个点。
+http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=204601&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26searchoption%5B3046%5D%5Bvalue%5D%3D2%26searchoption%5B3046%5D%5Btype%5D%3Dradio%26sortid%3D311
+
+
+9. longest substring with at most K distinct charcaters
+/*
+	aabcabc
+	i  j
+*/
+public class Solution {
+    public int longestSubstring(String s, int k) {
+        int i = 0, j = 0;
+        Map<Character, Integer> count = new HashMap<Character, Integer>();
+        int max = 0;
+        while (j < s.length) {
+        	char c = s.charAt(j++);
+        	count.put(c, count.containsKey(c) ? count.get(c) + 1: 1);
+        	if (count.size() > k) {
+        		while (map.size() > k) {
+        			char c = s.charAt(i++);
+        			if (map.get(c) == 1) map.remove(c);
+        			else map.put(c, map.get(c) - 1);
+        		}
+        	}
+        	max = Math.max(max, j - i);
+        }
+        return max;
+    }
+}
+
+10. Longest Substring with At Least K Repeating Characters(LC 395)
+/*
+s = "ababbc", k = 2
+
+*/
+public class Solution {
+    public int longestSubstring(String s, int k) {
+
+    }
+}
+
+
+10. Find longest arithmetic subsequence in an unsorted array.
+/*
+{1, 7, 10, 15, 27, 29}
+[1, 2]
+[0, 6,]
+
+*/
+public List<Integer> findLongestArithmeticProgression(int[] nums) {
+	
+}
+
+11. Merge Intervals :LC 88
+Given [1,3],[2,6],[8,10],[15,18],
+return [1,6],[8,10],[15,18].
+[8,10]
+/**
+ * Definition for an interval.
+ * public class Interval {
+ *     int start;
+ *     int end;
+ *     Interval() { start = 0; end = 0; }
+ *     Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
+public class Solution {
+    public List<Interval> merge(List<Interval> intervals) {
+    	//first sort intervals if they are not sorted already
+    	List<Interval> result = new ArrayList<Interval>();
+    	if (intervals == null || intervals.size() == 0) return result;
+    	Collections.sort(intervals, new MyComparator());
+    	Interval cur = intervals.get(0);
+    	for (int i = 1; i < intervals.size(); i++) {
+    		Interval tmp = intervals.get(i);
+    		if (cur.end < tmp.start) {
+    			result.add(cur);
+    			cur = tmp;
+    		}
+    		else {
+    			cur.end = Math.max(cur.end, tmp.end);
+    		}
+    	}
+    	result.add(cur);
+    	return result;
+    }
+    class MyComparator implements Comparator<Interval> {
+       // @Override
+    	public int compare(Interval i1, Interval i2) {
+    		return (i1.start == i2.start) ? i1.end - i2.end : i1.start - i2.start;
+    	}
+    }
+}
+
+
+12. Implement Iterator: given iterator of 2 sorted arraylist, implement an iterator to 
+iterator the 2 array in order(sorted)
+
+class SortedIterator{
+	Iterator it1;
+	Iterator it2:
+	List<Integer> list;
+    public SortedIterator(Iterator a, Iterator b){
+    	it1 = a;
+    	it2 = b;
+    }
+    public boolean hasNext() {
+    	return list.size() > 0 || it1.hasNext() || it2.hasNext();
+    }
+    public int next(){
+    	if (list.size() == 0) {
+    		if (!hasNext()) throw new Exception();
+    		if (it1.hasNext()) list.add(it1.next());
+    		if (it2.hasNext()) list.add(it2.next());
+    	}
+    	int num = 0;
+    	if (list.size() == 1) {
+    		num = list.get(0);
+    		list.remove(0);
+    	}
+    	else {
+    		int i = list.get(0) <= list.get(1) ? 0 : 1;
+    		num = list.get(i);
+    		list.remove(i);
+    	}
+    	return num;
+    }
+}
+follow up, if it is a list of sorted arraylists
+
+13. 给一个 二叉树 ， 求最深节点的最小公共父节点。
+http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=199739&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26searchoption%5B3046%5D%5Bvalue%5D%3D2%26searchoption%5B3046%5D%5Btype%5D%3Dradio%26sortid%3D311
+
+http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=199548&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26searchoption%5B3046%5D%5Bvalue%5D%3D2%26searchoption%5B3046%5D%5Btype%5D%3Dradio%26sortid%3D311
+     1
+  2   3
+     5  6    return 3.
+
+       1  
+    2   3
+4      5 6   retrun 1. 
+
+       1  
+    2   3
+4      	   retrun 4. 
+/*
+	bfs : find the last level
+*/
+public TreeNode findLCA(TreeNode root) {
+	Queue<TreeNode> q = new LinkedList<TreeNode>();
+	q.add(root);
+	List<TreeNode> curLevel = null;
+	while (!q.isEmpty()) {
+		int size = q.size();
+		curLevel = new ArrayList<TreeNode>();
+		for (int i = 0; i < size; i++) {
+			TreeNode cur = q.pop();
+			curLevel.add(cur);
+			if (cur.left != null) q.add(cur.left);
+			if (cur.right != null ) q.add(cur.right);
+		}
+	}
+	if (curLevel.size() == 0) return null;
+	if (curLevel.size() == 1) return curLevel.get(0);
+	rerturn findLCA(root, curLevel.get(0), curLevel.get(curLevel.size() - 1));
+}
+
+private TreeNode findLCA (TreeNode root, TreeNode n1, TreeNode n2) {
+	if (root == null) return null;
+	if (root == n1 || root == n2) return root;
+	TreeNode left = findLCA(root.left, n1, n2); 
+	TreeNode right = findLCA(root.right, n1, n2); 
+	if (left != null && right != null) return root;
+	if (left != null) return left;
+	return right;
+}
+
+
+//DFS????????
+private static class Solution {
+        private class ReturnVal {
+            public int depth;   //The depth of the deepest leaves on the current subtree
+            public TreeNode lca;//The lca of the deepest leaves on the current subtree
+
+            public ReturnVal(int d, TreeNode n) {
+                depth = d;
+                lca = n;
+         	}
+        }
+
+        public TreeNode LowestCommonAncestorOfDeepestLeaves(TreeNode root) {
+            ReturnVal res = find(root, 0);
+            return res.lca;
+        }
+        private ReturnVal find(TreeNode root, int depth) {. From 1point 3acres bbs
+            if(root == null) {
+                return new ReturnVal(-1, null);
+            } else {
+                ReturnVal lRes = find(root.left, depth+1);
+                ReturnVal rRes = find(root.right, depth+1);
+
+                if(lRes.depth == rRes.depth) {
+                    return new ReturnVal(lRes.depth==-1?depth:lRes.depth, root);
+                } else {
+                    return new ReturnVal(Math.max(rRes.depth, lRes.depth), rRes.depth>lRes.depth?rRes.lca:lRes.lca);
+                }
+            }
+        }
+}
+
+14. Binary Search Tree Iterator(LC 173)
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+public class BSTIterator {
+    Stack<TreeNode> stack;
+    
+    public BSTIterator(TreeNode root) {
+        stack = new Stack<TreeNode>();
+        while (root != null) {
+            stack.push(root);
+            root = root.left;
+        }
+    }
+
+    /** @return whether we have a next smallest number */
+    public boolean hasNext() {
+        return !stack.isEmpty();
+    }
+
+    /** @return the next smallest number */
+    public int next() {
+        if (!hasNext()) return 0;
+        TreeNode cur = stack.pop();
+        int val = cur.val;
+        TreeNode node = cur.right;
+        while (node != null) {
+            stack.push(node);
+            node = node.left;
+        }
+        return cur.val;
+    }
+}
+
+15. BST to Doubly LinkedList
+
+
+public Node turnToList(TreeNode root) {
+		
+}
+
+
+16. Reversely print the singly linked list without modifying the list. Spce complexity should be O(logn)
+
+/*
+	1 -> 2 -> 3-> 4-> 5 ->null
+		 i
+	j
+*/
+
+public void print(Node head) {
+	if (head == null) return;
+	if (head.next == null) {
+		System.out.println(head.val);
+		return;
+	}
+	Node fast = head, slow = head.next;
+	while (fast != null && fast.next != null) {
+		fast = fast.next.next;
+		slow = slow.next;
+	}
+	print (slow);
+	print (head);
+}
+
+17. The Skyline Problem  218	
+
+18.
+
+next ????FB昂赛特 求问Reference 
+4. Design autocomplete in a search engine
+
+5. behavior question. 最后的coding是
+
+6.design  pocketmon ,  google search suggestion.
 Map store previous values ( O(N) )
 把第一题extend到2D。给一个matrix, all elements are positive，问有没有个sub rectangle加起来和等于target。return true/false。
 Lz听到题目有点懵，认真调整心态，解决之。先写了个cumulative sum。把所有从0,0 到i,j的和算在新的matrix的i,j上。方便之后算head到tail的sub rectangle的和。这一步O(n^2)
 
 
-350. Intersection of Two Arrays II
-Sort, then find duplicates
-.鏈枃鍘熷垱鑷�1point3acres璁哄潧
 
-给一个字典包括很多字符串(e.g., abcd, dhfyf)，然后给定一个字符串查看字典中是否包含这个字符串。字符串中可能包括*，*可以匹配任何字符。我用的Trie。
 Task那道题，很多面经都提到过。就是比如给你一串task，再给一个cooldown，执行每个task需要时间1，两个相同task之间必须至少相距cooldown的时间，问执行所有task总共需要多少时间。比如执行如下task：12323，假设cooldown是3。总共需要的时间应该是 1 2 3 _ _ 2 3，也就是7个单位的时间。再比如 1242353，假设cool down是4，那总共时间就是 1 2 4 _ _ _ 2 3 5 _ _ _ 3，也就是13个单位的时间
 基于1，给出最优的排列，使得字符串最短。
 

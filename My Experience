@@ -1,6 +1,7 @@
 My Experience:
 
 Zillow :
+phone : 
 1.Find duplicated URL:
 Given a file (size is huge) with urls. How do you find a duplicated ones?
 
@@ -13,12 +14,20 @@ Follow up: how do you improve you function to avoid reading all files.
      2)Tic tac toe (no coding ,just design the best data structure to store the board, note here the board is huge, so I don’t think a 2D array is good)
 
 Yelp :
+phone: min stack
 1.	I forgot…easy, something to do with hashmap…
 2.	Implement a hashmap.  A lot of follow ups . basically trying to get n
 3.	Fibinacci (DP solution, O(1) space) 
 4.	Find 
 
 Oscar:
+phone : 
+onsite:
 1.	Graph clone
-2.	Implement min stack
-3.	System design : 
+2.	Implement indexed queue	
+3.	System design : API getRecord from huge database. 
+
+
+Glassdoor:
+phone1: sterilize /deserilize tree
+phone2: int getNumberofDays(int year1, int month1, int day1, int year2, int month2, int day2)
