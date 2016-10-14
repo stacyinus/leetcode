@@ -194,11 +194,93 @@ public void partition(Point[] p, int k, int s, int e) {
 面试官对限制条件说得并不是很清楚，就说你写吧。
 跟他简单商量了一下，最后我只考虑了leading/trailing spaces和小数点，
 指数的情况我问了，他说不用考虑了。没有LC上的难。
+Valid Number (without '.' and with 'e')
 
 
 8.Nested List Weight Sum I/II, LC 339/364.
-	
 
+Given a nested list of integers, return the sum of all integers in the list weighted by their depth.
+Each element is either an integer, or a list -- whose elements may also be integers or other lists.
+Example 1:
+Given the list [[1,1],2,[1,1]], return 10. (four 1's at depth 2, one 2 at depth 1)
+Example 2:
+Given the list [1,[4,[6]]], return 27. (one 1 at depth 1, one 4 at depth 2, and one 6 at depth 3; 1 + 4*2 + 6*3 = 27)
+	1*1 + 4 *2 + 6 *3 =1+
+/**
+ * // This is the interface that allows for creating nested lists.
+ * // You should not implement it, or speculate about its implementation
+ * public interface NestedInteger {
+ *
+ *     // @return true if this NestedInteger holds a single integer, rather than a nested list.
+ *     public boolean isInteger();
+ *
+ *     // @return the single integer that this NestedInteger holds, if it holds a single integer
+ *     // Return null if this NestedInteger holds a nested list
+ *     public Integer getInteger();
+ *
+ *     // @return the nested list that this NestedInteger holds, if it holds a nested list
+ *     // Return null if this NestedInteger holds a single integer
+ *     public List<NestedInteger> getList();
+ * }
+ */
+public class Solution {
+    public int depthSum(List<NestedInteger> nestedList) {
+    	return depthSumHelper(nestedList, 1);
+    }
+    private int depthSumHelper(List<NestedInteger> nestedList, int depth) {
+    	int sum = 0;
+    	for (int i = 0; i < nestedList.size(); i++) {
+    		NestedInteger cur = nestedList.get(i);
+    		if (cur.isInteger()) {
+    			sum += depth * cur.getInteger();
+    		}
+    		else {
+    			sum += depthSumHelper(cur.getList(), depth + 1);
+    		}
+    	}
+    	return sum;
+    }
+}
+
+Given a nested list of integers, return the sum of all integers in the list weighted by their depth.
+Each element is either an integer, or a list -- whose elements may also be integers or other lists.
+Different from the previous question where weight is increasing from root to leaf, now the weight is defined from bottom up. i.e., the leaf level integers have weight 1, and the root level integers have the largest weight.
+Example 1:
+Given the list [[1,1],2,[1,1]], return 8. (four 1's at depth 1, one 2 at depth 2)
+
+Example 2:
+Given the list [1,[4,[6]]], return 17. (one 1 at depth 3, one 4 at depth 2, and one 6 at depth 1; 1*3 + 4*2 + 6*1 = 17) 
+public class Solution {
+	class ReturnValue {
+		int depth;
+		int sum; 
+		public ReturnValue () {
+			depth = 1;
+			sum = 0;
+		}
+	}
+    public int depthSum(List<NestedInteger> nestedList) {
+    	return depthSumHelper(nestedList, 1).sum;
+    }
+    private ReturnValue depthSumHelper(List<NestedInteger> nestedList) {
+    	int levelSum = 0;
+    	ReturnValue rv = new ReturnValue();
+    	for (int i = 0; i < nestedList.size(); i++) {
+    		NestedInteger cur = nestedList.get(i);
+    		if (cur.isInteger()) {
+    			levelSum += cur.getInteger();
+    		}
+    		else {
+    			ReturnValue tmp = depthSumHelper(cur.getList());
+    			rv.sum += tmp.sum;
+    			rv.depth = tmp.depth + 1;
+    		}
+    	}
+    	rv.sum = rv.sum + levelSum * rv.depth;
+    	return rv;
+    }
+}
+ 	
 9. pow(a,b) LC50
 
 public double pow(double x, int n) {
@@ -216,16 +298,18 @@ public double pow(double x, int n) {
 }
 
 10. Tree Level Traversal
+
+第二题tree level traversal， follow up 是带间距的输出. 
 /**
 * Sample input:
 *
-*          1
-*         / \. 鐣欏鐢宠璁哄潧-涓€浜╀笁鍒嗗湴
-*        3   5. Waral 鍗氬鏈夋洿澶氭枃绔�,
-*       /   / \
-*      2   4   7
-*     / \   \. From 1point 3acres bbs
-*    9   6   8.1point3acres缃�
+*           1
+*         /  \
+*        3    5
+*       /    / \
+*      2    4   7
+*     / \   \
+*    9   6   8
 
 *
 * Expected output:
@@ -233,14 +317,7 @@ public double pow(double x, int n) {
 *    3 5
 *    2 4 7
 *    9 6 8
-*    ==========
-* follow up expected output
-*          1
-*        3   5
-*      2   4   7
-*    9   6   8
 
-follow up 是带间距的输出
 public void printTree(TreeNode root) {
 	Queue<TreeNode> q = new LinkedList<TreeNode>();
 	q.offer(root);
@@ -255,33 +332,195 @@ public void printTree(TreeNode root) {
 		System.out.println();
 	}
 }
-private int 
+follow up 1: 带间距的输出
+*    ==========
+* follow up expected output
+*          1
+*        3   5
+*      2   64   7
+*    9   6   8
+	 0 1 2 3 4 5   
+class Node {
+	int col;
+	TreeNode node;
+
+	public Node (int c, TreeNode n) {
+		col = c;
+		n = node;
+	}
+}
+public void printTree(TreeNode root) {
+	if (root == null) return;
+	int left = 0;
+	TreeNode tmp = root;
+	while (tmp != null) {
+		tmp = tmp.left;
+		left++;
+	}
+	Node newroot = new Node(left--, root);
+	Queue<Node> q = new LinkedList<Node>();
+	q.offer(newroot);
+	while (!q.isEmpty()) {
+		int size = q.size();
+		int pre = 0;
+		for (int i = 0 ; i < size ; i ++) {
+			Node cur = q.pop();
+			int col = cur.col;
+			TreeNode n = cur.node;
+			while (col + 1 > pre) {
+				System.out.print("  ");
+				col --;
+			}
+			if (n != null) {
+				System.out.print(n.val + " ");
+				q.offer( new Node(col - 1, n.left));
+				q.offer( new Node(col + 1, n.right));
+			}
+			pre = col;
+			System.out.print("  ");
+		}
+		System.out.println();
+	}
+}
+
 follow up 是level order print 的zigzag 打印 就是alternative的left to right 和right to left的打印
 
 11. Tournament tree 求 second minimum。就是胜者树找第二名的问题。
-这次面试之前我都根本不知道胜者树这种东西。。
 这题我先给了一个DFS O(n)的解法，不过小哥不满意，让再想想，但是想了大概5分钟还是不行。
 然后我问小哥要提示，小哥说第二名只能被最后的冠军打败。
 所以我就想到只需要考虑被root打败过的node就可以了，就想到了O(logn)的解法，写出来了。
+
 
 
 12. Implement a data structure that supports: add(), remove(), removeRand().
 
 
 13. compute mean of n data from streaming in real time
+class Mean {
+	double mean;
+	int n ;
+	public Mean() {
+		mean = 0;
+		n = 0;
+	}
+	public double getMean(int x) {
+		mean = ( mean * n + x ) / (n+1);
+		n = n + 1;
+		return mean;
+	}
 
+}
 
 14. compute variance of n data from streaming in real time
 
 
-
-
+15. Find the Influencer LC 277 (given a matrix and look for O(n) solution)
+	method 1 use graph:
+	populate graph takes O(n2) time
+	public 
 16. binary tree (not BST)，给两个节点，求lowest common ancestor。与原题区别在于每个node有parent pointer
 
 18. 版上常见的那个interval题目， 要实现一个接口，实现addInterval和getTotalCoverage两个函数。 基本算是leetcode的两个interval题目的变种， 第一遍bug free写了一个add O(n)和get O(1)的方法， 然后交流了一下之后做了些小优化。 followup是问有没有让add方法更efficient的写法, 然后我说了下add O(1), get O(nlogn)的方法， 然后又讨论了一些优化的问题。
 
 
+19. sqrt LC 69
+public class Solution {
+    public int mySqrt(int x) {
+        
+    }
+}
+
+
 onsite：
+
+
+1. Input: Billions of training examples in a file. Each example has one of 4 class labels
+Output: Select Mc random samples from each class c={1, ..., 4}
+简单版本： Get M Samples from a stream。相当于只有一个class
+
+2. derive cost function for logistic regression; ask other questions related to machine learning(e.g., regularization, overfitting, CTR).
+
+
+Coding 1
+Implement hash table. Follow up is multi-threading. Waral 鍗氬鏈夋洿澶氭枃绔�,
+Coding 2
+Convert multi-level list to a single list. 地里有类似的题，就是节点有up, down, left, right指针，然后变成一个链表，只用left/right pointer。这题不难，但有些corner case 要注意
+Design
+Shop top 500 exception for a datacenter
+
+其他还有 technical communication and host manager, 没什么好说的。
+总的来说，L家的题目不难，但自己multi-threading不熟，写code纠结了很长时间。 HR的反馈也是这轮有问题。
+
+
+
+
+Coding 1insert interval
+一个描述非常复杂的dfs, parse string， 很简单. 涓€浜�-涓夊垎-鍦帮紝鐙鍙戝竷
+鏉ユ簮涓€浜�.涓夊垎鍦拌鍧�. 
+Coding 2. visit 1point3acres.com for more.
+remove/add/getRandom O(1)
+用这个解法做的, feedback 是这个不是O(1), 面试官没听明白.鏈枃鍘熷垱鑷�1point3acres璁哄潧
+https://discuss.leetcode.com/top ... -follow-up-131-ms/2
+多维矩阵求和
+.1point3acres缃�
+Design 
+设计一个找系统里面所有符合要求文件的function, 要求能不停的添加新的条件
+type linkedin.com url 后发生什么, 这轮说概念上有些confusion
+
+
+
+
+1. 一个小哥模拟自己是新人，要我带他做一个项目。也就是讲一个我做过的项目，基本就是不断讲解，再回答他的提问。
+2. 讲一个自己做过的项目。肯定不能重复。于是说了一个在学校时做的小组Hadoop项目，作为team leader为团队和项目做了什么贡献。面试官好像更在意技术以外的，问了很多和组员沟通的细节。后面问了些HR问题“为啥来这疙瘩？”。
+午饭（最近他们要搬到新楼了，很兴奋。陪饭小哥说不用担心，随便聊。就谈了下体育兴趣，还有科技见闻。）
+3.罗马字转数字，数字转罗马。先给出我个人最喜欢的写法。考官不喜欢，非要用他的，纠结了一下。. 鍥磋鎴戜滑@1point 3 acres
+4.四向链表（上下左右）转双向链表（左右）。输入是一头一尾。放平链表后（中间可以乱序序），保证头尾元素还是所给的指针。
+先说了BFS的想法。然后要求用O（1）做空间。就是不管一切的放平了。然后把头尾挑出来，放到列首和列尾。. 1point 3acres 璁哄潧
+5.设计短网址服务器构架。讨论流量，服务器架构和数据库架构。纯设计，半点代码都不碰。各种挑战。
+鏉ユ簮涓€浜�.涓夊垎鍦拌鍧�. 
+之前HR说一共六轮其实包括了午饭，其实只有五轮。
+
+
+领英的onsite的时候，会收到一个小礼物，是自己Linkedin的联系人图谱，挺不错的。
+L家的onsite有如下几轮
+2x 写程序. visit 1point3acres.com for more.
+1x 技术交流
+1x 设计
+1x 东家介绍
+一般都是每轮两个面试官
+
+技术轮 1： 
+第一题, 罗马数字和拉丁数字的互相转换，花了不少时间在讨论规则上。
+记不清第二题了
+
+技术轮 2：
+第一题，multi-sum count: 输入一个数组，和一个目标数字，求有多少种方式能够用数组里面的数字求和得到目标数字
+第二题，leaf print tree: 给一个树，每一轮把所有的叶子输出出来，并且假象拿掉，然后再次输出，再次假象拿掉叶节点，直到全树输出完成为止。要求不能改变树本身
+
+技术交流： 
+这一轮是L家的特色轮了。是要求求职者以组里老人的身份，给两个以组里新人角色出现的面试官讲要一个自己做过的项目，要求是讲完后两个“新人”可以对项目有足够的了解，一个上手干活了。
+这一轮对于之前在公司要已经带过新人的求职者要应该属于没有太多难度了。不过要注意把自己项目细节和黑话略去，以方便“新人”学习和理解
+. 鐣欏鐢宠璁哄潧-涓€浜╀笁鍒嗗湴
+设计轮：
+tiny url：这个题目的面经很多了，就不多说了
+
+东家介绍：
+这一轮是L家的中层头头来介绍自己的部门，同时也问各种behavior问题。
+
+
+
+
+coding:insert a node in binart search treefind influencer
+print binary tree level by level
+merge n sorted lists
+permutation 
+
+
+design:
+tinyURL. 1point3acres.com/bbs
+
+其他的都是communication，讲讲project之类的
+
 普通的5轮+lunch
 两轮coding（都是题库题，但是会问各种细节，边界条件，为什么这么做，最后还跑了test case）：
 1LCA（和lc不太一样，是那种自己带父节点指针的那种）. 鍥磋鎴戜滑@1point 3 acres
@@ -422,3 +661,19 @@ In shared articles, some URLs maybecontained. Design a system that can return to
 .1point3acres缃�
 6.       6. Technical communication. 国人大哥+烙印。讲自己做过的一个项目。
 LinkedIn 明显感觉不像是在招人。面试官都是资料较浅的，懂的东西也不是很多的样子，有些还挺拽的。两天后悲剧。
+
+
+Linkedin onsite interview MTV-google 1point3acres
+1. code questions: given a stream of integer, randomly choose k elements from n, ensure each value among k has equal probability.  Given a mutlidenmentional arrays, compute the sum of all values. Given API getValue(dn, dn-1.... d0) dn = index at denmention
+
+2. technique communcation, describe favorite project
+3. code problems: serialize and deserialize a BST 
+4. host manager session: describe the most chanllenging project and how you handle challenges, why choose Linkedin over other companies
+5. system design: design a system to monitors the top exceptions during last hour, last 24 hours. 1point 3acres 璁哄潧
+
+
+
+
+
+System Design Summary 
+http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=175538&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26searchoption%5B3046%5D%5Bvalue%5D%3D6%26searchoption%5B3046%5D%5Btype%5D%3Dradio%26sortid%3D311
