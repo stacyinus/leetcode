@@ -42,7 +42,8 @@ public class Solution {
 
 ["abcd", "dcba", "dcbaee","eedcba","","a","aaa"]
 abcd, dcba
-
+ab ddba
+ab back
 eedcba(i th), if s1 is palindrome, then check if the reverse of s2 exists in the list , if so, j + i
 			  if s2 is palindrome,  check if reverse of s1 exists in the list, i + j
 abcd

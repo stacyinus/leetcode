@@ -25,9 +25,23 @@ phone :
 onsite:
 1.	Graph clone
 2.	Implement indexed queue	
-3.	System design : API getRecord from huge database. 
+3.	System design : getRecord from huge database. 
 
 
 Glassdoor:
 phone1: sterilize /deserilize tree
 phone2: int getNumberofDays(int year1, int month1, int day1, int year2, int month2, int day2)
+
+
+amazon:
+
+SDEII
+Ambiguity:
+
+Scope of Influence:
+
+Advise: Mentorship 
+
+
+
+Automation:
