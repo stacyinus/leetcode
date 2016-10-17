@@ -726,15 +726,196 @@ class solution {
 
 
 19. sqrt LC 69
-public class Solution {
     public int mySqrt(int x) {
-        
+        if(x<1)
+        	return x;
+        int s = 1, e=x;
+        while(s+1<e){
+        	int m = s+(e-s)/2;
+        	if(m == x/m)
+        		return m;
+        	else if(m > x/m)
+        		e = m;
+        	else
+        		s = m;
+        }
+        return s;
     }
+
+20. Factor Combinations
+
+Numbers can be regarded as product of its factors. For example,
+8 = 2 x 2 x 2;
+  = 2 x 4.
+Write a function that takes an integer n and return all possible combinations of its factors.
+Note: 
+Each combination's factors must be sorted ascending, for example: The factors of 2 and 6 is [2, 6], not [6, 2].
+You may assume that n is always positive.
+Factors should be greater than 1 and less than n.
+Examples: 
+input: 1
+output: 
+[]
+input: 37
+output: 
+[]
+input: 12
+output:
+[
+  [2, 6],
+  [2, 2, 3],
+  [3, 4]
+]
+input: 32
+output:
+[
+  [2, 16],
+  [2, 2, 8],
+  [2, 2, 2, 4],
+  [2, 2, 2, 2, 2],
+  [2, 4, 4],
+  [4, 8]
+]
+/*
+	12
+
+	2, 6
+	   [2,3]
+
+ 	32,					
+ 	2, 16		[2]
+ 	   [2,8]
+ 	      [2,4]	8,2
+ 	      	 [2,2]
+ 	4, 8
+
+ 	if n < 2, return []
+ 	for i from 2 to sqrt(n)
+ 		if (n % i == 0) {
+ 			List<integer>
+ 		}
+*/
+public List<List<Integer>> getFactors(int n) {
+	List<List<Integer>> result = new ArrayList<List<Integer>>();
+	if (n < 4) return result;
+	helper(n, 2, new ArrayList<Integer>(), result);
+	return result;
 }
 
+private void helper(int n, int start,  List<Integer> list, List<List<Integer>> result) {
+	if (n == 1) {
+		if (list.size() > 0) {
+			result.add(new ArrayList<Integer>(list));
+		} 
+		return;
+	}
+	for (int i = start; i <= n; i++) {
+		if (n % i == 0) {
+			list.add(i);
+			helper(n / i, i, list, result); //16,2, 4
+			list.remove(list.size());
+		}
+	}
+}
+http://buttercola.blogspot.com/2015/08/leetcode-factor-combinations.html
+
+21. How to implement a stack which will support following operations in O(1) time complexity?
+1) push() which adds an element to the top of stack.
+2) pop() which removes an element from top of stack.
+3) findMiddle() which will return middle element of the stack.
+4) deleteMiddle() which will delete the middle element.
+Push and pop are standard stack operations.
+1, 2, 3, 4,
+   m
+package LeetCode;
+
+class MiddleStack  {
+	class Node {
+		int val;
+		Node next;
+		Node prev;
+		public Node(int v) {
+			val = v;
+		}
+	} 
+    Node cur = null;
+    Node mid = null;
+    int size = 0;
+	public void push(int v) {
+		size++;
+		if (cur == null) {
+			cur = new Node(v);
+			mid = cur;
+		}
+		else {
+			cur.next = new Node(v);
+			cur.next.prev = cur;
+			if (size % 2 != 0) mid = mid.next;
+			cur = cur.next;
+		}
+		System.out.println("push : " + v);
+	}
+	public int pop() {
+		size--;
+		Node node = cur;
+		if (size == 0) {
+			mid = null;
+			cur = null;
+			return node.val;
+		}
+		cur = cur.prev;
+		cur.next = null;
+		if (size % 2 == 0) mid = mid.prev;
+		System.out.println("Pop : " + node.val);
+		return node.val;
+	}
+	public int findMiddle()  {
+		System.out.println("Find Middle : " + mid.val);
+		return mid.val;
+	}
+
+	public int deleteMiddle() {
+		size --;
+		Node node = mid;
+		Node prev = mid.prev;
+		Node next = mid.next;
+		if (size == 0) {
+			mid = null;
+			cur = null;
+			return node.val;
+		}
+		if (prev != null) {
+			prev.next = mid.next;
+		}
+		if (next != null) {
+			next.prev = prev;
+		}
+		if (size % 2 == 0) {
+			mid = prev;
+		}
+		else {
+			mid = prev == null ? cur :prev.next;
+		}
+		System.out.println("Delete middle : " + node.val);
+		return node.val;
+	}
+	
+	@Override
+	public String toString() {
+		Node tmp = cur;
+		String s = "[";
+		while (tmp != null) {
+			s += tmp.val + ",";
+			tmp = tmp.prev;
+		}
+		s += "]";
+		return s;
+	}
+}
 
 class 
 onsite：
+
 
 
 1. Input: Billions of training examples in a file. Each example has one of 4 class labels
