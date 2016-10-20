@@ -34,6 +34,24 @@ phone2: int getNumberofDays(int year1, int month1, int day1, int year2, int mont
 
 
 amazon:
+projects: 
+
+1. HTB list: design, tech lead, communication to users, conflict with 
+This a fullstack project I handled.
+internal tool , add business value
+3 parts: display, customization , altert
+front end:
+UI: WindowsForm
+back end: MVC model + SQL server 
+
+search + email alert 
+
+
+WindowsForm					relational db
+miss deadline? 
+
+
+2: Sharepoint : ambiguity requirements
 
 SDEII
 Ambiguity:
