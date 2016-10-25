@@ -529,8 +529,187 @@ public void print(Node head) {
 
 17. The Skyline Problem  218	
 
-18.
+public class Solution {
+    class Node implements Comparable{
+        int x;
+        int y;
+        boolean start;
+        public Node(int x, int y, boolean start) {
+            this.x = x;
+            this.y = y;
+            this.start = start;
+        }
+        @Override
+        public int compareTo(Node n) {
+            if (y == n.y) {
+                if (start == n.start)   return 0;
+                if (start) return 1;
+                return -1;
+            }
+            return n.y - y;
+        }
+    }
+    public List<int[]> getSkyline(int[][] buildings) {
+        List<int[]> result = new ArrayList<int[]>();
+        List<Node> starts = new ArrayList<Node>();
+        List<Node> ends = new ArrayList<Node>();
+        for (int i = 0; i < buildings.length ; i ++) {
+            starts.add(new Node (buildings[0], buildings[2], true));
+            ends.add(new Node (buildings[1], buildings[2], false));
+        }
+        starts.addAll(ends);
+        PriorityQueue<Node> q = PriorityQueue<Node>();
+        q.offer(0);
+        int pre = 0, cur = 0;
+        for (int i = 0 ; i < list.size(); i++) {
+            Node toAdd = starts.get(i);
+            cur = q.peek();
+            if (!toAdd.start) {
+                Node toPop = q.pop();
+                result.add(new int[2] {toPop.});
+            }
+            q.offer(n.y);
+            cur = q.peek().y;
+            if (pre != cur) {
+                
+            }
+            
+        }
+        result.add();
+    }
+}
 
+18. Add binary LC67
+
+11100 - a
+  101 - s2
+    
+public class Solution {
+    public String addBinary(String a, String b) {
+    	int i = a.length() - 1, j = b.length() - 1;
+    	StringBuilder sb = new StringBuilder();
+    	boolean carry = false;
+    	while (i >= 0 || j >= 0) {
+    		int ca = i >= 0 ? a.charAt(i--) - '0' : 0;
+    		int cb = j >= 0 ? b.charAt(j--) - '0' : 0;
+    		int c = carry? (ca + cb + 1) : (ca + cb);
+    		carry = c > 1;
+    		c = c >= 2? c - 2 : c;
+    		sb.append((char) (c + '0'));
+    	}
+    	if (carry) sb.append('1');
+    	return sb.reverse().toString();
+    }
+}
+
+public class Solution {
+    public String addBinary(String a, String b) {
+    	int i = a.length() - 1, j = b.length() - 1;
+    	StringBuilder sb = new StringBuilder();
+    	int carry = 0;
+    	while (i >= 0 || j >= 0) {
+    		int ca = i >= 0 ? a.charAt(i--) - '0' : 0;
+    		int cb = j >= 0 ? b.charAt(j--) - '0' : 0;
+    		int c = ca ^ cb ^ carry;
+    		carry = (ca & cb) | (ca & carry) | (cb & carry);
+    		sb.append((char) (c + '0'));
+    	}
+    	if (carry > 0) sb.append('1');
+    	return sb.reverse().toString();
+    }
+}	
+
+19. Regular Expression 
+
+20. Kth Largest Element in an Array LC215
+3,2,1,5,6,4
+
+public class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
+        for (int i = 0; i < k; i ++) {
+            pq.offer(nums[i]);
+        }
+        for (int i = k; i < nums.length; i ++) {
+            if (nums[i] >= pq.peek()) {
+                pq.poll();
+                pq.offer(nums[i]);
+            }
+        }
+        return pq.peek();
+    }
+		// partition
+	public int findKthLargest(int[] nums, int k) {
+	    return quickSelection(nums, 0, nums.length - 1, nums.length - k + 1);
+	}
+	/*
+     2,1
+     1,2 - 1
+	*/
+	public int findKthSmallest(int[] input, int s, int e, int k)  {// 1,2,3,4,5,6
+	    int i = partition(input, s, e);
+	    if (i + 1 == k) return input[i];//
+	    if (i + 1 < k) return quickSelection(input, i + 1, e, k);//([2,1], 1,1,1)
+	    return quickSelection(input, s, i - 1, k);
+	}
+	    
+	    public int partition(int[] input, int s, int e) {//0,1,2,6,5
+	    	//System.out.println("Current array: " + Arrays.toString(input));
+	    	int p = input[s];
+	    	while (s < e) {
+	    		while (s < e && input[e] >= p) {
+	    			e--;
+	    		}
+	    		input[s] = input[e];
+	    		while (s < e && input[s] <= p) {
+	    			s++;
+	    		}
+	    		input[e] = input[s];
+	    	}
+	    	input[s] = p;
+	    	return s;
+	    }
+}
+
+
+21. Letter Combinations of a Phone Number LC17
+/* "3"
+2 - a,b,c
+3 - ad,ae,af
+*/
+public class Solution {
+
+    public List<String> letterCombinations(String digits) {
+        if (digits == null || digits.length() == 0)  return new ArrayList<String>();
+        HashMap<Character, List<String>> map = new HashMap<Character, List<String>>();
+        map.put('2', Arrays.asList("a","b","c") );
+        map.put('3', Arrays.asList("d","e","f") );
+        map.put('4', Arrays.asList("g","h","i") );
+        map.put('5', Arrays.asList("j","k","l") );
+        map.put('6', Arrays.asList("m","n","o") );
+        map.put('7', Arrays.asList("p","q","r","s") );
+        map.put('8', Arrays.asList("t","u","v") );
+        map.put('9', Arrays.asList("w","x","y","z") );
+
+        List<String> result = new ArrayList<String> (map.get(digits.charAt(0)));
+
+    }
+
+    private void helper(String digits, List<String> result, String tmp) {
+    	if (digits.length() == 0) {
+    		result.add(tmp);
+    		return;
+    	}
+    	List<String> chars = map.get(digits.charAt(0));
+    	for (char c : chars) {
+    		for (String s : tmp) {
+    			for (String t : chars) {
+    				tmp2.add(s + t);
+   				}
+   			}
+    	}
+    	helper(digit.substring(1), result, tmp2);
+    }
 next ????FB昂赛特 求问Reference 
 4. Design autocomplete in a search engine
 
@@ -616,7 +795,7 @@ Smallest subarray with sum greater than a given value:
 
 flatten nested array
 
-215. Kth Largest Element in an Array
+
 
 114. Flatten Binary Tree to Linked List
 Linked list needs to be formed as a cycle
