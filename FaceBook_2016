@@ -1,3 +1,4 @@
+
 http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=203983&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26sortid%3D311
 
 1. 3Sum
@@ -6,15 +7,10 @@ http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=203983&extra=page%3
 /*
 s = "apple bee",
 dict = ["apple", "bee", "app"].
-a pplebee
-app lebee
-
-	apple bee
-   100101 0	
-    j - i + 1 = max
-    max + i - 1
+aaaaaaaaa
+[b]
 */
-//too slow : this is dfs but we can improve using DP
+//On^m
 public class Solution {
     public boolean wordBreak(String s, Set<String> wordDict) {
         if (wordDict.contains(s)) return true;
@@ -56,7 +52,58 @@ public class Solution {
     	return a[s.length];
     }
 }
-
+follow up: what if you want to return just one set of word break
+public class Solution {
+    public String wordBreak(String s, Set<String> wordDict) {
+        boolean[] canbreak = new boolean[s.length() + 1];//canbreak[i] = true meaning s.substring(0, i) is true
+        int[] path = new int[s.length() + 1];
+        canbreak[0] = true;
+        path[0] = -1;
+        for (int i = 1; i < canbreak.length; i++) {
+            for (int j = 0; j <= i; j++ ) {
+                if (canbreak[j] && wordDict.contains(s.substring(j,i))) {
+                    canbreak[i] = true;
+                    path[i] = j;//j - i
+                    break;
+                }    
+            }
+        }
+        if (!canbreak[s.length()]) return "";
+        List<String> list = new ArrayList<String>();
+        int i = s.length(), j = path[i];
+        while (j >= 0) {
+            list.add(s.substring(j,i));
+            i = j;
+            j = path[i];
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int k = list.size() - 1; k >= 0; k --) {
+            sb.append(list.get(k));
+            if (k != 0) sb.append(" ");
+        }
+        return sb.toString();
+    }
+}
+public class Solution {
+    public boolean wordBreak(String s, Set<String> wordDict) {
+        boolean[] a = new boolean[s.length + 1];
+        a[0] = true; 
+        int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+        for (String t: wordDict) {
+            min = Math.min(s.length(), min);
+            max = Math.max(s.length(), max);
+        }
+        for (int i = min; i < a.length; i++) {
+            for (int j = i - min; j >= 0 && i - j  <= max ; j--) {
+                if (a[j] && wordDict.contains(s.substring(j, i))) {
+                    a[i] = true;
+                    break;
+                }
+            }
+        }
+        return a[s.length];
+    }
+}
 3. Word Break II
 /*
 DP Memory search
@@ -619,8 +666,72 @@ public class Solution {
     }
 }	
 
-19. Regular Expression 
+19. Regular Expression LC10
 
+public class Solution {
+    public boolean isMatch(String s, String p) {
+        //System.out.println("Matching " + s + " with " + p);
+        if (p.length() == 0) return s.length() == 0;
+        if (s.length() == 0) return p.length() > 1 && p.charAt(1) == '*' && isMatch(s, p.substring(2));
+        if (p.charAt(0) == '*') return false;
+        if (p.length() > 1 && p.charAt(1) == '*') {
+            if (isMatch(s, p.substring(2))) return true;
+            for (int i = 0 ; i < s.length(); i ++) {
+                if (s.charAt(i) == p.charAt(0) || p.charAt(0) == '.') {
+                    if (isMatch(s.substring(i + 1), p.substring(2))) return true;
+                }
+                else return false;
+            }
+        }
+        else if (s.charAt(0) == p.charAt(0) || p.charAt(0) == '.') {
+            return isMatch(s.substring(1), p.substring(1));
+        }
+        return false;
+    }
+}
+
+1, If p.charAt(j) == s.charAt(i) :  dp[i][j] = dp[i-1][j-1];
+2, If p.charAt(j) == '.' : dp[i][j] = dp[i-1][j-1];
+3, If p.charAt(j) == '*': 
+   here are two sub conditions:
+               1   if p.charAt(j-1) != s.charAt(i) : dp[i][j] = dp[i][j-2]  //in this case, a* only counts as empty
+               2   if p.charAt(i-1) == s.charAt(i) or p.charAt(i-1) == '.':
+                              dp[i][j] = dp[i-1][j]    //in this case, a* counts as multiple a 
+                           or dp[i][j] = dp[i][j-1]   // in this case, a* counts as single a
+                           or dp[i][j] = dp[i][j-2]   // in this case, a* counts as empty
+Here is the solution
+
+public boolean isMatch(String s, String p) {
+
+    if (s == null || p == null) {
+        return false;
+    }
+    boolean[][] dp = new boolean[s.length()+1][p.length()+1];
+    dp[0][0] = true;
+    for (int i = 0; i < p.length(); i++) {
+        if (p.charAt(i) == '*' && dp[0][i-1]) {
+            dp[0][i+1] = true;
+        }
+    }
+    for (int i = 0 ; i < s.length(); i++) {
+        for (int j = 0; j < p.length(); j++) {
+            if (p.charAt(j) == '.') {
+                dp[i+1][j+1] = dp[i][j];
+            }
+            if (p.charAt(j) == s.charAt(i)) {
+                dp[i+1][j+1] = dp[i][j];
+            }
+            if (p.charAt(j) == '*') {
+                if (p.charAt(j-1) != s.charAt(i) && p.charAt(j-1) != '.') {
+                    dp[i+1][j+1] = dp[i+1][j-1];
+                } else {
+                    dp[i+1][j+1] = (dp[i+1][j] || dp[i][j+1] || dp[i+1][j-1]);
+                }
+            }
+        }
+    }
+    return dp[s.length()][p.length()];
+}
 20. Kth Largest Element in an Array LC215
 3,2,1,5,6,4
 
@@ -734,6 +845,131 @@ public class Solution {
     }
     
 }
+
+23. LC278 First Bad Version
+public class Solution extends VersionControl {
+    public int firstBadVersion(int n) {
+        int s = 1, e = n;
+        while (s < e) {
+            int m = s + (e - s)/2;
+            if (isBadVersion(m)) e = m;
+            else s = m + 1;
+        }
+        return s;
+    }
+}
+
+
+24. Binary Tree to Doubly Linked List (in order),  end is connect to head.
+public Node turnToList(TreeNode root) {
+    
+}
+public Node turnToList (TreeNode root) {
+    if (root == null) return null;
+    Node head = new Node(root.val);
+    Node left = turnToList(root.left);
+    Node right = turnToList(root.right);
+    if (left != null) {
+        head.next = left;
+        left.pre = head;
+        if (right != null) {
+            while (left.next != null) {
+                left = left.next;
+            }   
+            left.next = right;  
+            right.pre = left;
+        }
+    }
+    else if (right != null){
+        head.next = right;
+        right.pre = head;
+    }
+    return head;
+}
+
+25. Doubly Linked List to balanced  tree.
+
+
+
+26. largest size of island instead of number of islands (LC 200)
+
+public class Solution {
+    public int largestSizeIslands(char[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) return 0;
+        int max = 0;
+        boolean[][] visited = new boolean[grid.length][grid[0].length];
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (!visited[i][j] &&grid[i][j] == '1') {
+                    int count = dfs(grid, visited, i, j, 0);
+                    max = Math.max(count, max);
+                }
+            }
+        }
+        return max;
+    }
+    public int dfs(char[][] grid, boolean[][] visited, int i, int j, int size) {
+        if (i < 0 || i > grid.length - 1 || j < 0 || j > grid[i].length - 1 || visited[i][j] || grid[i][j] == '0') return size;
+        visited[i][j] = true;
+        size++; 
+        size = dfs(grid, visited, i - 1, j, size);
+        size = dfs(grid, visited, i + 1, j, size);
+        size = dfs(grid, visited, i, j - 1, size);
+        size = dfs(grid, visited, i, j + 1, size);
+        return size;
+    }
+}
+
+27. 第一题 flatten tree to linked list
+      a
+   b   c
+d   e  f      to     d->b->e->a->f->c
+
+28. 第二题 strStr()，然后求复杂度
+
+
+29. 
+1 longest path in the tree, start at any node and stop at any node; follow up 树很深；2 interger to string, LC 上那题稍微变一下， 可能为负数；
+面试官国人小哥好评。求onsite;.
+
+
+257. Binary Tree Paths   QuestionEditorial Solution  My Submissions
+Total Accepted: 74313
+Total Submissions: 223647
+Difficulty: Easy
+Contributors: Admin
+Given a binary tree, return all root-to-leaf paths.
+
+For example, given the following binary tree:
+
+   1
+ /   \
+2     3
+ \
+  5
+All root-to-leaf paths are:
+
+["1->2->5", "1->3"]
+
+
+
+
+
+
+
+
+刚面的。. 鐗涗汉浜戦泦,涓€浜╀笁鍒嗗湴
+一烙印面的，上来一道简单的题，intersection of two arrays。 看到这么简单的还挺激动，但故事肯定不是这么简单啦。
+先把简单的two pointer解法写完，然后问可不可优化。尼玛，都O(m + n)了，还要咋。
+于是说如果一个特长，那就binary search吧。好写完了。问如何优化？ 尼玛，都mlog(n)了，还咋样啊。. more info on 1point3acres.com
+于是说如果找到了，一个元素，那就用这次的index作为下次binary search的开始。可以节约掉之前的东西，不用search了。然后问，如果找不到呢，如何优化。尼玛. 鐗涗汉浜戦泦,涓€浜╀笁鍒嗗湴
+折腾了一会儿，说如果找不到，也返回上次search 结束的index，然后下次接着search。终于时间到了。
+感觉要黑也是有操作空间的。
+现在FB是不是喜欢问follow up， 而不是2个问题了？ 鏉
+
+
+30.
+
 
 next ????FB昂赛特 求问Reference 
 4. Design autocomplete in a search engine

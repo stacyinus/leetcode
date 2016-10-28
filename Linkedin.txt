@@ -913,6 +913,28 @@ class MiddleStack  {
 	}
 }
 
+22. given a positive number n, and another positive number k, now 2 players take turns to pick numbers from 1 to n,  
+and add up the number they pick together, if the play or pick the number that first make the sum greater than or equal to k,  
+that player wins. write a function to find out whether you, as the first player, can win or not.
+[1,2,3,4,5]  7
+1  
+2-5
+boolean canWin(int n, int sum) {
+	boolean[] used = new boolean[n + 1];
+	return canWin(1, 0, used);
+}
+boolean canWin(int sum, int curSum, boolean[] used) {
+	if (curSum >= sum) return false;
+	for (int i = 1; i < used.length; i++) {
+		if (!used[i]) {
+			used[i] = true;
+			if (!canWin(sum, curSum + i, used[i])) return true;
+		}
+	}
+	return false;
+}
+
+
 class 
 onsite：
 
