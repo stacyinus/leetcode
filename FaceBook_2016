@@ -955,35 +955,134 @@ public class Solution {
 27. 第一题 flatten tree to linked list
       a
    b   c
-d   e  f      to     d->b->e->a->f->c
+d   e  f      to     d->b->e->a->f->
+
+public TreeNode flatten (TreeNode root) {
+		
+}
+
+
 
 28. 第二题 strStr()，然后求复杂度
 
 
 29. 
-1 longest path in the tree, start at any node and stop at any node; follow up 树很深；2 interger to string, LC 上那题稍微变一下， 可能为负数；
-面试官国人小哥好评。求onsite;.
+1 longest path in the tree, start at any node and stop at any node; follow up 树很深；
+3 conditions: 
+1) cross root
+2) in left subtree
+3) in right subtree
 
+class Node {
+	int depth;
+	int max;
+	public Node (int d, int m) {
+		depth = d;
+		max = m;
+	}
+}
+public int longestPath (TreeNode root) {
+	if (root == null) return 0;
+	Node n = traverse(root);
+	return n.max;
+}
+public Node traverse(TreeNode root) {
+	if (root == null) {
+		reutrn new Node (0, 0);
+	}
+	Node left = traverse(root.left);
+	Node right = traverse(root.right);
+	int depth = Math.max(left.depth, right.depth) + 1;
+	int crossRoot = left.depth + right.depth + 1;
+	int max = Math.max(Math.max(left.max, right.max), crossRoot);
+	Node cur = new Node(depth, max);
+	return cur;
+}
 
-257. Binary Tree Paths   QuestionEditorial Solution  My Submissions
-Total Accepted: 74313
-Total Submissions: 223647
-Difficulty: Easy
-Contributors: Admin
-Given a binary tree, return all root-to-leaf paths.
+LC124 Max Path Sum
+public class Solution {
+	class Node {
+		int max;
+		int rootToLeaveMax;
+		public Node(int i , int j) {
+			max = i;
+			rootToLeaveMax = j;
+		}
+	}
+    public int maxPathSum(TreeNode root) {
+    	Node n = traverse(root);
+    	return n.max;
+    }
 
-For example, given the following binary tree:
+    private Node traverse(TreeNode root) {
+    	if (root == null) return new Node (Integer.MIN_VALUE, Integer.MIN_VALUE);
+    	if (root.left == null && root.right == null) return new Node(root.val, root.val); 
+    	Node left = traverse(root.left);//-2, -2
+    	Node right = traverse(root.right);// 3, 3
+    	int rootToLeave = Math.max(Math.max(left.rootToLeaveMax, right.rootToLeaveMax) + root.val, root.val);
+    	int crossRoot = root.val;
+    	
+    	if (left.rootToLeaveMax > 0) {
+    		crossRoot += left.rootToLeaveMax;
+    	}
+    	if (right.rootToLeaveMax > 0) {
+    		crossRoot += right.rootToLeaveMax;
+    	}
+    	
+    	int max = Math.max(Math.max(left.max, right.max), crossRoot);
+    	return new Node(max, rootToLeave);
+    }
+}
 
-   1
- /   \
-2     3
- \
-  5
-All root-to-leaf paths are:
+Minimum Window Substring
 
-["1->2->5", "1->3"]
-
-
+S = "ADOBECODEBANC"
+	 i
+	      j
+T = "ABC"
+A:1
+B:1
+C:1
+public String minWindow(String s, String t) {
+	Map<Character, Integer> counts = new HashMap<Character, Integer>();
+	Map<Character, Integer> countt = new HashMap<Character, Integer>();
+	for (int i = 0; i < t.length(); i ++ ) {
+		char c = t.charAt(i);
+		countt.put(c, countt.containsKey(c) ? countt.get(c) + 1 : 1 );
+	}
+	String result = "";
+	int i = 0, j = 0;
+	while (j <= s.length()) {
+		if (contains(counts,countt)) {
+			String tmp = s.substring(i, j);
+			result = (result.length() > tmp.length() || result.length() == 0 ) ? tmp : result;
+			char c = s.charAt(i++);
+			if (counts.containsKey(c)) {
+				counts.put(c, counts.get(c) - 1);
+			}
+		}
+		else if (j < s.length()){
+			char c = s.charAt(j++);
+			if (countt.containsKey(c)) {
+				counts.put(c, counts.containsKey(c) ? counts.get(c) + 1 : 1);
+			}
+		}
+		else {
+			j++;
+		}
+	}
+	return result;
+}
+private boolean contains(Map<Character, Integer> map1, Map<Character, Integer> map2) {
+	for (Map.Entry<Character, Integer> entry : map2.entrySet()) {
+		if (!map1.containsKey(entry.getKey()) || map1.get(entry.getKey()) < entry.getValue()) return false;
+	}	
+	return true;
+}
+30. interger to string, LC 上那题稍微变一下， 可能为负数；
+public String intToString(int n) {
+	
+}
 314. Binary Tree Vertical Order Traversal
 
 class Node {
@@ -1028,8 +1127,32 @@ public List<List<Integer>> traverse(TreeNode root) {
     return result;
 }
 
-1011
-  23
+
+LC257 Binary Tree Paths
+public class Solution {
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> result = new ArrayList<String> ();
+        if (root == null) return result;
+        traverse(result, "", root);
+        return result;
+    }
+    private void traverse(List<String> result, String cur, TreeNode root) {
+        cur = cur.length() == 0 ? Integer.toString(root.val) : (cur + "->" + root.val);
+        if (root.left == null && root.right == null) {
+            result.add(cur);
+            return;
+        }
+        if (root.left != null) {
+            traverse(result, cur, root.left);
+        }
+        if (root.right != null) {
+            traverse(result, cur, root.right);
+        }
+    }
+}
+
+
+
 
 刚面的。. 鐗涗汉浜戦泦,涓€浜╀笁鍒嗗湴
 一烙印面的，上来一道简单的题，intersection of two arrays。 看到这么简单的还挺激动，但故事肯定不是这么简单啦。
