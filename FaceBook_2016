@@ -1,3 +1,167 @@
+Onsite : 
+126Word Ladder II
+public class Solution {
+    public List<List<String>> findLadders(String beginWord, String endWord, Set<String> wordList) {
+        
+    }
+}
+
+LC29 Divide Integer
+public class Solution {
+    public int divide(int dividend, int divisor) {
+    	int r = 0;
+    	boolean pos = (dividend > 0 && divisor > 0) || (dividend < 0 && divisor < 0);
+    	long dividendnew = (long)Math.abs((long)dividend);
+    	long divisornew = (long)Math.abs((long)divisor);
+    	int tmp = divisornew, count = 1;
+    	while (dividendnew >= tmp) {
+    		while (dividendnew >= tmp) {
+    			dividendnew -= tmp;
+    			r += count;
+    			tmp = tmp << 1;
+    			count = count << 1;
+    		}
+    		tmp = divisor;
+    		count = 1;
+    	}
+    	return pos ? r : -1 * r;
+    }
+}        
+
+LC311 Sparse Matrix Multiplication
+
+public class Solution {
+    public int[][] multiply(int[][] A, int[][] B) {
+    	int m = A.length, n = A[0].length, k = B[0].length;
+    	int[][] result = new int[m][k];
+    	for (int i = 0; i < m; i++) {
+    		for (int j = 0; j < n; j++) {
+    			if (A[i][j] != 0 ) {
+    				for (int l = 0; l < k ; l ++) {
+    					result[i][l] += A[i][j] * B[j][l]; 
+    				}
+    			}
+    		}
+    	}
+    	return result;
+    }
+}
+
+
+这道题我当时并没有准备到，但是正因为如此，我认为我跟面试官的交流给我加分了不少。面试官首先问我每个vector很大，并不能在内存中存下，该怎么办，
+我说只需要存下非零的元素和他们的下标就行，然后询问面试官是否可以用预处理后的这两个vector非零元素的index和value作为输入，面试官同意后快速写完O(M*N)的代码，
+M和N分别是两个vector的长度。面试官说这两个输入如果是根据下标排序好的话应该怎么办，我说可以遍历长度较短的那一个，然后用二分搜索的方法在另一个vector中找index相同的元素，相乘加入到结果中，这样的话复杂度就是O(M*logN)。这时，面试官又问是否可以同时利用两个输入都是排序好这一个特性，我在这个地方有点卡住，但是在白板上写出一个test case，试着用可视化的方法帮助我来进行思考，同时面试官给了一些提醒，最后写出了O(M + N)的双指针方法然后问如果有一个向量比另一个长很多怎么办，遍历短的，对长的二分查找。
+两个vector相乘
+
+class Node {
+	int row;
+	int col;
+	double val;
+	public Node (int r, int c, double v) {
+		row = r;
+		col = c;
+		val = v;
+	}
+}
+public double[][] multiply(List<Node> ma, List<Node> mb, int m, int n) {
+	double[][] result = new double[m][n];
+	for (int i = 0; i < ma.size(); i ++) {
+		Node na = ma.get(i);
+		for (int j = 0; j < mb.size(); j ++) {
+			Node nb = mb.get(j);
+			if (na.col == nb.row) {
+				result[na.row][nb.col] += na.val * ma.val;
+			}
+		}
+	}
+	return result;
+}
+
+
+String To Double
+public double toDouble(String s) {
+	
+}
+
+Find Kth Nearest Node
+class Node {
+	int x;
+	int y;
+	int dis;
+
+	public Node(int x, int y, int dis) {
+		this.x = x;
+		this.y = y;
+		this.dis = dis;
+	}
+
+	@Override
+	public int compare(Node o) {
+		return this.dis - o.dis;
+	}
+}
+
+public List<Node> findKthNearest() {
+	
+}
+
+
+Ninja1：克罗地亚小哥，一个机器人在一个二维的地图上，对地图信息一无所知，包括长和宽。只有一个move命令可以控制机器人，可以东西南北走一步并返回true，如果是墙会返回false。求机器人可以到达位置的总个数。如何优化？
+
+int findSteps (int i, int j) {
+	Map<Integer, Set<Integer>> visited = new HashMap<Integer, Set<Integer>> ();
+	if (!move(i, j)) return 0;
+	return findSteps(i, j, visited, 1);
+}
+int findSteps(int i, int j, Map<Integer, Set<Integer>> visited, int steps) {
+	if (visited.containsKey(i) && visited.get(i).contains(j) || !move(i, j)) return steps;
+	int cur = steps++;
+	cur = findSteps(i - 1, j, visited, cur);
+	cur = findSteps(i + 1, j, visited, cur);
+	cur = findSteps(i, j - 1, visited, cur);
+	cur = findSteps(i, j + 1, visited, cur);
+	return cur;
+}
+
+LC34	Search for a Range  
+
+
+LC277 Find Celebrity 
+onsite:
+1) 烙印，. from: 1point3acres.com/bbs 
+扯淡， 各种质疑。除了常规问题，有一些奇葩问题： 离职提前多久跟你老板说？怎么保证你的离开不会对别人影响？ 你怎么带new hire？ 现在做的东西为什么要做？
+最后还剩2分钟， 讲了一个题：278. First Bad Version ， 没时间写只说说思路。
+
+2) 白人， 
+49. Group Anagrams, 讨论，秒掉
+285. Inorder Successor in BST， 讨论，秒掉。后来follow up 怎么O（lgn）, 讨论了一下写出。
+
+3) 烙印+ 烙印shadow
+283 Move Zeroes 不要求保持原来顺序，讨论，秒掉
+29 divide two numbers (出了个小bug, 而且现场写了一个(lgn ^2) 的算法(基于位运算的))
+. 鍥磋鎴戜滑@1point 3 acres
+4）白人
+设计一个FB的搜索系统， 自我感觉讨论不错， 然并卵 
+从requriment开始： 要搜索什么？ people,post, event ....
+constraint ， 用户多少，数据多少之类；
+UI 怎么搞， 怎样提高用户体验， typehead, 不同label分类
+总体怎么设计， 前段， server， 数据，画一画
+workflow 怎样，写个流程， 一个请求怎么完成 
+webservice怎么设计？ API， operation是怎么定义， 把restful讲讲
+数据库， 搜索的数据结构都怎么存，SQL table啦，还有 trie啦， bloom filter 啦， inverted table都讲讲。  
+CAP那一套说一说，怎么balance， 怎么Partion， 怎么保证consistence, cache怎么存.鐣欏璁哄潧-涓€浜�-涓夊垎鍦�
+
+
+一星期后说挂了，说有一轮coding 不好，desgin 也不好！
+一些体会： 
+* 都是LC原题，题不难但bar貌似越来越高。 
+* 设计题其实有一定经验，但回馈还是不好，有点惊讶。老中还是说多说多练吧！
+* 自己也做过面试，从没给一个烙印过过， 中国人都必过。 我对大部分的面试就这种感觉： 大部分人水平都差不多，有人放水就过了，没有人放水就过不了， 所以希望同胞多出来面试，也多关照同胞！
+
+System Design:
+
+在fb上发布新状态并能即时搜索其他人发布的新状态；为已知的附近餐馆排序显示在推荐列表中
+Phone
 
 http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=203983&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26sortid%3D311
 
@@ -289,44 +453,45 @@ Intersection of Two Arrays II: almost same with above problem...
 8. 蓄水池问题：给一个数组和一个数N， 随机返回该数组中任意一个不大于N的数。
 http://www.geeksforgeeks.org/reservoir-sampling/
 
-public int randome(int[] nums, int n) {
-	
+public int random(int[] nums, int n) {
+	int i = random(nums);
+	while (i > n) {
+		i = random(nums);
+	}
+	return i;
 }
-
-// A function to randomly select k items from stream[0..n-1].
-void selectKItems(int stream[], int n, int k)
-{
-    int i;  // index for elements in stream[]
- 
-    // reservoir[] is the output array. Initialize it with
-    // first k elements from stream[]
-    int reservoir[k];
-    for (i = 0; i < k; i++)
-        reservoir[i] = stream[i];
- 
-    // Use a different seed value so that we don't get
-    // same result each time we run this program
-    srand(time(NULL));
- 
-    // Iterate from the (k+1)th element to nth element
-    for (; i < n; i++)
-    {
-        // Pick a random index from 0 to i.
-        int j = rand() % (i+1);
- 
-        // If the randomly  picked index is smaller than k, then replace
-        // the element present at the index with new element from stream
-        if (j < k)
-          reservoir[j] = stream[i];
-    }
- 
-    printf("Following are k randomly selected items \n");
-    printArray(reservoir, k);
+private int random(int[] nums) {
+	int t = nums[0];
+	for (int i = 1; i < nums.length; i ++) {
+		int cur = rand() % (i + 1);
+		if (cur < 1) {
+			nums[0] = nums[i];
+		}
+	}	
+}
+public int[] selectKItems(int stream[], int n , int k) {
+	int[] result = new int[k];
+	int i = 0;
+	for (; i < k; i ++) {
+		result[i] = stream[i];
+	}
+	for (;i < n ; i ++) {
+		int t = rand() % (i + 1); 
+		if (t < k) {
+			result[t] = stream[i];
+		}
+	}
 }
 
 变种1：给一个l*w的矩阵，要随机取k个点。
 http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=204601&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26searchoption%5B3046%5D%5Bvalue%5D%3D2%26searchoption%5B3046%5D%5Btype%5D%3Dradio%26sortid%3D311
 
+public int[] randSelect(int[][] matrix, int l, int w, int k) {
+	int[] result = new int[k];
+	for (int i = 0; i < l; i ++) {
+
+	}
+}
 
 9. longest substring with at most K distinct charcaters
 /*
@@ -1249,7 +1414,9 @@ Find maximum, buy from earlier days, and sell on that day.
 38. Count and Say
 . 1point 3acres 璁哄潧
 sparse vector dot multiplication
-这道题我当时并没有准备到，但是正因为如此，我认为我跟面试官的交流给我加分了不少。面试官首先问我每个vector很大，并不能在内存中存下，该怎么办，我说只需要存下非零的元素和他们的下标就行，然后询问面试官是否可以用预处理后的这两个vector非零元素的index和value作为输入，面试官同意后快速写完O(M*N)的代码，M和N分别是两个vector的长度。面试官说这两个输入如果是根据下标排序好的话应该怎么办，我说可以遍历长度较短的那一个，然后用二分搜索的方法在另一个vector中找index相同的元素，相乘加入到结果中，这样的话复杂度就是O(M*logN)。这时，面试官又问是否可以同时利用两个输入都是排序好这一个特性，我在这个地方有点卡住，但是在白板上写出一个test case，试着用可视化的方法帮助我来进行思考，同时面试官给了一些提醒，最后写出了O(M + N)的双指针方法
+这道题我当时并没有准备到，但是正因为如此，我认为我跟面试官的交流给我加分了不少。面试官首先问我每个vector很大，并不能在内存中存下，该怎么办，
+我说只需要存下非零的元素和他们的下标就行，然后询问面试官是否可以用预处理后的这两个vector非零元素的index和value作为输入，面试官同意后快速写完O(M*N)的代码，
+M和N分别是两个vector的长度。面试官说这两个输入如果是根据下标排序好的话应该怎么办，我说可以遍历长度较短的那一个，然后用二分搜索的方法在另一个vector中找index相同的元素，相乘加入到结果中，这样的话复杂度就是O(M*logN)。这时，面试官又问是否可以同时利用两个输入都是排序好这一个特性，我在这个地方有点卡住，但是在白板上写出一个test case，试着用可视化的方法帮助我来进行思考，同时面试官给了一些提醒，最后写出了O(M + N)的双指针方法
 然后问如果有一个向量比另一个长很多怎么办，遍历短的，对长的二分查找。
 两个vector相乘
 
