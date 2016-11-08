@@ -80,8 +80,30 @@ public double[][] multiply(List<Node> ma, List<Node> mb, int m, int n) {
 
 String To Double
 public double toDouble(String s) {
-	
+	double result = 0, sum = 0;
+	boolean neg = s.charat(0) == '-';
+	int i = 1;
+	int base = 10;
+	while (i < s.length()) {
+		char c = s.charAt(i);
+		if (c == '.') {
+			result += sum;
+			base = 0.1;
+			sum = 0;
+		}
+		else if (c == 'e') {
+			result += sum;
+			int pow = 
+			result *= Math.pow(10, );
+			break;
+		}
+		else {
+			sum = 10 * sum + (c - '0') 
+		}
+	}
 }
+
+
 
 Find Kth Nearest Node
 class Node {
@@ -123,24 +145,88 @@ int findSteps(int i, int j, Map<Integer, Set<Integer>> visited, int steps) {
 	return cur;
 }
 
+Decode ways
+
+public int decodeWays(String s) {
+	
+}
+
 LC34	Search for a Range  
 
 
 LC277 Find Celebrity 
-onsite:
-1) 烙印，. from: 1point3acres.com/bbs 
-扯淡， 各种质疑。除了常规问题，有一些奇葩问题： 离职提前多久跟你老板说？怎么保证你的离开不会对别人影响？ 你怎么带new hire？ 现在做的东西为什么要做？
-最后还剩2分钟， 讲了一个题：278. First Bad Version ， 没时间写只说说思路。
 
-2) 白人， 
-49. Group Anagrams, 讨论，秒掉
-285. Inorder Successor in BST， 讨论，秒掉。后来follow up 怎么O（lgn）, 讨论了一下写出。
+LC278 First Bad Version
 
-3) 烙印+ 烙印shadow
-283 Move Zeroes 不要求保持原来顺序，讨论，秒掉
-29 divide two numbers (出了个小bug, 而且现场写了一个(lgn ^2) 的算法(基于位运算的))
-. 鍥磋鎴戜滑@1point 3 acres
-4）白人
+LC49 Group Anagrams
+
+LC285 Inorder Successor in BST
+
+LC283 Move Zeroes 不要求保持原来顺序
+LC29 divide two numbers 
+
+
+
+LC91，做完dp解之后，又被问了不用dp怎么做
+
+给n个d维的vector和一个first selected的vector, 选出k个vector,每次选择下一个时要求：选离所有selected vector最远的vector, 计算距离的函数已给出D(v1,v2)并假设调用此函数时间复杂度为O(1), 某vector与所有selected vectors的距离定义为这个vector与其nearest selected neighbor的距离。在面试官的提示下最终找到了复杂度为O(nk)的最优解，对每个unselected的vector存下其与selected vectosr的距离,每次遍历unselected vectors找出距离最远的vector为下一个selected vector, 用这个vector与每个unselected vector的距离去更新距离（若小于原距离，表示nearest selected neighbor更换了）  
+
+
+最近在做什么以及细问了简历。给一个手机键盘（只有0-9，不考虑*#那两个位置）样式的棋盘，骑士初始在数字1的位置，问走了s步以后（每步走日字），有多少种可能的走法。提示是可以hard code下一步的位置， 比如1->(6，8)。 应该可以用dp解，时间不多用了DFS/backtracking暴力解了
+
+
+
+1. Find all cells that are furthest to knights: (X is wall, O is space, K is Knight)(multiple knights)
+O O O
+O X O
+K X O
+return [(2,2)]
+Corner case:
+(1). [O], return all O’s
+(2). [K X O O] should return all [(0,2), (0,3)] because they are all on the other side
+Asked: Why BFS is more efficient than DFS
+
+2. Task execution with k period cooldown (keep order), all tasks take 1 time period. e.g.
+[1,1,2,1] with k = 2, time consumption is 7 (1 _ _ 1 2 _ 1)
+optimize storage, you don't need to store all task numbers.
+提议用LinkedHashMap，要说明至少一种implementation 方式，并且每次执行task都检查最早的element，如果执行记录远久直接移除。只有15分钟所以写了pseudo code。
+鏉ユ簮涓€浜�.涓夊垎鍦拌鍧�. 
+第二轮 一年多工作经验的ABC（非常nice，做完题闲聊了20分钟）：
+
+3. Flatten linked list
+Struct{
+  int val;
+  Struct next, child;
+}
+e.g.
+3 -> 4 -> 5
+        |
+        6 -> 7
+        |
+        8 -> 9
+return 3 -> 4 -> 6 -> 8 -> 9 -> 7 -> 5
+.1point3acres缃�
+4. Total hamming distance of all numbers in array. The array contains all 64 bits integers,
+   and two integers respectively having 0 and 1 at one digit contributes 1 hamming distance.
+   E.g. 11011 : 10011 has Hamming distance 1, and 11111 : 01100 has 3.
+   
+   Follow up: Do better than O(n^2) brute force.
+-google 1point3acres
+第三轮 五年多工作经验的国人
+
+5.1. Behavior interview. 没有问why facebook，但问我以前的team project, intern project和分工。
+
+5.2. Move non-zeros to the left side in array, return the count of non-zero integers, don't care about the rest of the array which are not used, require minimum number of writes. Order of integers does not matter.
+
+[size=14.666666666666666px]e.g.[1,0,2,0,4,0,5,7] -> [1,7,2,5,4,x,x,x] and return 5. # writes is 2..
+
+
+
+
+System Design:
+
+在fb上发布新状态并能即时搜索其他人发布的新状态；为已知的附近餐馆排序显示在推荐列表中
+
 设计一个FB的搜索系统， 自我感觉讨论不错， 然并卵 
 从requriment开始： 要搜索什么？ people,post, event ....
 constraint ， 用户多少，数据多少之类；
@@ -152,15 +238,6 @@ webservice怎么设计？ API， operation是怎么定义， 把restful讲讲
 CAP那一套说一说，怎么balance， 怎么Partion， 怎么保证consistence, cache怎么存.鐣欏璁哄潧-涓€浜�-涓夊垎鍦�
 
 
-一星期后说挂了，说有一轮coding 不好，desgin 也不好！
-一些体会： 
-* 都是LC原题，题不难但bar貌似越来越高。 
-* 设计题其实有一定经验，但回馈还是不好，有点惊讶。老中还是说多说多练吧！
-* 自己也做过面试，从没给一个烙印过过， 中国人都必过。 我对大部分的面试就这种感觉： 大部分人水平都差不多，有人放水就过了，没有人放水就过不了， 所以希望同胞多出来面试，也多关照同胞！
-
-System Design:
-
-在fb上发布新状态并能即时搜索其他人发布的新状态；为已知的附近餐馆排序显示在推荐列表中
 Phone
 
 http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=203983&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26sortid%3D311
