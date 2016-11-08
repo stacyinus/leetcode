@@ -48,6 +48,73 @@ public class Solution {
 }
 
 
+LC 88 - Merge Sorted Array
+public class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int i = m - 1, j = n - 1, k = m + n - 1;
+        while (i >=0 || j >= 0) {
+            if (i < 0) {
+                nums1[k--] = nums2[j--];
+                continue;
+            }
+            if (j < 0) {
+                nums1[k--] = nums1[i--];
+                continue;
+            }
+            if (nums1[i] > nums2[j]) {
+                nums1[k--] = nums1[i--];
+            }
+            else {
+                nums1[k--] = nums2[j--];
+            }
+        }
+    }
+}
+P2: Task Cooldown
+Given an array of tasks and cooldown e.g., [1,1,2,1] and cooldown = 2, find how long it
+takes to schedule all tasks
+Return 7 as the tasks should be scheduled as: 1, _, _, 1, 2, _, 1
+Not need to return the array.
+[1,2,1,2,1] cooldown = 2     1,2,_,1,2,_1
+ 0 1 2 3 4
+ 
+count 
+1,2,_,1,2
+1,2,4,2,3,5,3，假设cool down是4，那总共时间就是 1 2 4 _ _ _ 2 3 5 _ _ _ 3，也就是13个单位的时间
+
+
+public int coolDown(int[] tasks, int interval) {
+    Map<Integer, Integer> indexMap = new HashMap<Integer, Integer>();
+    int total = 0;
+    for (int i = 0; i < tasks.length; i ++) {
+        if (indexMap.containsKey(task[i])) {
+
+        }
+    }
+    return total;
+}
+LeetCode 158 - Read N Characters Given Read4 II - Call multiple times
+但是给的function是read4K(), 4096 bytes
+
+
+
+LeetCode是int read(char *buf, int n)。
+当时楼主做的是int read(int n)，自己开了个global buffer。
+感觉可以和面试官讨论直到把function signature改得和LeetCode一模一样。
+
+楼主看过面经，知道会被问read4() 2，但是一开始还是没问清，给了个read4() 1的答案。。
+记住要问read()会不会被called multiple times。如果是被called multiple times，就是read4() 2了。
+
+第三轮
+P1: Behavioral questions
+- Why Facebook?
+- Career plan. From 1point 3acres bbs
+- Teamwork experience and how to handle disagreement
+- Which area(s) your previous companies can improve on?
+P2: Test whether a string is palindromic.
+Ignore cases, digits, and non-alphabet characters.
+
+
 这道题我当时并没有准备到，但是正因为如此，我认为我跟面试官的交流给我加分了不少。面试官首先问我每个vector很大，并不能在内存中存下，该怎么办，
 我说只需要存下非零的元素和他们的下标就行，然后询问面试官是否可以用预处理后的这两个vector非零元素的index和value作为输入，面试官同意后快速写完O(M*N)的代码，
 M和N分别是两个vector的长度。面试官说这两个输入如果是根据下标排序好的话应该怎么办，我说可以遍历长度较短的那一个，然后用二分搜索的方法在另一个vector中找index相同的元素，相乘加入到结果中，这样的话复杂度就是O(M*logN)。这时，面试官又问是否可以同时利用两个输入都是排序好这一个特性，我在这个地方有点卡住，但是在白板上写出一个test case，试着用可视化的方法帮助我来进行思考，同时面试官给了一些提醒，最后写出了O(M + N)的双指针方法然后问如果有一个向量比另一个长很多怎么办，遍历短的，对长的二分查找。
